@@ -444,7 +444,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 	public boolean rejectApplication(Object applicationPK, User performer) {
 		try {
 			MusicSchoolChoice application = findMusicSchoolChoice(applicationPK);
-			Iterator iter = application.getChildren();
+			Iterator iter = application.getChildrenIterator();
 			boolean hasChildrenApplications = false;
 			while (iter.hasNext()) {
 				Case theCase = (Case) iter.next();
