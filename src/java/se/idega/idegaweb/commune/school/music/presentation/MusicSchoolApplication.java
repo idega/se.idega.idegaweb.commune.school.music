@@ -333,11 +333,13 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		instrumentTable.setWidth(Table.HUNDRED_PERCENT);
 		instrumentTable.setStyleAttribute("border:1px solid #000000;");
 		instrumentTable.setColor("#FFFFFF");
-		instrumentTable.setCellpadding(3);
+		instrumentTable.setCellpadding(2);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
 		table.add(instrumentTable, 1, row);
 		table.setVerticalAlignment(1, row++, Table.VERTICAL_ALIGN_TOP);
 		int iRow = 1;
+		int numberOfInstruments = instruments.size();
+		int lastRow = numberOfInstruments % 4 == 0 ? numberOfInstruments / 4 : (numberOfInstruments / 4) + 1;
 		int iColumn = 1;
 		
 		if (instruments != null) {
@@ -356,7 +358,19 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 				if (chosenInstruments != null) {
 					box.setChecked(chosenInstruments.contains(instrument));
 				}
-				//instrumentTable.setStyleClass(iColumn, iRow, getStyleName(STYLENAME_INPUT_CELL));
+				if (iRow == 1) {
+					instrumentTable.setCellpaddingTop(iColumn, iRow, 4);
+				}
+				else if (iRow == lastRow) {
+					instrumentTable.setCellpaddingBottom(iColumn, iRow, 4);
+				}
+				if (iColumn == 1) {
+					instrumentTable.setCellpaddingLeft(iColumn, iRow, 4);
+				}
+				else if (iColumn == 4) {
+					instrumentTable.setCellpaddingRight(iColumn, iRow, 4);
+				}
+				instrumentTable.setWidth(iColumn, iRow, "25%");
 				instrumentTable.add(box, iColumn, iRow);
 				instrumentTable.add(getSmallText(Text.NON_BREAKING_SPACE), iColumn, iRow);
 				instrumentTable.add(getSmallText(localize(instrument.getCode(), instrument.getDescription())), iColumn++, iRow);
