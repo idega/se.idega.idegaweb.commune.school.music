@@ -324,17 +324,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 	private void showPhaseTwo(IWContext iwc) throws RemoteException {
 		Form form = new Form();
 		form.setEventListener(MusicSchoolEventListener.class);
-		form.maintainParameter(PARAMETER_SCHOOLS + "_1");
-		form.maintainParameter(PARAMETER_SCHOOLS + "_2");
-		form.maintainParameter(PARAMETER_SCHOOLS + "_3");
-		form.maintainParameter(PARAMETER_INSTRUMENTS + "_1");
-		form.maintainParameter(PARAMETER_INSTRUMENTS + "_2");
-		form.maintainParameter(PARAMETER_INSTRUMENTS + "_3");
 		form.maintainParameter(PARAMETER_SEASON);
-		form.maintainParameter(PARAMETER_DEPARTMENT);
-		form.maintainParameter(PARAMETER_LESSON_TYPE);
-		form.maintainParameter(PARAMETER_TEACHER_REQUEST);
-		form.maintainParameter(PARAMETER_OTHER_INSTRUMENT);
 		form.maintainParameter(PARAMETER_HAS_EXTRA_APPLICATIONS);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_1");
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_2");
@@ -693,7 +683,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.maintainParameter(PARAMETER_LESSON_TYPE);
 		form.maintainParameter(PARAMETER_TEACHER_REQUEST);
 		form.maintainParameter(PARAMETER_OTHER_INSTRUMENT);
-		form.maintainParameter(PARAMETER_HAS_EXTRA_APPLICATIONS);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_1");
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_2");
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_3");
@@ -761,18 +750,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 	private void showPhaseFour(IWContext iwc) throws RemoteException {
 		Form form = new Form();
 		form.setEventListener(MusicSchoolEventListener.class);
-		form.maintainParameter(PARAMETER_SCHOOLS + "_1");
-		form.maintainParameter(PARAMETER_SCHOOLS + "_2");
-		form.maintainParameter(PARAMETER_SCHOOLS + "_3");
-		form.maintainParameter(PARAMETER_INSTRUMENTS + "_1");
-		form.maintainParameter(PARAMETER_INSTRUMENTS + "_2");
-		form.maintainParameter(PARAMETER_INSTRUMENTS + "_3");
 		form.maintainParameter(PARAMETER_SEASON);
-		form.maintainParameter(PARAMETER_DEPARTMENT);
-		form.maintainParameter(PARAMETER_LESSON_TYPE);
-		form.maintainParameter(PARAMETER_TEACHER_REQUEST);
-		form.maintainParameter(PARAMETER_OTHER_INSTRUMENT);
-		form.maintainParameter(PARAMETER_HAS_EXTRA_APPLICATIONS);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_1");
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_2");
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_3");
@@ -853,9 +831,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_LESSON_TYPE);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_TEACHER_REQUEST);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_OTHER_INSTRUMENT);
-		form.maintainParameter(PARAMETER_MESSAGE);
-		form.maintainParameter(PARAMETER_PREVIOUS_STUDIES);
-		form.maintainParameter(PARAMETER_ELEMENTARY_SCHOOL);
 		
 		SchoolSeason season = null;
 		try {
