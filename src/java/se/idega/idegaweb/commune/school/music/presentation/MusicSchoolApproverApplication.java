@@ -80,7 +80,7 @@ public class MusicSchoolApproverApplication extends MusicSchoolBlock {
 			
 			table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
 			table.add(getSmallHeader(localize("name", "Name")), 1, row);
-			table.add(getText(user.getNameLastFirst(false)), 2, row++);
+			table.add(getText(user.getName()), 2, row++);
 			
 			table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
 			table.add(getSmallHeader(localize("personal_id", "Personal ID")), 1, row);

@@ -261,7 +261,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("personal_id", "Personal ID")), 2, row++);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
-		table.add(getTextInput("name", child.getNameLastFirst(false), true), 1, row);
+		table.add(getTextInput("name", child.getName(), true), 1, row);
 		table.setStyleClass(2, row, getStyleName(STYLENAME_INPUT_CELL));
 		table.add(getTextInput("personalID", PersonalIDFormatter.format(child.getPersonalID(), iwc.getCurrentLocale()), true), 2, row++);
 		
