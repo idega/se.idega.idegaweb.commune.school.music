@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE invoke >
+
+<invoke>
+	<method_description name="getChoicesReport">
+		<class_description class="se.idega.idegaweb.commune.school.music.business.MusicSchoolReport" default_display_name="MusicSchoolReport" type="IBOSessionBean" />
+
+		<input>
+			<class_description class="com.idega.block.school.data.SchoolSeason" default_display_name="Season" name="school_season">
+				<localized_name name="Skólaár" locale="is_IS"/>
+				<localized_name name="School season" locale="en"/>
+				<class_handler class="com.idega.block.school.presentation.SchoolSeasonDropdown" />
+			</class_description>
+	
+		</input>
+	
+		<output>
+			<class_description class="com.idega.block.datareport.util.ReportableCollection" default_display_name="" />
+		</output>
+		
+	</method_description>
+
+</invoke>

@@ -63,7 +63,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 	private final static String IW_BUNDLE_IDENTIFIER = "se.idega.idegaweb.commune.school.music";
 	private final static String CASE_CODE_KEY = "MUSICCH";
 
-	private MusicSchoolChoiceHome getMusicSchoolChoiceHome() {
+	public MusicSchoolChoiceHome getMusicSchoolChoiceHome() {
 		try {
 			return (MusicSchoolChoiceHome) IDOLookup.getHome(MusicSchoolChoice.class);
 		}

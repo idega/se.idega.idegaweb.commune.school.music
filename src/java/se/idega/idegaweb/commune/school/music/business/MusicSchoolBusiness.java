@@ -3,12 +3,15 @@ package se.idega.idegaweb.commune.school.music.business;
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 
+import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceHome;
+
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.user.data.User;
 
 
 public interface MusicSchoolBusiness extends com.idega.block.process.business.CaseBusiness
 {
+ public MusicSchoolChoiceHome getMusicSchoolChoiceHome() throws java.rmi.RemoteException;
  public boolean addStudentsToGroup(java.lang.String[] p0,com.idega.block.school.data.SchoolClass p1,com.idega.block.school.data.SchoolYear p2,com.idega.block.school.data.SchoolStudyPath p3,com.idega.user.data.User p4) throws java.rmi.RemoteException;
  public void deleteInstrument(Object instrumentPK) throws java.rmi.RemoteException;
  public java.util.Collection findAllDepartments()throws javax.ejb.FinderException, java.rmi.RemoteException;

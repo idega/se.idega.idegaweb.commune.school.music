@@ -359,13 +359,13 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	}
 
 	public Integer ejbFindAllByStatuses(User child, School school, SchoolSeason season, String[] statuses) throws FinderException {
-		SelectQuery query = getDefaultQuery(child, school, season, null, null, statuses);
+		SelectQuery query = getDefaultQuery(child, school, season, null, null, null, statuses);
 		
 		return (Integer) idoFindOnePKBySQL(query.toString());
 	}
 
 	public Collection ejbFindAllByStatuses(User child, School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String[] statuses) throws FinderException {
-		SelectQuery query = getDefaultQuery(child, school, season, year, instrument, statuses);
+		SelectQuery query = getDefaultQuery(child, school, season, year, instrument, null, statuses);
 		
 		return idoFindPKsBySQL(query.toString());
 	}
@@ -395,20 +395,24 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	}
 	
 	public int ejbHomeGetNumberOfApplications(User child, String[] statuses) throws IDOException {
-		return ejbHomeGetNumberOfApplications(child, null, null, null, null, statuses);
+		return ejbHomeGetNumberOfApplications(child, null, null, null, null, null, statuses);
 	}
 	
 	public int ejbHomeGetNumberOfApplications(User child, SchoolSeason season, String[] statuses) throws IDOException {
-		return ejbHomeGetNumberOfApplications(child, null, season, null, null, statuses);
+		return ejbHomeGetNumberOfApplications(child, null, season, null, null, null, statuses);
 	}
 	
 	public int ejbHomeGetNumberOfApplications(User child, SchoolYear year, String[] statuses) throws IDOException {
-		return ejbHomeGetNumberOfApplications(child, null, null, year, null, statuses);
+		return ejbHomeGetNumberOfApplications(child, null, null, year, null, null, statuses);
 	}
 	
-	public int ejbHomeGetNumberOfApplications(User child, School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String[] statuses) throws IDOException {
+	public int ejbHomeGetNumberOfApplications(School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String types, String[] statuses) throws IDOException {
+		return ejbHomeGetNumberOfApplications(null, school, season, year, instrument, types, statuses);
+	}
+	
+	public int ejbHomeGetNumberOfApplications(User child, School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String types, String[] statuses) throws IDOException {
 		try {
-			SelectQuery query = getDefaultQuery(child, school, season, year, instrument, statuses);
+			SelectQuery query = getDefaultQuery(child, school, season, year, instrument, types, statuses);
 			query.removeColumn(new Column(query.getBaseTable(), this.getIDColumnName()));
 			query.addColumn(new CountColumn(query.getBaseTable(), this.getIDColumnName()));
 			
@@ -419,7 +423,7 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		}
 	}
 	
-	private SelectQuery getDefaultQuery(User child, School school, SchoolSeason season, SchoolYear department, SchoolStudyPath instrument, String[] statuses) throws FinderException {
+	private SelectQuery getDefaultQuery(User child, School school, SchoolSeason season, SchoolYear department, SchoolStudyPath instrument, String types, String[] statuses) throws FinderException {
 		Table choice = new Table(this);
 		Table process = new Table(Case.class);
 		Table instruments = new Table(SchoolStudyPath.class);
@@ -461,6 +465,9 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 			catch (IDOCompositePrimaryKeyException icpke) {
 				throw new FinderException(icpke.getMessage());
 			}
+		}
+		if (types != null) {
+			query.addCriteria(new InCriteria(choice, SCHOOL_TYPE, types));
 		}
 		
 		return query;
