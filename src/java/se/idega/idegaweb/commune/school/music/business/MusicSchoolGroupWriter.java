@@ -57,8 +57,8 @@ import com.idega.util.PersonalIDFormatter;
 public class MusicSchoolGroupWriter implements MediaWritable {
 
 	protected MemoryFileBuffer buffer = null;
-	private CareBusiness careBusiness;
-	private CommuneUserBusiness userBusiness;
+	protected CareBusiness careBusiness;
+	protected CommuneUserBusiness userBusiness;
 	protected Locale locale;
 	protected IWResourceBundle iwrb;
 	

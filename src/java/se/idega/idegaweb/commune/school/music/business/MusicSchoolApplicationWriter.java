@@ -31,6 +31,8 @@ public class MusicSchoolApplicationWriter extends MusicSchoolGroupWriter {
 	public void init(HttpServletRequest req, IWContext iwc) {
 		try {
 			locale = iwc.getApplicationSettings().getApplicationLocale();
+			careBusiness = getCareBusiness(iwc);
+			userBusiness = getUserBusiness(iwc);
 			iwrb = iwc.getIWMainApplication().getBundle(MusicSchoolBlock.IW_BUNDLE_IDENTIFIER).getResourceBundle(locale);
 			schoolName = getSession(iwc).getProvider().getSchoolName();
 			
