@@ -698,6 +698,16 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		}
 	}
 	
+	public boolean hasExtraApplication(User student, SchoolSeason season) {
+		try {
+			String[] statuses = { getCaseStatusPlaced().getStatus(), getCaseStatusPreliminary().getStatus(), getCaseStatusInactive().getStatus() };
+			return getMusicSchoolChoiceHome().getNumberOfApplications(student, season, statuses, true) > 0;
+		}
+		catch (IDOException ie) {
+			return false;
+		}
+	}
+	
 	public boolean hasNextSeason(SchoolSeason season) {
 		try {
 			return getSchoolBusiness().getSchoolSeasonHome().findNextSeason(season) != null;

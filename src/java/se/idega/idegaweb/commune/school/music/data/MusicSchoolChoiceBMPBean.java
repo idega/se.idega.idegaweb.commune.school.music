@@ -428,24 +428,28 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	}
 	
 	public int ejbHomeGetNumberOfApplications(User child, String[] statuses) throws IDOException {
-		return ejbHomeGetNumberOfApplications(child, null, null, null, null, null, statuses);
+		return ejbHomeGetNumberOfApplications(child, null, null, null, null, null, statuses, null);
 	}
 	
 	public int ejbHomeGetNumberOfApplications(User child, SchoolSeason season, String[] statuses) throws IDOException {
-		return ejbHomeGetNumberOfApplications(child, null, season, null, null, null, statuses);
+		return ejbHomeGetNumberOfApplications(child, null, season, null, null, null, statuses, null);
+	}
+	
+	public int ejbHomeGetNumberOfApplications(User child, SchoolSeason season, String[] statuses, boolean extraApplication) throws IDOException {
+		return ejbHomeGetNumberOfApplications(child, null, season, null, null, null, statuses, new Boolean(extraApplication));
 	}
 	
 	public int ejbHomeGetNumberOfApplications(User child, SchoolYear year, String[] statuses) throws IDOException {
-		return ejbHomeGetNumberOfApplications(child, null, null, year, null, null, statuses);
+		return ejbHomeGetNumberOfApplications(child, null, null, year, null, null, statuses, null);
 	}
 	
 	public int ejbHomeGetNumberOfApplications(School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String types, String[] statuses) throws IDOException {
-		return ejbHomeGetNumberOfApplications(null, school, season, year, instrument, types, statuses);
+		return ejbHomeGetNumberOfApplications(null, school, season, year, instrument, types, statuses,  null);
 	}
 	
-	public int ejbHomeGetNumberOfApplications(User child, School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String types, String[] statuses) throws IDOException {
+	public int ejbHomeGetNumberOfApplications(User child, School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String types, String[] statuses, Boolean showExtraApplications) throws IDOException {
 		try {
-			SelectQuery query = getDefaultQuery(child, school, season, year, instrument, types, statuses, null);
+			SelectQuery query = getDefaultQuery(child, school, season, year, instrument, types, statuses, showExtraApplications);
 			query.removeAllColumns();
 			query.removeAllOrder();
 			query.addColumn(new CountColumn(query.getBaseTable(), this.getIDColumnName()));

@@ -1,6 +1,6 @@
 /*
- * $Id: MusicSchoolChoiceHomeImpl.java,v 1.5 2005/03/19 16:37:29 laddi Exp $
- * Created on 19.3.2005
+ * $Id: MusicSchoolChoiceHomeImpl.java,v 1.6 2005/03/31 08:22:32 laddi Exp $
+ * Created on 31.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -24,10 +24,10 @@ import com.idega.user.data.User;
  * <p>
  * TODO laddi Describe Type MusicSchoolChoiceHomeImpl
  * </p>
- *  Last modified: $Date: 2005/03/19 16:37:29 $ by $Author: laddi $
+ *  Last modified: $Date: 2005/03/31 08:22:32 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MusicSchoolChoiceHomeImpl extends IDOFactory implements MusicSchoolChoiceHome {
 
@@ -159,6 +159,15 @@ public class MusicSchoolChoiceHomeImpl extends IDOFactory implements MusicSchool
 		return theReturn;
 	}
 
+	public int getNumberOfApplications(User child, SchoolSeason season, String[] statuses, boolean extraApplication)
+			throws IDOException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		int theReturn = ((MusicSchoolChoiceBMPBean) entity).ejbHomeGetNumberOfApplications(child, season, statuses,
+				extraApplication);
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
+	}
+
 	public int getNumberOfApplications(User child, SchoolYear year, String[] statuses) throws IDOException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 		int theReturn = ((MusicSchoolChoiceBMPBean) entity).ejbHomeGetNumberOfApplications(child, year, statuses);
@@ -176,10 +185,10 @@ public class MusicSchoolChoiceHomeImpl extends IDOFactory implements MusicSchool
 	}
 
 	public int getNumberOfApplications(User child, School school, SchoolSeason season, SchoolYear year,
-			SchoolStudyPath instrument, String types, String[] statuses) throws IDOException {
+			SchoolStudyPath instrument, String types, String[] statuses, Boolean showExtraApplications) throws IDOException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 		int theReturn = ((MusicSchoolChoiceBMPBean) entity).ejbHomeGetNumberOfApplications(child, school, season, year,
-				instrument, types, statuses);
+				instrument, types, statuses, showExtraApplications);
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}

@@ -1,6 +1,6 @@
 /*
- * $Id: MusicSchoolChoiceHome.java,v 1.5 2005/03/19 16:37:28 laddi Exp $
- * Created on 19.3.2005
+ * $Id: MusicSchoolChoiceHome.java,v 1.6 2005/03/31 08:22:32 laddi Exp $
+ * Created on 31.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -24,10 +24,10 @@ import com.idega.user.data.User;
  * <p>
  * TODO laddi Describe Type MusicSchoolChoiceHome
  * </p>
- *  Last modified: $Date: 2005/03/19 16:37:28 $ by $Author: laddi $
+ *  Last modified: $Date: 2005/03/31 08:22:32 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface MusicSchoolChoiceHome extends IDOHome {
 
@@ -119,6 +119,12 @@ public interface MusicSchoolChoiceHome extends IDOHome {
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#ejbHomeGetNumberOfApplications
 	 */
+	public int getNumberOfApplications(User child, SchoolSeason season, String[] statuses, boolean extraApplication)
+			throws IDOException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#ejbHomeGetNumberOfApplications
+	 */
 	public int getNumberOfApplications(User child, SchoolYear year, String[] statuses) throws IDOException;
 
 	/**
@@ -131,7 +137,7 @@ public interface MusicSchoolChoiceHome extends IDOHome {
 	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#ejbHomeGetNumberOfApplications
 	 */
 	public int getNumberOfApplications(User child, School school, SchoolSeason season, SchoolYear year,
-			SchoolStudyPath instrument, String types, String[] statuses) throws IDOException;
+			SchoolStudyPath instrument, String types, String[] statuses, Boolean showExtraApplications) throws IDOException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#ejbHomeGetMusicChoiceStatistics

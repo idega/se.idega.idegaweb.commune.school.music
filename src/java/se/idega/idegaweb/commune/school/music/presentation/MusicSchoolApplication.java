@@ -676,6 +676,16 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.maintainParameter(PARAMETER_PREVIOUS_STUDIES);
 		form.maintainParameter(PARAMETER_ELEMENTARY_SCHOOL);
 		
+		SchoolSeason season = null;
+		try {
+			season = getCareBusiness(iwc).getCurrentSeason();
+		}
+		catch (FinderException fe) {
+			log(fe);
+			add(getErrorText(localize("no_season_found", "No season found...")));
+			return;
+		}
+		
 		Table table = new Table();
 		table.setCellpadding(0);
 		table.setCellspacing(0);
@@ -698,7 +708,12 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		RadioButton yes = this.getRadioButton(PARAMETER_HAS_EXTRA_APPLICATIONS, Boolean.TRUE.toString());
 		RadioButton no = this.getRadioButton(PARAMETER_HAS_EXTRA_APPLICATIONS, Boolean.FALSE.toString());
-		no.setSelected(true);
+		if (getBusiness().hasExtraApplication(getSession().getChild(), season)) {
+			yes.setSelected(true);
+		}
+		else {
+			no.setSelected(true);
+		}
 		yes.keepStatusOnAction(true);
 		no.keepStatusOnAction(true);
 		
@@ -819,6 +834,34 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		User user = getSession().getChild();
 		Age age = new Age(user.getDateOfBirth());
 		
+		SchoolSeason season = null;
+		try {
+			season = getCareBusiness(iwc).getCurrentSeason();
+		}
+		catch (FinderException fe) {
+			log(fe);
+			add(getErrorText(localize("no_season_found", "No season found...")));
+			return;
+		}
+		
+		String chosenElementarySchool = null;
+		String chosenPreviousStudies = null;
+		String chosenMessage = null;
+		
+		List choices = null;
+		try {
+			choices = new ArrayList(getBusiness().findChoicesByChildAndSeason(getSession().getChild(), season, false));
+			if (!choices.isEmpty()) {
+				MusicSchoolChoice choice = (MusicSchoolChoice) choices.get(0);
+				chosenElementarySchool = choice.getElementarySchool();
+				chosenPreviousStudies = choice.getPreviousStudies();
+				chosenMessage = choice.getMessage();
+			}
+		}
+		catch (FinderException fe) {
+			//Nothing found...
+		}
+
 		table.add(getPhasesTable(5, 6), 1, row++);
 		table.setHeight(row++, 12);
 
@@ -832,7 +875,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(getHeader(localize("application.other_information", "Other information")), 1, row++);
 		
 		if (age.getYears() < 16) {
-			TextInput elementarySchool = getTextInput(PARAMETER_ELEMENTARY_SCHOOL, null);
+			TextInput elementarySchool = getTextInput(PARAMETER_ELEMENTARY_SCHOOL, chosenElementarySchool);
 			elementarySchool.keepStatusOnAction(true);
 			table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
 			table.add(getText(localize("elementary_school", "Elementary school")), 1, row++);
@@ -841,7 +884,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 			table.setHeight(row++, 3);
 		}
 		
-		TextArea previousStudies = getTextArea(PARAMETER_PREVIOUS_STUDIES, null);
+		TextArea previousStudies = getTextArea(PARAMETER_PREVIOUS_STUDIES, chosenPreviousStudies);
 		previousStudies.setHeight("50");
 		previousStudies.keepStatusOnAction(true);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
@@ -851,7 +894,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		table.setHeight(row++, 18);
 
-		TextArea message = getTextArea(PARAMETER_MESSAGE, null);
+		TextArea message = getTextArea(PARAMETER_MESSAGE, chosenMessage);
 		message.setHeight("50");
 		message.keepStatusOnAction(true);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
