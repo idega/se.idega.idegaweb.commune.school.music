@@ -204,14 +204,17 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					}
 				}
 				
-				table.setHeight(row++, 12);
-				
-				SubmitButton showGroup = (SubmitButton) getButton(new SubmitButton(localize("show_group", "Show group"), PARAMETER_ACTION, String.valueOf(ACTION_SAVE)));
-				SubmitButton submit = (SubmitButton) getButton(new SubmitButton(localize("save", "Save"), PARAMETER_ACTION, String.valueOf(ACTION_SAVE)));
-				
-				table.add(showGroup, 1, row);
-				table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
-				table.add(submit, 1, row);
+				if (getSession().getGroup() != null) {
+					table.setHeight(row++, 12);
+					
+					SubmitButton showGroup = (SubmitButton) getButton(new SubmitButton(localize("show_group", "Show group"), PARAMETER_ACTION, String.valueOf(ACTION_SAVE)));
+					SubmitButton submit = (SubmitButton) getButton(new SubmitButton(localize("save", "Save"), PARAMETER_ACTION, String.valueOf(ACTION_SAVE)));
+					
+					table.add(showGroup, 1, row);
+					table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
+					table.add(submit, 1, row);
+					table.setCellpaddingLeft(1, row, 12);
+				}
 			}
 			catch (FinderException fe) {
 				table.setHeight(row++, 6);
