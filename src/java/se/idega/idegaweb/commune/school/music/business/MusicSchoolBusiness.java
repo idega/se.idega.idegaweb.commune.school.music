@@ -1,6 +1,6 @@
 /*
- * $Id: MusicSchoolBusiness.java,v 1.16 2005/03/29 06:26:37 laddi Exp $
- * Created on 28.3.2005
+ * $Id: MusicSchoolBusiness.java,v 1.17 2005/03/30 14:00:47 laddi Exp $
+ * Created on 30.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -37,10 +37,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * TODO laddi Describe Type MusicSchoolBusiness
  * </p>
- *  Last modified: $Date: 2005/03/29 06:26:37 $ by $Author: laddi $
+ *  Last modified: $Date: 2005/03/30 14:00:47 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 
@@ -150,8 +150,8 @@ public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#updateChoice
 	 */
 	public MusicSchoolChoice updateChoice(Object choicePK, Object departmentPK, Object lessonTypePK,
-			Collection instrumentsPKs, String teacherRequest, String message, String otherInstrument, String previousStudy,
-			String elementarySchool) throws FinderException, java.rmi.RemoteException;
+			Collection instrumentsPKs, String teacherRequest, String otherInstrument) throws FinderException,
+			java.rmi.RemoteException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#updateStudent

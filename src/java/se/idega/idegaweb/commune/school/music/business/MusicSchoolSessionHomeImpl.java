@@ -1,6 +1,6 @@
 /*
- * $Id: MusicSchoolSessionHomeImpl.java,v 1.2 2005/03/20 12:47:09 laddi Exp $
- * Created on 20.3.2005
+ * $Id: MusicSchoolSessionHomeImpl.java,v 1.3 2005/03/30 14:00:47 laddi Exp $
+ * Created on 30.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -16,10 +16,10 @@ import com.idega.business.IBOHomeImpl;
  * <p>
  * TODO laddi Describe Type MusicSchoolSessionHomeImpl
  * </p>
- *  Last modified: $Date: 2005/03/20 12:47:09 $ by $Author: laddi $
+ *  Last modified: $Date: 2005/03/30 14:00:47 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MusicSchoolSessionHomeImpl extends IBOHomeImpl implements MusicSchoolSessionHome {
 

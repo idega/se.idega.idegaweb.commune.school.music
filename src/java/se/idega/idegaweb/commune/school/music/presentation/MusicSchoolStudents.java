@@ -101,7 +101,7 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		table.add(headerTable, 1, 1);
 
 		headerTable.setCellpaddingLeft(1, 1, 12);
-		headerTable.add(getNavigationTable(), 1, 1);
+		headerTable.add(getNavigationTable(this), 1, 1);
 		headerTable.setCellpaddingLeft(1, 3, 12);
 		headerTable.add(getSortTable(), 1, 3);
 		headerTable.setVerticalAlignment(1, 3, Table.VERTICAL_ALIGN_BOTTOM);

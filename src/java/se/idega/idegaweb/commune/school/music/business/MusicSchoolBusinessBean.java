@@ -380,7 +380,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		return choice;
 	}
 	
-	public MusicSchoolChoice updateChoice(Object choicePK, Object departmentPK, Object lessonTypePK, Collection instrumentsPKs, String teacherRequest, String message, String otherInstrument, String previousStudy, String elementarySchool) throws FinderException {
+	public MusicSchoolChoice updateChoice(Object choicePK, Object departmentPK, Object lessonTypePK, Collection instrumentsPKs, String teacherRequest, String otherInstrument) throws FinderException {
 		MusicSchoolChoice choice = getMusicSchoolChoiceHome().findByPrimaryKey(choicePK);
 		try {
 			choice.removeStudyPaths();
@@ -391,9 +391,6 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		choice.setSchoolType(lessonTypePK);
 		choice.setSchoolYear(departmentPK);
 		choice.setTeacherRequest(teacherRequest);
-		choice.setElementarySchool(elementarySchool);
-		choice.setPreviousStudies(previousStudy);
-		choice.setMessage(message);
 		choice.setOtherInstrument(otherInstrument);
 		
 		Collection instrumentsCollection = new ArrayList();

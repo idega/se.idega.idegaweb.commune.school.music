@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolAcceptedApplications.java,v 1.8 2005/03/21 07:29:30 laddi Exp $
+ * $Id: MusicSchoolAcceptedApplications.java,v 1.9 2005/03/30 14:00:47 laddi Exp $
  * Created on 18.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -34,7 +34,6 @@ import com.idega.presentation.Image;
 import com.idega.presentation.Table;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
-import com.idega.presentation.ui.BackButton;
 import com.idega.presentation.ui.CheckBox;
 import com.idega.presentation.ui.DropdownMenu;
 import com.idega.presentation.ui.Form;
@@ -91,7 +90,7 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 		int row = 1;
 		
 		table.setCellpaddingLeft(1, row, 12);
-		table.add(getNavigationTable(), 1, row++);
+		table.add(getNavigationTable(this), 1, row++);
 		table.setHeight(row++, 12);
 		
 		add(form);
@@ -307,8 +306,9 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 		
 		table.setHeight(row++, 12);
 		
-		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));
+		SubmitButton previous = (SubmitButton) getButton(new SubmitButton(localize("previous", "Previous"), PARAMETER_ACTION, String.valueOf(ACTION_VIEW)));
 		SubmitButton submit = (SubmitButton) getButton(new SubmitButton(localize("transfer", "Transfer"), PARAMETER_ACTION, String.valueOf(ACTION_TRANSFER)));
+		submit.setSubmitConfirm(localize("confirm_transfer", "Are you sure you want to transfer the students to next year?"));
 
 		table.add(previous, 1, row);
 		table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);

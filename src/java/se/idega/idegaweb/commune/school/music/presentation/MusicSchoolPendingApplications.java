@@ -57,7 +57,7 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 			int row = 1;
 			
 			table.setCellpaddingLeft(1, row, 12);
-			table.add(getNavigationTable(), 1, row++);
+			table.add(getNavigationTable(this), 1, row++);
 			table.setHeight(row++, 12);
 			table.setCellpaddingRight(1, row, 6);
 			table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
@@ -67,6 +67,7 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 			table.setHeight(row++, 12);
 
 			SubmitButton reactivate = (SubmitButton) getButton(new SubmitButton(localize("reactivate", "Reactivate"), PARAMETER_REACTIVATE, "true"));
+			reactivate.setSubmitConfirm(localize("confirm_reactivate", "Are you sure you want to reactivate the selected applications?"));
 			
 			table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
 			table.add(reactivate, 1, row);
@@ -242,6 +243,9 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 			try {
 				String[] applications = iwc.getParameterValues(PARAMETER_APPLICATION);
 				getBusiness().reactivateApplications(applications, iwc.getCurrentUser());
+				if (getParentPage() != null) {
+					getParentPage().setAlertOnLoad(localize("selected_students_reactivated", "The selected students have been reactivated."));
+				}
 			}
 			catch (RemoteException re) {
 				log(re);

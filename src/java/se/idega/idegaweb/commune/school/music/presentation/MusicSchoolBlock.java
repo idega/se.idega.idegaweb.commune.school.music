@@ -265,11 +265,21 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		}
 	}
 	
-	protected Table getNavigationTable() {
+	protected Table getNavigationTable(MusicSchoolBlock block) {
 		Table table = new Table(4, 1);
 		table.setCellpadding(0);
 		table.setCellspacing(0);
 		int column = 1;
+		
+		try {
+			if (!getSession().isCurrentBlock(block)) {
+				getSession().reset();
+				getSession().setCurrentBlock(block);
+			}
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
 		
 		DropdownMenu seasons = getSeasonsDropdown();
 		table.add(seasons, column, 1);

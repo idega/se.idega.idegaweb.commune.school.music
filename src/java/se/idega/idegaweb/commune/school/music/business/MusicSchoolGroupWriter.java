@@ -141,7 +141,21 @@ public class MusicSchoolGroupWriter implements MediaWritable {
     sheet.setColumnWidth((short)2, (short) (30 * 256));
     sheet.setColumnWidth((short)3, (short) (14 * 256));
 		sheet.setColumnWidth((short)4, (short) (14 * 256));
-    HSSFFont font = wb.createFont();
+		sheet.setColumnWidth((short)5, (short) (14 * 256));
+		sheet.setColumnWidth((short)6, (short) (14 * 256));
+		sheet.setColumnWidth((short)7, (short) (24 * 256));
+		sheet.setColumnWidth((short)8, (short) (30 * 256));
+		sheet.setColumnWidth((short)9, (short) (18 * 256));
+
+		sheet.setColumnWidth((short)10, (short) (14 * 256));
+    
+		sheet.setColumnWidth((short)11, (short) (30 * 256));
+		sheet.setColumnWidth((short)12, (short) (24 * 256));
+		sheet.setColumnWidth((short)13, (short) (14 * 256));
+		sheet.setColumnWidth((short)14, (short) (14 * 256));
+		sheet.setColumnWidth((short)15, (short) (14 * 256));
+
+		HSSFFont font = wb.createFont();
     font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
     font.setFontHeightInPoints((short)12);
     HSSFCellStyle style = wb.createCellStyle();
@@ -177,16 +191,10 @@ public class MusicSchoolGroupWriter implements MediaWritable {
     cell.setCellValue(iwrb.getLocalizedString("home_phone","Home phone"));
     cell.setCellStyle(style);
     cell = row.createCell((short) cellColumn++);
-    cell.setCellValue(iwrb.getLocalizedString("work_phone","Work phone"));
-    cell.setCellStyle(style);
-    cell = row.createCell((short) cellColumn++);
     cell.setCellValue(iwrb.getLocalizedString("mobile_phone","Mobile phone"));
     cell.setCellStyle(style);
     cell = row.createCell((short) cellColumn++);
     cell.setCellValue(iwrb.getLocalizedString("email","E-mail"));
-    cell.setCellStyle(style);
-    cell = row.createCell((short) cellColumn++);
-    cell.setCellValue(iwrb.getLocalizedString("custodian_email","Custodian e-mail"));
     cell.setCellStyle(style);
     cell = row.createCell((short) cellColumn++);
     cell.setCellValue(iwrb.getLocalizedString("instruments","Instruments"));
@@ -195,38 +203,55 @@ public class MusicSchoolGroupWriter implements MediaWritable {
     cell.setCellValue(iwrb.getLocalizedString("department","Department"));
     cell.setCellStyle(style);
 
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue("");
+    cell.setCellStyle(style);
+
+		cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("custodian","Custodian"));
+    cell.setCellStyle(style);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("custodian_email","E-mail"));
+    cell.setCellStyle(style);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("custodian_home_phone","Home phone"));
+    cell.setCellStyle(style);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("custodian_work_phone","Work phone"));
+    cell.setCellStyle(style);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("custodian_mobile_phone","Mobile phone"));
+    cell.setCellStyle(style);
+
 		if (!students.isEmpty()) {
 			User student;
 			Address address;
 			PostalCode postalCode = null;
 			Phone homePhone;
-			Phone workPhone;
 			Phone mobilePhone;
 			Email email;
-			Email custodianEmail;
 			IDOEntity entity;
 			SchoolYear department;
 			Collection instruments;
 			
+			Phone custodianHomePhone;
+			Phone custodianWorkPhone;
+			Phone custodianMobilePhone;
+			Email custodianEmail;
+
 			Iterator iter = students.iterator();
 			while (iter.hasNext()) {
 				cellColumn = 0;
-				row = sheet.createRow(cellRow++);
 				entity = (IDOEntity) iter.next();
 				student = getUser(entity);
 				if (!showEntry(iwc, entity, student)) {
 					continue;
 				}
+				row = sheet.createRow(cellRow++);
 				address = userBusiness.getUsersMainAddress(student);
 				if (address != null)
 					postalCode = address.getPostalCode();
 				homePhone = userBusiness.getChildHomePhone(student);
-				try {
-					workPhone = userBusiness.getUsersWorkPhone(student);
-				}
-				catch (NoPhoneFoundException npfe) {
-					workPhone = null;
-				}
 				try {
 					mobilePhone = userBusiness.getUsersMobilePhone(student);
 				}
@@ -243,6 +268,24 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 				User custodian = userBusiness.getCustodianForChild(student);
 				if (custodian != null) {
 					try {
+						custodianHomePhone = userBusiness.getUsersHomePhone(custodian);
+					}
+					catch (NoPhoneFoundException npfe) {
+						custodianHomePhone = null;
+					}
+					try {
+						custodianWorkPhone = userBusiness.getUsersWorkPhone(custodian);
+					}
+					catch (NoPhoneFoundException npfe) {
+						custodianWorkPhone = null;
+					}
+					try {
+						custodianMobilePhone = userBusiness.getUsersMobilePhone(custodian);
+					}
+					catch (NoPhoneFoundException npfe) {
+						custodianMobilePhone = null;
+					}
+					try {
 						custodianEmail = userBusiness.getUsersMainEmail(custodian);
 					}
 					catch (NoEmailFoundException nefe) {
@@ -250,6 +293,9 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 					}
 				}
 				else {
+					custodianHomePhone = null;
+					custodianWorkPhone = null;
+					custodianMobilePhone = null;
 					custodianEmail = null;
 				}
 
@@ -275,10 +321,6 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 			    row.createCell((short)cellColumn).setCellValue(homePhone.getNumber());
 			  }
 			  cellColumn++;
-			  if (workPhone != null) {
-			    row.createCell((short)cellColumn).setCellValue(workPhone.getNumber());
-			  }
-			  cellColumn++;
 			  if (mobilePhone != null) {
 			    row.createCell((short)cellColumn).setCellValue(mobilePhone.getNumber());
 			  }
@@ -302,7 +344,33 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 					}
 				}
 		    row.createCell((short)cellColumn++).setCellValue(instrumentText.toString());
-		    row.createCell((short)cellColumn++).setCellValue(iwrb.getLocalizedString(department.getLocalizedKey(), department.getSchoolYearName()));
+				if (department != null) {
+					row.createCell((short)cellColumn).setCellValue(iwrb.getLocalizedString(department.getLocalizedKey(), department.getSchoolYearName()));
+				}
+			  cellColumn++;
+				
+				row.createCell((short)cellColumn++).setCellValue("");
+				
+			  if (custodian != null) {
+			    row.createCell((short)cellColumn).setCellValue(custodian.getName());
+			  }
+			  cellColumn++;
+			  if (custodianHomePhone != null) {
+			    row.createCell((short)cellColumn).setCellValue(custodianHomePhone.getNumber());
+			  }
+			  cellColumn++;
+			  if (custodianWorkPhone != null) {
+			    row.createCell((short)cellColumn).setCellValue(custodianWorkPhone.getNumber());
+			  }
+			  cellColumn++;
+			  if (custodianMobilePhone != null) {
+			    row.createCell((short)cellColumn).setCellValue(custodianMobilePhone.getNumber());
+			  }
+			  cellColumn++;
+			  if (custodianEmail != null) {
+			    row.createCell((short)cellColumn).setCellValue(custodianEmail.getEmailAddress());
+			  }
+			  cellColumn++;
 			}
 		}
 		try {

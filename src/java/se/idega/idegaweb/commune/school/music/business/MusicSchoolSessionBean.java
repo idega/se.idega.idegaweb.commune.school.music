@@ -4,12 +4,10 @@
 package se.idega.idegaweb.commune.school.music.business;
 
 import java.rmi.RemoteException;
-
 import javax.ejb.FinderException;
-
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
-
+import se.idega.idegaweb.commune.school.music.presentation.MusicSchoolBlock;
 import com.idega.block.school.business.SchoolBusiness;
 import com.idega.block.school.data.School;
 import com.idega.block.school.data.SchoolClass;
@@ -56,6 +54,8 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 	protected MusicSchoolChoice iApplication;
 	protected Object iApplicationPK;
 	
+	protected String blockClassName;
+	
 	protected static final String PARAMETER_CHILD_ID = "ms_child_id";
 	protected static final String PARAMETER_PROVIDER_ID = "ms_provider_id";
 	protected static final String PARAMETER_INSTRUMENT_ID = "ms_instrument_id";
@@ -64,6 +64,23 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 	protected static final String PARAMETER_GROUP_ID = "ms_group_id";
 	protected static final String PARAMETER_STUDENT_ID = "ms_student_id";
 	protected static final String PARAMETER_APPLICATION_ID = "ms_application_id";
+	
+	public void reset() {
+		setSeason(null);
+		setDepartment(null);
+		setInstrument(null);
+	}
+	
+	public void setCurrentBlock(MusicSchoolBlock block) {
+		this.blockClassName = block.getClassName();
+	}
+	
+	public boolean isCurrentBlock(MusicSchoolBlock block) {
+		if (blockClassName != null) {
+			return blockClassName.equals(block.getClassName());
+		}
+		return false;
+	}
 	
 	public User getChild() {
 		if (iChild == null && getChildPK() != null) {

@@ -143,15 +143,8 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 			return;
 		}
 		
-		if (getBusiness().hasGrantedApplication(getSession().getChild(), season)) {
-			add(getErrorText(localize("student_already_has_placement", "Student already has a granted placement for the school season")));
-			add(new Break(2));
-			add(new UserHomeLink());
-			return;
-		}
-		
 		if (getBusiness().hasApplication(getSession().getChild(), season)) {
-			viewApplication(iwc);
+			viewApplication(iwc, getBusiness().hasGrantedApplication(getSession().getChild(), season));
 		}
 		else {
 			showPhaseOne(iwc);
@@ -1213,7 +1206,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		add(form);
 	}
 	
-	private void viewApplication(IWContext iwc) throws RemoteException {
+	private void viewApplication(IWContext iwc, boolean hasGrantedApplication) throws RemoteException {
 		Form form = new Form();
 
 		SchoolSeason season = null;
@@ -1532,14 +1525,21 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		}
 		
 		table.setHeight(row++, 18);
+		
+		if (hasGrantedApplication) {
+			table.add(getErrorText(localize("student_already_has_placement", "Student already has a granted placement for the school season")), 1, row++);
+			table.setHeight(row++, 18);
+		}
 
 		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));
 		SubmitButton next = (SubmitButton) getButton(new SubmitButton(localize("edit", "Edit"), PARAMETER_ACTION, String.valueOf(ACTION_PHASE_1)));
 		
 		table.add(previous, 1, row);
 		table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
-		table.add(next, 1, row);
-		table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
+		if (!hasGrantedApplication) {
+			table.add(next, 1, row);
+			table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
+		}
 		table.add(getHelpButton("help_music_school_application_verify"), 1, row);
 		table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
 		table.setCellpaddingRight(1, row, 12);
