@@ -39,7 +39,7 @@ public class MusicSchoolChildren extends MusicSchoolBlock {
 			
 			Collection children = null;
 			try {
-				children = getUserBusiness().getMemberFamilyLogic().getChildrenFor(iwc.getCurrentUser());
+				children = getUserBusiness().getMemberFamilyLogic().getChildrenInCustodyOf(iwc.getCurrentUser());
 			}
 			catch (NoChildrenFound e) {
 				children = new ArrayList();
