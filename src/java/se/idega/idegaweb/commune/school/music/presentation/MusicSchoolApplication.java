@@ -570,11 +570,13 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("first_school", "First choice")), 1, iRow);
+		choiceTable.add(new Break(), 1, iRow);
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(school1, 1, iRow);
 
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("first_instrument", "First instrument")), 2, iRow);
+		choiceTable.add(new Break(), 2, iRow);
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(instrumentsDrop1, 2, iRow++);
 		
@@ -582,11 +584,13 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("second_school", "Second choice")), 1, iRow);
+		choiceTable.add(new Break(), 1, iRow);
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(school2, 1, iRow);
 
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("second_instrument", "Second instrument")), 2, iRow);
+		choiceTable.add(new Break(), 2, iRow);
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(instrumentsDrop2, 2, iRow++);
 
@@ -594,11 +598,13 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("third_school", "Third school")), 1, iRow);
+		choiceTable.add(new Break(), 1, iRow);
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(school3, 1, iRow);
 
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("third_instrument", "Third instrument")), 2, iRow);
+		choiceTable.add(new Break(), 2, iRow);
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(instrumentsDrop3, 2, iRow++);
 
@@ -606,6 +612,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("other_instrument", "Other instrument")), 2, iRow);
+		choiceTable.add(new Break(), 2, iRow);
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(otherInstrumentInput, 2, iRow++);
 		
@@ -613,11 +620,13 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("department", "Department")), 1, iRow);
+		choiceTable.add(new Break(), 1, iRow);
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(departmentDrop, 1, iRow);
 
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("lesson_type", "Lesson type")), 2, iRow);
+		choiceTable.add(new Break(), 2, iRow);
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(lessonTypeDrop, 2, iRow++);
 
@@ -625,6 +634,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("teacher_request", "Teacher request")), 1, iRow);
+		choiceTable.add(new Break(), 1, iRow);
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(teacherRequestInput, 1, iRow++);
 		
