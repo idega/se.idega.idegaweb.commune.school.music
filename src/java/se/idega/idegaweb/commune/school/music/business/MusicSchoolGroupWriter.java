@@ -80,7 +80,7 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 			Map studentMap = careBusiness.getStudentList(students);
 			Collections.sort(students, SchoolClassMemberComparatorForSweden.getComparatorSortByName(iwc.getCurrentLocale(), userBusiness, studentMap));
 			
-			buffer = writeXLS(students);
+			buffer = writeXLS(students, iwc);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -123,7 +123,11 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 		}
 	}
 	
-	public MemoryFileBuffer writeXLS(Collection students) throws RemoteException {
+	protected boolean showEntry(IWContext iwc, IDOEntity entity, User student) {
+		return true;
+	}
+	
+	public MemoryFileBuffer writeXLS(Collection students, IWContext iwc) throws RemoteException {
 		MemoryFileBuffer buffer = new MemoryFileBuffer();
 		MemoryOutputStream mos = new MemoryOutputStream(buffer);
 		if (!students.isEmpty()) {
@@ -206,6 +210,9 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 				row = sheet.createRow(cellRow++);
 				entity = (IDOEntity) iter.next();
 				student = getUser(entity);
+				if (!showEntry(iwc, entity, student)) {
+					continue;
+				}
 				address = userBusiness.getUsersMainAddress(student);
 				if (address != null)
 					postalCode = address.getPostalCode();

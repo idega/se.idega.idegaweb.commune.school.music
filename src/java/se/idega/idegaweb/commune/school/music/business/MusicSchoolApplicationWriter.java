@@ -35,7 +35,7 @@ public class MusicSchoolApplicationWriter extends MusicSchoolGroupWriter {
 			schoolName = getSession(iwc).getProvider().getSchoolName();
 			
 			Collection choices = getCollection(iwc);
-			buffer = writeXLS(choices);
+			buffer = writeXLS(choices, iwc);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -47,6 +47,7 @@ public class MusicSchoolApplicationWriter extends MusicSchoolGroupWriter {
 			return getBusiness(iwc).findChoicesInSchool(getSession(iwc).getProvider(), getSession(iwc).getSeason(), getSession(iwc).getDepartment(), getSession(iwc).getInstrument());
 		}
 		catch (FinderException fe) {
+			fe.printStackTrace(System.err);
 			return new ArrayList();
 		}
 		catch (RemoteException re) {
@@ -68,6 +69,28 @@ public class MusicSchoolApplicationWriter extends MusicSchoolGroupWriter {
 		}
 		catch (IDORelationshipException ire) {
 			return new ArrayList();
+		}
+	}
+	
+	protected boolean showEntry(IWContext iwc, IDOEntity entity, User student) {
+		try {
+			MusicSchoolChoice choice = (MusicSchoolChoice) entity;
+			boolean isPlaced = choice.getCaseStatus().equals(getBusiness(iwc).getCaseStatusPlaced());
+			boolean hasInstrumentPlacement = false;
+			if (isPlaced && getSession(iwc).getInstrument() != null) {
+				hasInstrumentPlacement = getBusiness(iwc).isPlacedInSchool(student, getSession(iwc).getProvider(), getSession(iwc).getSeason(), getSession(iwc).getInstrument());
+			}
+			else {
+				hasInstrumentPlacement = false;
+			}
+			
+			if (hasInstrumentPlacement || (getSession(iwc).getInstrument() == null && isPlaced)) {
+				return false;
+			}
+			return true;
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
 		}
 	}
 }
