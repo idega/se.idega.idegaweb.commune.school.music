@@ -18,6 +18,7 @@ import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
 
 import com.idega.block.school.data.SchoolClass;
 import com.idega.block.school.data.SchoolClassMember;
+import com.idega.core.contact.data.Phone;
 import com.idega.core.location.data.Address;
 import com.idega.core.location.data.PostalCode;
 import com.idega.presentation.IWContext;
@@ -26,6 +27,7 @@ import com.idega.presentation.text.Text;
 import com.idega.presentation.ui.DropdownMenu;
 import com.idega.presentation.ui.Form;
 import com.idega.presentation.ui.HiddenInput;
+import com.idega.user.business.NoPhoneFoundException;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 import com.idega.util.PersonalIDFormatter;
@@ -115,19 +117,21 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		table.setWidth(getWidth());
 		table.setCellpadding(getCellpadding());
 		table.setCellspacing(getCellspacing());
-		table.setColumns(4);
+		table.setColumns(5);
 		int row = 1;
 
 		table.add(getSmallHeader(localize("name", "Name")), 1, row);
 		table.add(getSmallHeader(localize("personal_id", "Personal ID")), 2, row);
 		table.add(getSmallHeader(localize("address", "Address")), 3, row);
 		table.add(getSmallHeader(localize("zip_code", "Zip code")), 4, row);
+		table.add(getSmallHeader(localize("home_phone", "Phone")), 5, row);
 		table.setCellpaddingLeft(1, row, 12);
 		table.setRowStyleClass(row++, getHeaderRowClass());
 
 		User student;
 		Address address;
 		PostalCode postal;
+		Phone phone;
 		SchoolClassMember studentMember;
 		int numberOfStudents = 0;
 		boolean notStarted = false;
@@ -165,6 +169,12 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 				}
 				else {
 					postal = null;
+				}
+				try {
+					phone = getUserBusiness().getUsersHomePhone(student);
+				}
+				catch (NoPhoneFoundException npfe) {
+					phone = null;
 				}
 				notStarted = false;
 				hasTerminationDate = false;
@@ -208,6 +218,8 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 					table.add(getSmallText(address.getStreetAddress()), 3, row);
 				if (postal != null)
 					table.add(getSmallText(postal.getPostalAddress()), 4, row);
+				if (phone != null)
+					table.add(getSmallText(phone.getNumber()), 5, row);
 				row++;
 			}
 
@@ -215,11 +227,13 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 				table.setHeight(row++, 2);
 				if (showNotStarted) {
 					table.mergeCells(1, row, table.getColumns(), row);
+					table.setCellpaddingLeft(1, row, 12);
 					table.add(getSmallErrorText("+ "), 1, row);
 					table.add(getSmallText(localize("school.placement_has_not_started", "Placment has not started yet")), 1, row++);
 				}
 				if (showHasTermination) {
 					table.mergeCells(1, row, table.getColumns(), row);
+					table.setCellpaddingLeft(1, row, 12);
 					table.add(getSmallErrorText("&Delta; "), 1, row);
 					table.add(getSmallText(localize("school.placement_has_termination_date", "Placment has termination date")), 1, row++);
 				}
@@ -233,8 +247,6 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 			table.add(getSmallHeader(localize("school.number_of_students", "Number of students") + ": " + String.valueOf(numberOfStudents)), 1, row++);
 		}
 
-		table.setColumnAlignment(3, Table.HORIZONTAL_ALIGN_CENTER);
-		table.setColumnAlignment(5, Table.HORIZONTAL_ALIGN_CENTER);
 		table.setRowColor(row, "#FFFFFF");
 
 		return table;
