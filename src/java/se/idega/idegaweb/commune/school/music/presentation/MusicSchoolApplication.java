@@ -757,7 +757,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.maintainParameter(PARAMETER_MESSAGE);
 		form.maintainParameter(PARAMETER_PREVIOUS_STUDIES);
 		form.maintainParameter(PARAMETER_ELEMENTARY_SCHOOL);
-		form.addParameter(PARAMETER_HAS_EXTRA_APPLICATIONS, "true");
+		form.addParameter(PARAMETER_HAS_EXTRA_APPLICATIONS, Boolean.TRUE.toString());
 		form.addParameter(PARAMETER_BACK, "-1");
 		
 		Table table = new Table();
@@ -1721,25 +1721,28 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 			boolean success = getBusiness().saveChoices(iwc.getCurrentUser(), getSession().getChild(), schoolPKs, season, department, lessonType, instrumentPKs, otherInstrument, teacherRequest, message, currentYear, currentInstrument, previousStudies, elementarySchool, paymentMethod, false);
 			
 			if (iwc.isParameterSet(PARAMETER_HAS_EXTRA_APPLICATIONS)) {
-				schoolPKs = new ArrayList();
-				for (int i = 0; i < 3; i++) {
-					if (iwc.isParameterSet(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_" + (i+1))) {
-						schoolPKs.add(iwc.getParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_" + (i+1)));
+				boolean saveExtraApplications = new Boolean(iwc.getParameter(PARAMETER_HAS_EXTRA_APPLICATIONS)).booleanValue();
+				if (saveExtraApplications) {
+					schoolPKs = new ArrayList();
+					for (int i = 0; i < 3; i++) {
+						if (iwc.isParameterSet(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_" + (i+1))) {
+							schoolPKs.add(iwc.getParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_" + (i+1)));
+						}
 					}
-				}
-				instrumentPKs = new ArrayList();
-				for (int i = 0; i < 3; i++) {
-					if (iwc.isParameterSet(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_" + (i+1))) {
-						instrumentPKs.add(iwc.getParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_" + (i+1)));
+					instrumentPKs = new ArrayList();
+					for (int i = 0; i < 3; i++) {
+						if (iwc.isParameterSet(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_" + (i+1))) {
+							instrumentPKs.add(iwc.getParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_" + (i+1)));
+						}
 					}
+	
+					department = iwc.getParameter(EXTRA_PREFIX + PARAMETER_DEPARTMENT);
+					lessonType = iwc.getParameter(EXTRA_PREFIX + PARAMETER_LESSON_TYPE);
+					teacherRequest = iwc.getParameter(EXTRA_PREFIX + PARAMETER_TEACHER_REQUEST);
+					otherInstrument = iwc.getParameter(EXTRA_PREFIX + PARAMETER_OTHER_INSTRUMENT);
+	
+					success = getBusiness().saveChoices(iwc.getCurrentUser(), getSession().getChild(), schoolPKs, season, department, lessonType, instrumentPKs, otherInstrument, teacherRequest, message, currentYear, currentInstrument, previousStudies, elementarySchool, paymentMethod, true);
 				}
-
-				department = iwc.getParameter(EXTRA_PREFIX + PARAMETER_DEPARTMENT);
-				lessonType = iwc.getParameter(EXTRA_PREFIX + PARAMETER_LESSON_TYPE);
-				teacherRequest = iwc.getParameter(EXTRA_PREFIX + PARAMETER_TEACHER_REQUEST);
-				otherInstrument = iwc.getParameter(EXTRA_PREFIX + PARAMETER_OTHER_INSTRUMENT);
-
-				success = getBusiness().saveChoices(iwc.getCurrentUser(), getSession().getChild(), schoolPKs, season, department, lessonType, instrumentPKs, otherInstrument, teacherRequest, message, currentYear, currentInstrument, previousStudies, elementarySchool, paymentMethod, true);
 			}
 			
 			if (success) {
