@@ -13,10 +13,11 @@ import java.util.Map;
 import javax.ejb.FinderException;
 
 import se.idega.idegaweb.commune.school.business.SchoolChoiceComparator;
-import se.idega.idegaweb.commune.school.business.SchoolClassMemberComparator;
 import se.idega.idegaweb.commune.school.music.business.MusicSchoolGroupWriter;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
+import se.idega.util.SchoolClassMemberComparatorForSweden;
 
+import com.idega.block.school.business.SchoolClassMemberComparator;
 import com.idega.block.school.data.SchoolClass;
 import com.idega.block.school.data.SchoolClassMember;
 import com.idega.core.contact.data.Phone;
@@ -185,7 +186,7 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		if (!students.isEmpty()) {
 			numberOfStudents = students.size();
 			Map studentMap = getCareBusiness().getStudentList(students);
-			Collections.sort(students, new SchoolClassMemberComparator(sortStudentsBy, iwc.getCurrentLocale(), getUserBusiness(), studentMap));
+			Collections.sort(students, SchoolClassMemberComparatorForSweden.getComparatorSortBy(sortStudentsBy, iwc.getCurrentLocale(), getUserBusiness(), studentMap));
 			Iterator iter = students.iterator();
 			while (iter.hasNext()) {
 				studentMember = (SchoolClassMember) iter.next();

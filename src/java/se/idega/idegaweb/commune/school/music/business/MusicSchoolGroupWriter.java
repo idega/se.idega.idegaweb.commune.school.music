@@ -20,9 +20,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
 import se.idega.idegaweb.commune.care.business.CareBusiness;
-import se.idega.idegaweb.commune.school.business.SchoolChoiceComparator;
-import se.idega.idegaweb.commune.school.business.SchoolClassMemberComparator;
 import se.idega.idegaweb.commune.school.music.presentation.MusicSchoolBlock;
+import se.idega.util.SchoolClassMemberComparatorForSweden;
 import com.idega.block.school.business.SchoolBusiness;
 import com.idega.block.school.data.SchoolClassMember;
 import com.idega.business.IBOLookup;
@@ -74,7 +73,7 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 			
 			List students = new ArrayList(getSchoolBusiness(iwc).getSchoolClassMemberHome().findBySchoolClassAndYearAndStudyPath(getSession(iwc).getGroup(), getSession(iwc).getDepartment(), getSession(iwc).getInstrument()));
 			Map studentMap = careBusiness.getStudentList(students);
-			Collections.sort(students, new SchoolClassMemberComparator(SchoolChoiceComparator.NAME_SORT, iwc.getCurrentLocale(), userBusiness, studentMap));
+			Collections.sort(students, SchoolClassMemberComparatorForSweden.getComparatorSortByName(iwc.getCurrentLocale(), userBusiness, studentMap));
 			
 			buffer = writeXLS(students);
 		}
