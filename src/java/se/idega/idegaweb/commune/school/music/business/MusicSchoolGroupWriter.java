@@ -170,7 +170,7 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 					postalCode = address.getPostalCode();
 				phone = userBusiness.getChildHomePhone(student);
 
-		    row.createCell((short)0).setCellValue(student.getNameLastFirst(true));
+		    row.createCell((short)0).setCellValue(student.getName());
 		    row.createCell((short)1).setCellValue(PersonalIDFormatter.format(student.getPersonalID(), locale));
 		    if (address != null) {
 			    row.createCell((short)2).setCellValue(address.getStreetAddress());

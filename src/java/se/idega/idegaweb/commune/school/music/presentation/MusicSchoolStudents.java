@@ -14,7 +14,6 @@ import javax.ejb.FinderException;
 
 import se.idega.idegaweb.commune.school.business.SchoolChoiceComparator;
 import se.idega.idegaweb.commune.school.business.SchoolClassMemberComparator;
-import se.idega.idegaweb.commune.school.business.SchoolClassWriter;
 import se.idega.idegaweb.commune.school.music.business.MusicSchoolGroupWriter;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
 
@@ -116,6 +115,7 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		if (getSession().getGroup() != null) {
 			_group = getSession().getGroup();
 			table.setCellpaddingRight(1, 3, 6);
+			table.setAlignment(1, 3, Table.HORIZONTAL_ALIGN_RIGHT);
 			table.add(getXLSLink(), 1, 3);
 			table.add(getStudentTable(iwc), 1, 5);
 		}
