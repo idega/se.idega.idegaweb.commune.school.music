@@ -351,6 +351,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		choice.setCreated(stamp.getTimestamp());
 		choice.setCaseStatus(status);
 		choice.setParentCase(parentCase);
+		choice.setAsExtraApplication(extraApplication);
 		
 		try {
 			choice.store();
