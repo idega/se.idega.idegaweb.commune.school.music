@@ -354,9 +354,9 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		}
 	}
 
-	private CommuneUserBusiness getUserBusiness(IWApplicationContext iwac) {
+	protected CommuneUserBusiness getUserBusiness(IWApplicationContext iwac) {
 		try {
-			return (CommuneUserBusiness) IBOLookup.getServiceInstance(iwac, CommuneUserBusiness.class);
+			return super.getUserBusiness(iwac);
 		}
 		catch (IBOLookupException ile) {
 			throw new IBORuntimeException(ile);
