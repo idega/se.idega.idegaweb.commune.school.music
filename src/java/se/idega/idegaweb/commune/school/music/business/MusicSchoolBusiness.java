@@ -1,6 +1,6 @@
 /*
- * $Id: MusicSchoolBusiness.java,v 1.14 2005/03/20 12:47:09 laddi Exp $
- * Created on 20.3.2005
+ * $Id: MusicSchoolBusiness.java,v 1.15 2005/03/21 08:06:23 laddi Exp $
+ * Created on 21.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -34,10 +34,10 @@ import com.idega.user.data.User;
  * <p>
  * TODO laddi Describe Type MusicSchoolBusiness
  * </p>
- *  Last modified: $Date: 2005/03/20 12:47:09 $ by $Author: laddi $
+ *  Last modified: $Date: 2005/03/21 08:06:23 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 
@@ -197,6 +197,11 @@ public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#hasGrantedApplication
 	 */
 	public boolean hasGrantedApplication(User student, SchoolSeason season) throws java.rmi.RemoteException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#hasApplication
+	 */
+	public boolean hasApplication(User student, SchoolSeason season) throws java.rmi.RemoteException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#hasNextSeason

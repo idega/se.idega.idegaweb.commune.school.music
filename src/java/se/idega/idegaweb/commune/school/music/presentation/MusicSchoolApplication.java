@@ -145,6 +145,11 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 			return;
 		}
 		
+		if (getBusiness().hasApplication(getSession().getChild(), season)) {
+			add(getErrorText(localize("student_already_has_application", "Student already has an application for the school season.  You can change it by doing it again.")));
+			add(new Break(2));
+		}
+		
 		Form form = new Form();
 		form.setEventListener(MusicSchoolEventListener.class);
 		form.maintainParameter(PARAMETER_SCHOOLS + "_1");
