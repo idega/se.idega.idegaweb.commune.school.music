@@ -37,6 +37,7 @@ import com.idega.user.business.NoPhoneFoundException;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 import com.idega.util.PersonalIDFormatter;
+import com.idega.util.text.Name;
 
 /**
  * @author laddi To change this generated comment edit the template variable
@@ -215,9 +216,8 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 					hasTerminationDate = true;
 				}
 
-				String name = student.getNameLastFirst(true);
-				if (iwc.getCurrentLocale().getLanguage().equalsIgnoreCase("is"))
-					name = student.getName();
+				Name studentName = new Name(student.getFirstName(), student.getMiddleName(), student.getLastName());
+				String name = studentName.getName(iwc.getApplicationSettings().getDefaultLocale(), true);
 
 				if (row % 2 == 0)
 					table.setRowStyleClass(row, getDarkRowClass());
