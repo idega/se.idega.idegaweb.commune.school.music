@@ -183,6 +183,10 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		int row = 1;
 
 		table.mergeCells(1, row, 2, row);
+		table.add(getPhasesTable(1, 6), 1, row++);
+		table.setHeight(row++, 12);
+		
+		table.mergeCells(1, row, 2, row);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
 		table.add(getHeader(localize("application.applicant", "Applicant")), 1, row++);
 		
@@ -320,8 +324,14 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.add(table);
 		int row = 1;
 		
+		table.add(getPhasesTable(2, 6), 1, row++);
+		table.setHeight(row++, 12);
+
 		table.add(getPersonInfoTable(iwc, getSession().getChild()), 1, row++);
 		table.setHeight(row++, 18);
+		
+		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
+		table.add(getHeader(localize("application.primary_application", "Primary application")), 1, row++);
 		
 		table.add(getChoiceTable(iwc, false), 1, row++);
 		table.setHeight(row++, 18);
@@ -336,7 +346,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(getHelpButton("help_music_school_application_phase_2"), 1, row);
 		table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
 		table.setCellpaddingRight(1, row, 12);
-		next.setOnSubmitFunction("checkApplication", getSubmitConfirmScript());
+		next.setOnSubmitFunction("checkApplication", getSubmitConfirmScript(""));
 		form.setToDisableOnSubmit(next, true);
 
 		add(form);
@@ -539,6 +549,8 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		choiceTable.add(getText(localize("first_instrument", "First instrument")), 2, iRow);
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(instrumentsDrop1, 2, iRow++);
+		
+		choiceTable.setHeight(iRow++, 3);
 
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("second_school", "Second choice")), 1, iRow);
@@ -550,6 +562,8 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(instrumentsDrop2, 2, iRow++);
 
+		choiceTable.setHeight(iRow++, 3);
+
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("third_school", "Third school")), 1, iRow);
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_INPUT_CELL));
@@ -559,6 +573,8 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		choiceTable.add(getText(localize("third_instrument", "Third instrument")), 2, iRow);
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(instrumentsDrop3, 2, iRow++);
+
+		choiceTable.setHeight(iRow++, 3);
 
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("other_instrument", "Other instrument")), 2, iRow);
@@ -577,12 +593,30 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(lessonTypeDrop, 2, iRow++);
 
+		choiceTable.setHeight(iRow++, 3);
+
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("teacher_request", "Teacher request")), 1, iRow);
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(teacherRequestInput, 1, iRow++);
 		
 		return choiceTable;
+	}
+	
+	private Table getPhasesTable(int phase, int totalPhases) {
+		Table table = new Table(2, 1);
+		table.setCellpadding(0);
+		table.setCellspacing(0);
+		table.setWidth(Table.HUNDRED_PERCENT);
+		table.setAlignment(2, 1, Table.HORIZONTAL_ALIGN_RIGHT);
+		
+		table.add(getHeader(localize("music_school_application", "Music school application")), 1, 1);
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(localize("phase", "Phase")).append(" ").append(phase).append(" ").append(localize("of", "of")).append(" ").append(totalPhases);
+		table.add(getHeader(buffer.toString()), 2, 1);
+		
+		return table;
 	}
 	
 	private String getParameterName(String parameterName, boolean extraApplications) {
@@ -627,6 +661,9 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setWidth(Table.HUNDRED_PERCENT);
 		form.add(table);
 		int row = 1;
+
+		table.add(getPhasesTable(3, 6), 1, row++);
+		table.setHeight(row++, 12);
 
 		table.add(getPersonInfoTable(iwc, getSession().getChild()), 1, row++);
 		table.setHeight(row++, 18);
@@ -705,8 +742,14 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.add(table);
 		int row = 1;
 		
+		table.add(getPhasesTable(4, 6), 1, row++);
+		table.setHeight(row++, 12);
+
 		table.add(getPersonInfoTable(iwc, getSession().getChild()), 1, row++);
 		table.setHeight(row++, 18);
+		
+		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
+		table.add(getHeader(localize("application.secondary_applications", "Secondary application")), 1, row++);
 		
 		table.add(getChoiceTable(iwc, true), 1, row++);
 		table.setHeight(row++, 18);
@@ -721,7 +764,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(getHelpButton("help_music_school_application_phase_4"), 1, row);
 		table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
 		table.setCellpaddingRight(1, row, 12);
-		next.setOnSubmitFunction("checkApplication", getSubmitConfirmScript());
+		next.setOnSubmitFunction("checkApplication", getSubmitConfirmScript(EXTRA_PREFIX));
 		form.setToDisableOnSubmit(next, true);
 
 		add(form);
@@ -777,8 +820,14 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		User user = getSession().getChild();
 		Age age = new Age(user.getDateOfBirth());
 		
+		table.add(getPhasesTable(5, 6), 1, row++);
+		table.setHeight(row++, 12);
+
 		table.add(getPersonInfoTable(iwc, user), 1, row++);
 		table.setHeight(row++, 18);
+		
+		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
+		table.add(getHeader(localize("application.other_information", "Other information")), 1, row++);
 		
 		if (age.getYears() < 16) {
 			TextInput elementarySchool = getTextInput(PARAMETER_ELEMENTARY_SCHOOL, null);
@@ -861,8 +910,14 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.add(table);
 		int row = 1;
 
+		table.add(getPhasesTable(6, 6), 1, row++);
+		table.setHeight(row++, 12);
+
 		table.add(getPersonInfoTable(iwc, getSession().getChild()), 1, row++);
 		table.setHeight(row++, 18);
+		
+		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
+		table.add(getHeader(localize("application.verify_application", "Verify application")), 1, row++);
 		
 		Table verifyTable = new Table();
 		verifyTable.setCellpadding(getCellpadding());
@@ -1079,20 +1134,24 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		verifyTable.setHeight(iRow++, 6);
 		
 		if (elementarySchool != null && elementarySchool.length() > 0) {
-			verifyTable.add(getSmallHeader(localize("elementary_school", "Elementary school")), 1, iRow);
-			verifyTable.add(getText(elementarySchool), 2, iRow++);
+			verifyTable.mergeCells(1, iRow, 2, iRow);
+			verifyTable.add(getSmallHeader(localize("elementary_school", "Elementary school")), 1, iRow++);
+			verifyTable.add(getText(elementarySchool), 1, iRow++);
+			verifyTable.setHeight(iRow++, 3);
 		}
 		
 		if (previousStudies != null && previousStudies.length() > 0) {
-			verifyTable.add(getSmallHeader(localize("previous_studies", "Previous studies")), 1, iRow);
-			verifyTable.setVerticalAlignment(1, iRow, Table.VERTICAL_ALIGN_TOP);
-			verifyTable.add(getText(previousStudies), 2, iRow++);
+			verifyTable.mergeCells(1, iRow, 2, iRow);
+			verifyTable.add(getSmallHeader(localize("previous_studies", "Previous studies")), 1, iRow++);
+			verifyTable.add(getText(previousStudies), 1, iRow++);
+			verifyTable.setHeight(iRow++, 3);
 		}
 		
 		if (message != null && message.length() > 0) {
-			verifyTable.add(getSmallHeader(localize("message", "Message")), 1, iRow);
-			verifyTable.setVerticalAlignment(1, iRow, Table.VERTICAL_ALIGN_TOP);
-			verifyTable.add(getText(message), 2, iRow++);
+			verifyTable.mergeCells(1, iRow, 2, iRow);
+			verifyTable.add(getSmallHeader(localize("message", "Message")), 1, iRow++);
+			verifyTable.add(getText(message), 1, iRow++);
+			verifyTable.setHeight(iRow++, 3);
 		}
 		
 		table.setHeight(row++, 18);
@@ -1112,17 +1171,17 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		add(form);
 	}
 	
-	private String getSubmitConfirmScript() {
+	private String getSubmitConfirmScript(String prefix) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("function checkApplication() {").append("\n\t");
-		buffer.append("\n\t var dropOne = ").append("findObj('").append(PARAMETER_SCHOOLS + "_1").append("');");
-		buffer.append("\n\t var dropTwo = ").append("findObj('").append(PARAMETER_SCHOOLS + "_2").append("');");
-		buffer.append("\n\t var dropThree = ").append("findObj('").append(PARAMETER_SCHOOLS + "_3").append("');");
-		buffer.append("\n\t var dropDepartment = ").append("findObj('").append(PARAMETER_DEPARTMENT).append("');");
-		buffer.append("\n\t var dropLessonTypes = ").append("findObj('").append(PARAMETER_LESSON_TYPE).append("');");
-		buffer.append("\n\t var dropInstrumentOne = ").append("findObj('").append(PARAMETER_INSTRUMENTS + "_1").append("');");
-		buffer.append("\n\t var dropInstrumentTwo = ").append("findObj('").append(PARAMETER_INSTRUMENTS + "_2").append("');");
-		buffer.append("\n\t var dropInstrumentThree = ").append("findObj('").append(PARAMETER_INSTRUMENTS + "_3").append("');");
+		buffer.append("\n\t var dropOne = ").append("findObj('").append(prefix + PARAMETER_SCHOOLS + "_1").append("');");
+		buffer.append("\n\t var dropTwo = ").append("findObj('").append(prefix + PARAMETER_SCHOOLS + "_2").append("');");
+		buffer.append("\n\t var dropThree = ").append("findObj('").append(prefix + PARAMETER_SCHOOLS + "_3").append("');");
+		buffer.append("\n\t var dropDepartment = ").append("findObj('").append(prefix + PARAMETER_DEPARTMENT).append("');");
+		buffer.append("\n\t var dropLessonTypes = ").append("findObj('").append(prefix + PARAMETER_LESSON_TYPE).append("');");
+		buffer.append("\n\t var dropInstrumentOne = ").append("findObj('").append(prefix + PARAMETER_INSTRUMENTS + "_1").append("');");
+		buffer.append("\n\t var dropInstrumentTwo = ").append("findObj('").append(prefix + PARAMETER_INSTRUMENTS + "_2").append("');");
+		buffer.append("\n\t var dropInstrumentThree = ").append("findObj('").append(prefix + PARAMETER_INSTRUMENTS + "_3").append("');");
 
 		buffer.append("\n\t var one = 0;");
 		buffer.append("\n\t var two = 0;");

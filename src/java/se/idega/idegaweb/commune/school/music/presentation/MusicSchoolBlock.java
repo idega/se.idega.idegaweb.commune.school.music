@@ -312,6 +312,7 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		table.setCellspacing(0);
 		table.setColumns(5);
 		table.setWidth(3, 12);
+		table.setWidth(Table.HUNDRED_PERCENT);
 		int row = 1;
 		
 		Age age = new Age(user.getDateOfBirth());
