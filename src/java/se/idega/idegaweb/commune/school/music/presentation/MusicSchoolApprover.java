@@ -294,6 +294,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 				
 				table.setHeight(row++, 12);
 				
+				table.setCellpaddingLeft(1, row, 12);
 				SubmitButton showChoices = (SubmitButton) getButton(new SubmitButton(localize("show_choices", "Show choices"), PARAMETER_ACTION, String.valueOf(ACTION_FORM)));
 				table.add(showChoices, 1, row);
 			}
