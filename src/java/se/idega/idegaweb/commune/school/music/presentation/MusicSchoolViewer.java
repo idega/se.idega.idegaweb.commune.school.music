@@ -35,6 +35,10 @@ public class MusicSchoolViewer extends MusicSchoolBlock {
 			Collections.sort(schools, new SchoolComparator(iwc.getCurrentLocale()));
 			
 			Lists list = new Lists();
+			list.setCompact(true);
+			if (textStyleName != null) {
+				list.setClass(textStyleName);
+			}
 			
 			Iterator iter = schools.iterator();
 			while (iter.hasNext()) {
@@ -49,9 +53,6 @@ public class MusicSchoolViewer extends MusicSchoolBlock {
 				}
 				else {
 					Text text = new Text(school.getSchoolName());
-					if (textStyleName != null) {
-						text.setStyleClass(textStyleName);
-					}
 					list.add(text);
 				}
 			}
