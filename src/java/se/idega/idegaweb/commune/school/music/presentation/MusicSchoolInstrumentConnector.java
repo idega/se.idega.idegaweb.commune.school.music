@@ -8,9 +8,7 @@ package se.idega.idegaweb.commune.school.music.presentation;
 
 import java.rmi.RemoteException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.ejb.FinderException;
 
@@ -51,12 +49,6 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 	private static final String PARAMETER_ACTION = "prm_action";
 	private static final String PARAMETER_PROVIDER_CHANGED = "prm_provider_changed"; 
 	
-	private static final String STYLENAME_HEADER_CELL = "HeaderCell";
-	private static final String STYLENAME_HEADING_CELL = "HeadingCell";
-	private static final String STYLENAME_TEXT_CELL = "TextCell";
-	private static final String STYLENAME_INPUT_CELL = "InputCell";
-	private static final String STYLENAME_INFORMATION_CELL = "InformationCell";
-	
 	//localized keys and strings
 	private static final String INSTRUMENT_KEY = "ms_instrument";
 	private static final String INSTRUMENT_DEFAULT = "Intstrument";
@@ -93,20 +85,13 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 	}
 	
 	private Table getTable(IWContext iwc) throws RemoteException {
-		
-		
 		Table connectionTable = new Table();
-		
-		connectionTable.setStyleAttribute("border:1px solid #000000;");
-		connectionTable.setColor("#FFFFFF");
-		connectionTable.setCellpadding(3);
+		connectionTable.setCellpadding(2);
 		int iRow = 1;
 		int iColumn = 1;
 		
 		connectionTable.add(getHeader(localize(SCHOOL_KEY, SCHOOL_DEFAULT)), 1, iRow);
 		connectionTable.mergeCells(1, iRow, 4, iRow);
-		
-		
 		
 		connectionTable.mergeCells(1,iRow, 4, iRow++);
 		connectionTable.mergeCells(1,iRow, 4, iRow);
@@ -124,12 +109,10 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 			school = iwc.getParameter(PARAMETER_PROVIDER);
 			try {
 				selectedSchool = getSchoolBusiness().getSchoolHome().findByPrimaryKey(school);
-				
 			}
 			catch (FinderException fe) {
 				log(fe);
 			}
-			
 		}
 		
 		if (instruments != null) {
@@ -142,7 +125,6 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 				}
 				
 				CheckBox box = getCheckBox(PARAMETER_INSTRUMENTS + instrument.getPrimaryKey().toString(), instrument.getPrimaryKey().toString());
-				
 				if (selectedSchool != null) {
 					try {
 						box.setChecked(selectedSchool.getStudyPaths().contains(instrument));
@@ -155,9 +137,9 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 				connectionTable.setStyleClass(iColumn, iRow, getStyleName(STYLENAME_INPUT_CELL));
 				connectionTable.add(box, iColumn, iRow);
 				connectionTable.add(getSmallText(Text.NON_BREAKING_SPACE), iColumn, iRow);
+				connectionTable.setWidth(iColumn, iRow, "25%");
 				connectionTable.add(getSmallText(localize(instrument.getCode(), instrument.getDescription())), iColumn++, iRow);
 			}
-			
 		}
 				
 		SubmitButton submit = (SubmitButton) getButton(new SubmitButton(localize("save", "Save"), PARAMETER_ACTION, String.valueOf(ACTION_SAVE)));
@@ -167,7 +149,6 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 		connectionTable.setAlignment(2, iRow, Table.HORIZONTAL_ALIGN_RIGHT);
 		connectionTable.add(submit, 4, iRow++);
 		return connectionTable;
-		
 	}
 	
 	/* Removes the instruments and calls the method to add the all instruments
@@ -192,25 +173,20 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 			}
 			//remove study path so that selected ones can be added
 			try {
-			selectedSchool.removeAllStudyPaths();
+				selectedSchool.removeAllStudyPaths();
 			}
 			catch (IDORemoveRelationshipException removeRelEx){
 				log(removeRelEx);
 			}
 					
 			saveSchoolInstruments(iwc, selectedSchool);
-					
 		}
-		
 	}
-	
 	
 	/*
 	 * Save instruments that were selected
 	 * 
 	 */
-	
-	
 	private void saveSchoolInstruments(IWContext iwc, School selectedSchool) {
 		Iterator iter = getInstrumentColl().iterator();
 		while(iter.hasNext()) {
@@ -227,11 +203,9 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 		}
 	}
 	
-	
 	/*
 	 * Returns all school study paths / instruments.
 	 */
-		
 	private Collection getInstrumentColl() {
 		Collection instruments = null;
 		try {
@@ -248,7 +222,6 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 	/*
 	 * Returns providers in a dropdown.
 	 */
-	
 	private DropdownMenu getProvidersDropdown(IWContext iwc) {
 		// Get dropdown for providers
 		DropdownMenu providers = (DropdownMenu) getStyledInterface(
@@ -282,17 +255,4 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 			return ACTION_FORM;
 		}
 	}
-	
-	public Map getStyleNames() {
-		Map map = new HashMap();
-		map.put(STYLENAME_HEADER_CELL, "");
-		map.put(STYLENAME_HEADING_CELL, "");
-		map.put(STYLENAME_TEXT_CELL, "");
-		map.put(STYLENAME_INPUT_CELL, "");
-		map.put(STYLENAME_INFORMATION_CELL, "");
-		
-		return map;
-	}
-	
-	
 }
