@@ -1312,7 +1312,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		}
 
 		try {
-			choices = getBusiness().findChoicesByChildAndSeason(getSession().getChild(), season, false);
+			choices = getBusiness().findChoicesByChildAndSeason(getSession().getChild(), season, true);
 			Iterator iter = choices.iterator();
 			boolean initialValuesSet = false;
 			int choiceNumber = 1;
