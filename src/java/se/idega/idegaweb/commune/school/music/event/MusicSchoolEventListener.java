@@ -39,21 +39,36 @@ public class MusicSchoolEventListener implements IWPageEventListener {
 			if (iwc.isParameterSet(session.getParameterNameInstrumentID())) {
 				session.setInstrument(iwc.getParameter(session.getParameterNameInstrumentID()));
 			}
+			else if (iwc.isParameterSetAsEmpty(session.getParameterNameInstrumentID())) {
+				session.setInstrument(null);
+			}
 			
 			if (iwc.isParameterSet(session.getParameterNameDepartmentID())) {
 				session.setDepartment(iwc.getParameter(session.getParameterNameDepartmentID()));
+			}
+			else if (iwc.isParameterSetAsEmpty(session.getParameterNameDepartmentID())) {
+				session.setDepartment(null);
 			}
 			
 			if (iwc.isParameterSet(session.getParameterNameSeasonID())) {
 				session.setSeason(iwc.getParameter(session.getParameterNameSeasonID()));
 			}
+			else if (iwc.isParameterSetAsEmpty(session.getParameterNameSeasonID())) {
+				session.setSeason(null);
+			}
 			
 			if (iwc.isParameterSet(session.getParameterNameGroupID())) {
 				session.setGroup(iwc.getParameter(session.getParameterNameGroupID()));
 			}
+			else if (iwc.isParameterSetAsEmpty(session.getParameterNameSeasonID())) {
+				session.setGroup(null);
+			}
 			
 			if (iwc.isParameterSet(session.getParameterNameApplicationID())) {
 				session.setApplication(iwc.getParameter(session.getParameterNameApplicationID()));
+			}
+			else if (iwc.isParameterSetAsEmpty(session.getParameterNameApplicationID())) {
+				session.setApplication(null);
 			}
 			
 			return true;

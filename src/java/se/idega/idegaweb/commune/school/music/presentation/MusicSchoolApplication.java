@@ -453,6 +453,16 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setHeight(row++, 18);
 		
 		//Showing current situation selection
+		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("previous_studies", "Previous studies")), 1, row);
+		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("elementary_school", "Elementary school")), 2, row++);
+		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
+		table.add(getTextInput(PARAMETER_PREVIOUS_STUDIES, chosenPreviousStudy), 1, row);
+		table.setStyleClass(2, row, getStyleName(STYLENAME_INPUT_CELL));
+		table.add(getTextInput(PARAMETER_ELEMENTARY_SCHOOL, chosenElementarySchool), 2, row++);
+		table.setHeight(row++, 3);
+		
 		table.mergeCells(1, row, 2, row);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
 		table.add(getHeader(localize("application.current_status", "Current status")), 1, row++);
@@ -485,15 +495,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.mergeCells(1, row, 2, row);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_INFORMATION_CELL));
 		table.add(localize("application.current_information", "(example, 4th grade in singing)"), 1, row++);
-		
-		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("previous_studies", "Previous studies")), 1, row);
-		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("elementary_school", "Elementary school")), 2, row++);
-		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
-		table.add(getTextInput(PARAMETER_PREVIOUS_STUDIES, chosenPreviousStudy), 1, row);
-		table.setStyleClass(2, row, getStyleName(STYLENAME_INPUT_CELL));
-		table.add(getTextInput(PARAMETER_ELEMENTARY_SCHOOL, chosenElementarySchool), 2, row++);
 		
 		//Done with current situation
 

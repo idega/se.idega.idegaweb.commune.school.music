@@ -14,6 +14,8 @@ import javax.ejb.FinderException;
 
 import se.idega.idegaweb.commune.school.business.SchoolChoiceComparator;
 import se.idega.idegaweb.commune.school.business.SchoolClassMemberComparator;
+import se.idega.idegaweb.commune.school.business.SchoolClassWriter;
+import se.idega.idegaweb.commune.school.music.business.MusicSchoolGroupWriter;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
 
 import com.idega.block.school.data.SchoolClass;
@@ -21,12 +23,17 @@ import com.idega.block.school.data.SchoolClassMember;
 import com.idega.core.contact.data.Phone;
 import com.idega.core.location.data.Address;
 import com.idega.core.location.data.PostalCode;
+import com.idega.idegaweb.IWMainApplication;
+import com.idega.io.MediaWritable;
 import com.idega.presentation.IWContext;
+import com.idega.presentation.Image;
 import com.idega.presentation.Table;
+import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
 import com.idega.presentation.ui.DropdownMenu;
 import com.idega.presentation.ui.Form;
 import com.idega.presentation.ui.HiddenInput;
+import com.idega.presentation.ui.Window;
 import com.idega.user.business.NoPhoneFoundException;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
@@ -85,11 +92,12 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		form.setEventListener(MusicSchoolEventListener.class);
 		form.add(new HiddenInput(PARAMETER_ACTION, String.valueOf(action)));
 
-		Table table = new Table(1, 3);
+		Table table = new Table(1, 5);
 		table.setCellpadding(0);
 		table.setCellspacing(0);
 		table.setWidth(getWidth());
 		table.setHeight(2, 12);
+		table.setHeight(3, 12);
 
 		form.add(table);
 
@@ -107,9 +115,27 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 
 		if (getSession().getGroup() != null) {
 			_group = getSession().getGroup();
-			table.add(getStudentTable(iwc), 1, 3);
+			table.setCellpaddingRight(1, 3, 6);
+			table.add(getXLSLink(), 1, 3);
+			table.add(getStudentTable(iwc), 1, 5);
 		}
 		add(form);
+	}
+
+	private Link getXLSLink() {
+		Window window = new Window(localize("Group", "School group"), getIWApplicationContext().getIWMainApplication().getMediaServletURI());
+		window.setResizable(true);
+		window.setMenubar(true);
+		window.setHeight(400);
+		window.setWidth(500);
+		
+		Image image = getBundle().getImage("shared/xls.gif");
+		image.setToolTip(localize("excel_list", "Get list in Excel format"));
+
+		Link link = new Link(image);
+		link.setWindow(window);
+		link.addParameter(MediaWritable.PRM_WRITABLE_CLASS, IWMainApplication.getEncryptedClassName(MusicSchoolGroupWriter.class));
+		return link;
 	}
 
 	private Table getStudentTable(IWContext iwc) throws RemoteException {
