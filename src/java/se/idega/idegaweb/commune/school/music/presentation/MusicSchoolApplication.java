@@ -516,7 +516,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		table.mergeCells(1, row, 2, row);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_INFORMATION_CELL));
-		table.add(getSmallText(TextSoap.formatText(localize("payment_method_information", "Information about payment..."))), 1, row++);
+		table.add(getSmallText(TextSoap.formatTabsAndReturnsToHtml(localize("payment_method_information", "Information about payment..."))), 1, row++);
 		
 		/*table.setHeight(row++, 12);
 		
