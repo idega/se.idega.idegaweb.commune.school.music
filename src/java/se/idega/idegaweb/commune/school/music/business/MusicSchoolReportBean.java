@@ -110,7 +110,7 @@ public class MusicSchoolReportBean extends IBOSessionBean implements MusicSchool
 				
 			}
 			
-			String[] statuses = { getMusicSchoolBusiness().getCaseStatusPlaced().getStatus() }; 
+			String[] statuses = { getMusicSchoolBusiness().getCaseStatusPreliminary().getStatus(), getMusicSchoolBusiness().getCaseStatusPlaced().getStatus() }; 
 			iter = schools.iterator();
 			while (iter.hasNext()) {
 				School school = (School) iter.next();

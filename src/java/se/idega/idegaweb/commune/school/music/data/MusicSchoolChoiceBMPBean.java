@@ -413,7 +413,8 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	public int ejbHomeGetNumberOfApplications(User child, School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String types, String[] statuses) throws IDOException {
 		try {
 			SelectQuery query = getDefaultQuery(child, school, season, year, instrument, types, statuses);
-			query.removeColumn(new Column(query.getBaseTable(), this.getIDColumnName()));
+			query.removeAllColumns();
+			query.removeAllOrder();
 			query.addColumn(new CountColumn(query.getBaseTable(), this.getIDColumnName()));
 			
 			return idoGetNumberOfRecords(query.toString());
@@ -424,9 +425,9 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	}
 	
 	private SelectQuery getDefaultQuery(User child, School school, SchoolSeason season, SchoolYear department, SchoolStudyPath instrument, String types, String[] statuses) throws FinderException {
-		Table choice = new Table(this);
-		Table process = new Table(Case.class);
-		Table instruments = new Table(SchoolStudyPath.class);
+		Table choice = new Table(this, "c");
+		Table process = new Table(Case.class, "p");
+		Table instruments = new Table(SchoolStudyPath.class, "sp");
 		
 		SelectQuery query = new SelectQuery(choice);
 		query.addColumn(new Column(choice, this.getIDColumnName()));
@@ -438,7 +439,7 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		}
 		if (instrument != null) {
 			try {
-				query.addManyToManyJoin(choice, instruments);
+				query.addManyToManyJoin(choice, instruments, "csp");
 			}
 			catch (IDORelationshipException ile) {
 				throw new FinderException(ile.getMessage());
