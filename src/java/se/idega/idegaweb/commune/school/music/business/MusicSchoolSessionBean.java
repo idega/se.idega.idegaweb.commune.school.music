@@ -155,7 +155,7 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 	public SchoolYear getDepartment() {
 		if (iDepartment == null && iDepartmentPK != null) {
 			try {
-				iDepartment = getSchoolBusiness().getSchoolYear(new Integer(iInstrumentPK.toString()));
+				iDepartment = getSchoolBusiness().getSchoolYear(new Integer(iDepartmentPK.toString()));
 			}
 			catch (RemoteException re) {
 				iDepartment = null;
@@ -171,7 +171,7 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 	public SchoolSeason getSeason() {
 		if (iSeason == null && iSeasonPK != null) {
 			try {
-				iSeason = getSchoolBusiness().getSchoolSeason(new Integer(iInstrumentPK.toString()));
+				iSeason = getSchoolBusiness().getSchoolSeason(new Integer(iSeasonPK.toString()));
 			}
 			catch (RemoteException re) {
 				iSeason = null;
