@@ -93,7 +93,7 @@ public class MusicSchoolApplicationWriter implements MediaWritable {
 	public String getMimeType() {
 		if (buffer != null)
 			return buffer.getMimeType();
-		return "application/pdf";
+		return "application/x-msexcel";
 	}
 	
 	public void writeTo(OutputStream out) throws IOException {
