@@ -349,8 +349,8 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		}
 
 		if (status.equals(getCaseStatusPreliminary())) {
-			String subject = "";
-			String body = "";
+			String subject = getLocalizedString("music_school.choice_received_subject", "Music school choice received");
+			String body = getLocalizedString("music_school.choice_received_body", "{1} has received the application for a music school placing for {0}, {2}.  The application will be handled as soon as possible.");
 			sendMessageToParents(choice, subject, body);
 		}
 
@@ -431,12 +431,15 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 			while (iter.hasNext()) {
 				Case theCase = (Case) iter.next();
 				if (theCase.getCaseCode().equals(application.getCaseCode())) {
-					String subject = this.getLocalizedString("music_school.choice_received_subject", "Music school choice received");
-					String body = this.getLocalizedString("music_school.choice_received_body", "{1} has received the application for a music school placing for {0}, {2}.  The application will be handled as soon as possible.");
+					String subject = getLocalizedString("music_school.choice_received_subject", "Music school choice received");
+					String body = getLocalizedString("music_school.choice_received_body", "{1} has received the application for a music school placing for {0}, {2}.  The application will be handled as soon as possible.");
 					sendMessageToParents((MusicSchoolChoice)theCase, subject, body);
 					changeCaseStatus(theCase, getCaseStatusPreliminary().getStatus(), performer);
 				}
 			}
+			String subject = getLocalizedString("music_school.choice_rejected_subject", "Music school choice rejected");
+			String body = getLocalizedString("music_school.choice_rejected_body", "{1} has rejected the application for a music school placing for {0}, {2}.");
+			sendMessageToParents(application, subject, body);
 			changeCaseStatus(application, getCaseStatusDenied().getStatus(), performer);
 			return true;
 		}
