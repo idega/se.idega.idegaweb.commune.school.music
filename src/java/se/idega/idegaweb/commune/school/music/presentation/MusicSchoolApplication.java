@@ -9,17 +9,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
-
-import se.idega.idegaweb.commune.school.business.SchoolCommuneBusiness;
+import se.idega.idegaweb.commune.care.business.CareBusiness;
 import se.idega.idegaweb.commune.school.music.business.NoDepartmentFoundException;
 import se.idega.idegaweb.commune.school.music.business.NoInstrumentFoundException;
 import se.idega.idegaweb.commune.school.music.business.NoLessonTypeFoundException;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
-
 import com.idega.block.navigation.presentation.UserHomeLink;
 import com.idega.block.school.data.School;
 import com.idega.block.school.data.SchoolSeason;
@@ -122,7 +119,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		
 		SchoolSeason season = null;
 		try {
-			season = getSchoolCommuneBusiness(iwc).getCurrentSchoolSeason();
+			season = getCareBusiness(iwc).getCurrentSeason();
 		}
 		catch (FinderException fe) {
 			log(fe);
@@ -811,9 +808,9 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		}
 	}
 
-	private SchoolCommuneBusiness getSchoolCommuneBusiness(IWContext iwc) {
+	private CareBusiness getCareBusiness(IWContext iwc) {
 		try {
-			return (SchoolCommuneBusiness) IBOLookup.getServiceInstance(iwc, SchoolCommuneBusiness.class);	
+			return (CareBusiness) IBOLookup.getServiceInstance(iwc, CareBusiness.class);	
 		}
 		catch (IBOLookupException ile) {
 			throw new IBORuntimeException(ile);
