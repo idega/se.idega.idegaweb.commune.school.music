@@ -9,15 +9,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.ejb.FinderException;
-
-import se.idega.idegaweb.commune.school.business.SchoolChoiceComparator;
 import se.idega.idegaweb.commune.school.music.business.MusicSchoolGroupWriter;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
 import se.idega.util.SchoolClassMemberComparatorForSweden;
-
-import com.idega.block.school.business.SchoolClassMemberComparator;
 import com.idega.block.school.data.SchoolClass;
 import com.idega.block.school.data.SchoolClassMember;
 import com.idega.core.contact.data.Phone;
@@ -54,7 +49,7 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 	private final int ACTION_MANAGE = 1;
 
 	private int action = 0;
-	private int sortStudentsBy = SchoolChoiceComparator.NAME_SORT;
+	private int sortStudentsBy = SchoolClassMemberComparatorForSweden.NAME_SORT;
 
 	private SchoolClass _group;
 
@@ -85,7 +80,7 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		if (iwc.isParameterSet(PARAMETER_SORT))
 			sortStudentsBy = Integer.parseInt(iwc.getParameter(PARAMETER_SORT));
 		else
-			sortStudentsBy = SchoolChoiceComparator.NAME_SORT;
+			sortStudentsBy = SchoolClassMemberComparatorForSweden.NAME_SORT;
 	}
 
 	private void drawForm(IWContext iwc) throws RemoteException {
@@ -285,11 +280,11 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		table.add(getSmallHeader(localize("school.sort_by", "Sort by") + ":" + Text.NON_BREAKING_SPACE), 1, 3);
 
 		DropdownMenu menu = (DropdownMenu) getStyledInterface(new DropdownMenu(PARAMETER_SORT));
-		menu.addMenuElement(SchoolChoiceComparator.NAME_SORT, localize("school.sort_by", "- Sort by -"));
-		menu.addMenuElement(SchoolChoiceComparator.NAME_SORT, localize("school.sort_name", "Name"));
-		menu.addMenuElement(SchoolChoiceComparator.PERSONAL_ID_SORT, localize("school.sort_personal_id", "Personal ID"));
-		menu.addMenuElement(SchoolChoiceComparator.ADDRESS_SORT, localize("school.sort_address", "Address"));
-		menu.addMenuElement(SchoolChoiceComparator.GENDER_SORT, localize("school.sort_gender", "Gender"));
+		menu.addMenuElement(SchoolClassMemberComparatorForSweden.NAME_SORT, localize("school.sort_by", "- Sort by -"));
+		menu.addMenuElement(SchoolClassMemberComparatorForSweden.NAME_SORT, localize("school.sort_name", "Name"));
+		menu.addMenuElement(SchoolClassMemberComparatorForSweden.PERSONAL_ID_SORT, localize("school.sort_personal_id", "Personal ID"));
+		menu.addMenuElement(SchoolClassMemberComparatorForSweden.ADDRESS_SORT, localize("school.sort_address", "Address"));
+		menu.addMenuElement(SchoolClassMemberComparatorForSweden.GENDER_SORT, localize("school.sort_gender", "Gender"));
 		menu.setSelectedElement(sortStudentsBy);
 		menu.setToSubmit();
 		table.add(menu, 2, 3);
