@@ -102,9 +102,10 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		choicesTable.add(getSmallHeader(localize("postal_code", "Postal code")), iColumn++, iRow);
 		choicesTable.add(getSmallHeader(localize("department", "Department")), iColumn++, iRow);
 		choicesTable.add(getSmallHeader(localize("instruments.plural_or_singular", "Instrument/s")), iColumn++, iRow);
+		choicesTable.setCellpaddingLeft(1, iRow, 12);
 		choicesTable.setRowStyleClass(iRow++, getHeaderRow2Class());
 		
-		if (getSession().getSeason() != null && getSession().getDepartment() != null) {
+		if (getSession().getSeason() != null) {
 			try {
 				Collection choices = getBusiness().findChoicesInSchool(getSession().getProvider(), getSession().getSeason(), getSession().getDepartment(), getSession().getInstrument());
 				MusicSchoolChoice choice;
@@ -194,6 +195,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 						choicesTable.add(box, iColumn, iRow);
 					}
 					
+					choicesTable.setCellpaddingLeft(1, iRow, 12);
 					if (iRow % 2 == 0) {
 						choicesTable.setRowStyleClass(iRow++, getLightRowClass());
 					}
@@ -234,6 +236,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 			groupTable.add(getSmallHeader(localize("personal_id", "Personal ID")), iColumn++, iRow);
 			groupTable.add(getSmallHeader(localize("address", "Address")), iColumn++, iRow);
 			groupTable.add(getSmallHeader(localize("postal_code", "Postal code")), iColumn++, iRow);
+			groupTable.setCellpaddingLeft(1, iRow, 12);
 			groupTable.setRowStyleClass(iRow++, getHeaderRow2Class());
 			
 			try {
@@ -277,6 +280,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					}
 					groupTable.add(remove, iColumn++, iRow);
 
+					groupTable.setCellpaddingLeft(1, iRow, 12);
 					if (iRow % 2 == 0) {
 						groupTable.setRowStyleClass(iRow++, getLightRowClass());
 					}
