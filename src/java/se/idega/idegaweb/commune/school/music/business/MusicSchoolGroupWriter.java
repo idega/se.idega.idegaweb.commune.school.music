@@ -164,10 +164,10 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 	    cell.setCellValue(iwrb.getLocalizedString("custodian_email","Custodian e-mail"));
 	    cell.setCellStyle(style);
 	    cell = row.createCell((short) cellColumn++);
-	    cell.setCellValue(iwrb.getLocalizedString("department","Department"));
+	    cell.setCellValue(iwrb.getLocalizedString("instruments","Instruments"));
 	    cell.setCellStyle(style);
 	    cell = row.createCell((short) cellColumn++);
-	    cell.setCellValue(iwrb.getLocalizedString("instruments","Instruments"));
+	    cell.setCellValue(iwrb.getLocalizedString("department","Department"));
 	    cell.setCellStyle(style);
 
 			User student;

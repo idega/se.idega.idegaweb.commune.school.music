@@ -342,14 +342,12 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 			email = null;
 		}
 		
-		table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getSmallHeader(localize("personal_id", "Personal ID")), 1, row);
 		table.add(getText(PersonalIDFormatter.format(user.getPersonalID(), iwc.getCurrentLocale())), 2, row);
 		
 		table.add(getSmallHeader(localize("name", "Name")), 4, row);
 		table.add(getText(user.getName()), 5, row++);
 		
-		table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getSmallHeader(localize("address", "Address")), 1, row);
 		table.add(getSmallHeader(localize("zip_code", "Postal code")), 4, row);
 		if (address != null) {
@@ -360,7 +358,6 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		}
 		row++;
 		
-		table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getSmallHeader(localize("home_phone", "Home phone")), 1, row);
 		table.add(getSmallHeader(localize("mobile_phone", "Mobile phone")), 4, row);
 		if (phone != null) {
@@ -371,7 +368,6 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		}
 		row++;
 		
-		table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getSmallHeader(localize("email", "E-mail")), 1, row);
 		if (email != null) {
 			table.add(getText(email.getEmailAddress()), 2, row);
@@ -404,14 +400,12 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 
 				table.setHeight(row++, 12);
 
-				table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
 				table.add(getSmallHeader(localize("custodian", "Custodian")), 1, row);
-				table.add(getText(custodian.getName()), 2, row++);
+				table.add(getText(custodian.getName()), 2, row);
 
 				table.add(getSmallHeader(localize("personal_id", "Personal ID")), 4, row);
-				table.add(getText(PersonalIDFormatter.format(custodian.getPersonalID(), iwc.getCurrentLocale())), 5, row);
+				table.add(getText(PersonalIDFormatter.format(custodian.getPersonalID(), iwc.getCurrentLocale())), 5, row++);
 				
-				table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
 				table.add(getSmallHeader(localize("home_phone", "Home phone")), 1, row);
 				table.add(getSmallHeader(localize("mobile_phone", "Mobile phone")), 4, row);
 				if (phone != null) {
@@ -422,7 +416,6 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 				}
 				row++;
 				
-				table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
 				table.add(getSmallHeader(localize("email", "E-mail")), 1, row);
 				if (email != null) {
 					table.add(getText(email.getEmailAddress()), 2, row);

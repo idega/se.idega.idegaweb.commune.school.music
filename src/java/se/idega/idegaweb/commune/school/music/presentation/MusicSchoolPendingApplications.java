@@ -6,12 +6,9 @@ package se.idega.idegaweb.commune.school.music.presentation;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.Iterator;
-
 import javax.ejb.FinderException;
-
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
-
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolYear;
 import com.idega.core.location.data.Address;
@@ -25,7 +22,8 @@ import com.idega.presentation.ui.CheckBox;
 import com.idega.presentation.ui.Form;
 import com.idega.presentation.ui.SubmitButton;
 import com.idega.user.data.User;
-import com.idega.util.PersonalIDFormatter;
+import com.idega.util.Age;
+import com.idega.util.IWTimestamp;
 
 
 /**
@@ -64,7 +62,7 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 			table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
 			table.add(reactivate, 1, row);
 			table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
-			table.add(getHelpButton("Help_music_school_reactivate"), 1, row);
+			table.add(getHelpButton("Help_music_school_pending"), 1, row);
 			table.setCellpaddingRight(1, row, 12);
 			add(form);
 		}
@@ -75,19 +73,21 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 	
 	private Table getChoicesTable(IWContext iwc) throws RemoteException {
 		Table choicesTable = new Table();
-		choicesTable.setColumns(7);
+		choicesTable.setColumns(9);
 		choicesTable.setWidth(Table.HUNDRED_PERCENT);
 		choicesTable.setCellpadding(0);
 		choicesTable.setCellspacing(0);
 		int iColumn = 1;
 		int iRow = 1;
 		
+		choicesTable.add(getSmallHeader(localize("number", "Nr.")), iColumn++, iRow);
+		choicesTable.add(getSmallHeader(localize("choice_date", "Choice date")), iColumn++, iRow);
 		choicesTable.add(getSmallHeader(localize("name", "Name")), iColumn++, iRow);
-		choicesTable.add(getSmallHeader(localize("personal_id", "Personal ID")), iColumn++, iRow);
-		choicesTable.add(getSmallHeader(localize("address", "Address")), iColumn++, iRow);
+		choicesTable.add(getSmallHeader(localize("date_of_birth", "Date of birth")), iColumn++, iRow);
+		choicesTable.add(getSmallHeader(localize("age", "Age")), iColumn++, iRow);
 		choicesTable.add(getSmallHeader(localize("postal_code", "Postal code")), iColumn++, iRow);
-		choicesTable.add(getSmallHeader(localize("department", "Department")), iColumn++, iRow);
 		choicesTable.add(getSmallHeader(localize("instruments.plural_or_singular", "Instrument/s")), iColumn++, iRow);
+		choicesTable.add(getSmallHeader(localize("department", "Department")), iColumn++, iRow);
 		choicesTable.setCellpaddingLeft(1, iRow, 12);
 		choicesTable.setRowStyleClass(iRow++, getHeaderRow2Class());
 		
@@ -100,8 +100,10 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 				PostalCode code;
 				Collection instruments;
 				SchoolYear department;
+				IWTimestamp choiceDate;
 				Link userLink;
 				CheckBox box;
+				int count = 1;
 				
 				Iterator iter = choices.iterator();
 				while (iter.hasNext()) {
@@ -123,7 +125,16 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 						instruments = null;
 					}
 					department = choice.getSchoolYear();
+					IWTimestamp dateOfBirth = new IWTimestamp(user.getDateOfBirth());
+					Age age = new Age(user.getDateOfBirth());
 					box = getCheckBox(PARAMETER_APPLICATION, choice.getPrimaryKey().toString());
+					if (choice.getChoiceDate() != null) {
+						choiceDate = new IWTimestamp(choice.getChoiceDate());
+					}
+					else {
+						choiceDate = null;
+					}
+
 					choicesTable.setWidth(iColumn, iRow, 12);
 					choicesTable.add(box, iColumn, iRow);
 					
@@ -135,10 +146,22 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 						userLink.setPage(getResponsePage());
 					}
 					
-					choicesTable.add(userLink, iColumn++, iRow);
-					choicesTable.add(getSmallText(PersonalIDFormatter.format(user.getPersonalID(), iwc.getCurrentLocale())), iColumn++, iRow);
+					choicesTable.add(getSmallText(String.valueOf(count)), iColumn++, iRow);
+					if (choiceDate != null) {
+						choicesTable.add(getSmallText(choiceDate.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), iColumn++, iRow);
+					}
+					else {
+						choicesTable.add(getSmallText("-"), iColumn++, iRow);
+					}
+					if (getResponsePage() != null) {
+						choicesTable.add(userLink, iColumn++, iRow);
+					}
+					else {
+						choicesTable.add(getSmallText(user.getName()), iColumn++, iRow);
+					}
+					choicesTable.add(getSmallText(dateOfBirth.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), iColumn++, iRow);
+					choicesTable.add(getSmallText(String.valueOf(age.getYears())), iColumn++, iRow);
 					if (address != null) {
-						choicesTable.add(getSmallText(address.getStreetAddress()), iColumn++, iRow);
 						if (code != null) {
 							choicesTable.add(getSmallText(code.getPostalAddress()), iColumn++, iRow);
 						}
@@ -148,9 +171,7 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 					}
 					else {
 						choicesTable.add(getSmallText("-"), iColumn++, iRow);
-						choicesTable.add(getSmallText("-"), iColumn++, iRow);
 					}
-					choicesTable.add(getSmallText(localize(department.getLocalizedKey(), department.getSchoolYearName())), iColumn++, iRow);
 					Iterator iterator = instruments.iterator();
 					Text instrumentText = null;
 					while (iterator.hasNext()) {
@@ -167,6 +188,7 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 						}
 					}
 					choicesTable.add(instrumentText, iColumn++, iRow);
+					choicesTable.add(getSmallText(localize(department.getLocalizedKey(), department.getSchoolYearName())), iColumn++, iRow);
 					choicesTable.add(box, iColumn, iRow);
 					
 					choicesTable.setCellpaddingLeft(1, iRow, 12);
@@ -176,6 +198,7 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 					else {
 						choicesTable.setRowStyleClass(iRow++, getDarkRowClass());
 					}
+					count++;
 				}
 			}
 			catch (FinderException fe) {

@@ -139,9 +139,9 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 	private Table getStudentTable(IWContext iwc) throws RemoteException {
 		Table table = new Table();
 		table.setWidth(getWidth());
-		table.setCellpadding(getCellpadding());
-		table.setCellspacing(getCellspacing());
-		table.setColumns(5);
+		table.setCellpadding(0);
+		table.setCellspacing(0);
+		table.setColumns(7);
 		int iRow = 1;
 		int iColumn = 1;
 
@@ -153,7 +153,7 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		table.add(getSmallHeader(localize("instruments.plural_or_singular", "Instrument/s")), iColumn++, iRow);
 		table.add(getSmallHeader(localize("department", "Department")), iColumn++, iRow);
 		table.setCellpaddingLeft(1, iRow, 12);
-		table.setRowStyleClass(iRow++, getHeaderRowClass());
+		table.setRowStyleClass(iRow++, getHeaderRow2Class());
 
 		User student;
 		Address address;

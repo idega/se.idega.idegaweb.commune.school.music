@@ -315,7 +315,6 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		editTable.setCellpadding(0);
 		editTable.setCellspacing(0);
 		editTable.setColumns(2);
-		editTable.setWidth(Table.HUNDRED_PERCENT);
 		table.add(editTable, 1, row++);
 		int editRow = 1;
 		
@@ -353,9 +352,12 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		}
 
 		SelectorUtility util = new SelectorUtility();
-		DropdownMenu instrumentsDrop1 = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_1"), instruments, "getLocalizedKey", getResourceBundle());
-		DropdownMenu instrumentsDrop2 = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_2"), instruments, "getLocalizedKey", getResourceBundle());
-		DropdownMenu instrumentsDrop3 = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_3"), instruments, "getLocalizedKey", getResourceBundle());
+		DropdownMenu instrumentsDrop1 = (DropdownMenu) getStyledInterface(util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_1"), instruments, "getLocalizedKey", getResourceBundle()));
+		instrumentsDrop1.addMenuElementFirst("", localize("select_instrument", "Select instrument"));
+		DropdownMenu instrumentsDrop2 = (DropdownMenu) getStyledInterface(util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_2"), instruments, "getLocalizedKey", getResourceBundle()));
+		instrumentsDrop2.addMenuElementFirst("", localize("select_instrument", "Select instrument"));
+		DropdownMenu instrumentsDrop3 = (DropdownMenu) getStyledInterface(util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_3"), instruments, "getLocalizedKey", getResourceBundle()));
+		instrumentsDrop3.addMenuElementFirst("", localize("select_instrument", "Select instrument"));
 		if (chosenInstruments != null) {
 			int index = 1;
 			Iterator iter = chosenInstruments.iterator();
@@ -435,17 +437,17 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		table.setHeight(row++, 18);
 		
 		if (age.getYears() < 16) {
-			table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
-			table.add(getText(localize("elementary_school", "Elementary school")), 2, row++);
-			table.setStyleClass(2, row, getStyleName(STYLENAME_INPUT_CELL));
-			table.add(getTextInput(PARAMETER_ELEMENTARY_SCHOOL, choice.getElementarySchool()), 2, row++);
+			table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
+			table.add(getText(localize("elementary_school", "Elementary school")), 1, row++);
+			table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
+			table.add(getTextInput(PARAMETER_ELEMENTARY_SCHOOL, choice.getElementarySchool()), 1, row++);
 			table.setHeight(row++, 6);
 		}
 		
 		TextArea previousStudies = getTextArea(PARAMETER_PREVIOUS_STUDIES, choice.getPreviousStudies());
 		previousStudies.setHeight("50");
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("message", "message")), 1, row++);
+		table.add(getText(localize("previous_studies", "Previous studies")), 1, row++);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
 		table.add(previousStudies, 1, row++);
 		

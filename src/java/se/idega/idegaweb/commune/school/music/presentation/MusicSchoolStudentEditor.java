@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolStudentEditor.java,v 1.1 2005/03/20 12:47:09 laddi Exp $
+ * $Id: MusicSchoolStudentEditor.java,v 1.2 2005/03/20 13:31:43 laddi Exp $
  * Created on 20.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -122,11 +122,11 @@ public class MusicSchoolStudentEditor extends MusicSchoolBlock {
 		}
 
 		SelectorUtility util = new SelectorUtility();
-		DropdownMenu instrumentsDrop1 = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_1"), instruments, "getLocalizedKey", getResourceBundle());
+		DropdownMenu instrumentsDrop1 = (DropdownMenu) getStyledInterface(util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_1"), instruments, "getLocalizedKey", getResourceBundle()));
 		instrumentsDrop1.addMenuElementFirst("", localize("select_instrument", "Select instrument"));
-		DropdownMenu instrumentsDrop2 = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_2"), instruments, "getLocalizedKey", getResourceBundle());
+		DropdownMenu instrumentsDrop2 = (DropdownMenu) getStyledInterface(util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_2"), instruments, "getLocalizedKey", getResourceBundle()));
 		instrumentsDrop2.addMenuElementFirst("", localize("select_instrument", "Select instrument"));
-		DropdownMenu instrumentsDrop3 = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_3"), instruments, "getLocalizedKey", getResourceBundle());
+		DropdownMenu instrumentsDrop3 = (DropdownMenu) getStyledInterface(util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_3"), instruments, "getLocalizedKey", getResourceBundle()));
 		instrumentsDrop3.addMenuElementFirst("", localize("select_instrument", "Select instrument"));
 		if (chosenInstruments != null) {
 			int index = 1;

@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolAcceptedApplications.java,v 1.2 2005/03/20 12:47:09 laddi Exp $
+ * $Id: MusicSchoolAcceptedApplications.java,v 1.3 2005/03/20 13:31:43 laddi Exp $
  * Created on 18.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -312,7 +312,7 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 		if (iwc.isParameterSet(PARAMETER_ACTION)) {
 			return Integer.parseInt(iwc.getParameter(PARAMETER_ACTION));
 		}
-		return ACTION_FORM;
+		return ACTION_VIEW;
 	}
 	
 	private void transferStudents(IWContext iwc) {
