@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.ejb.FinderException;
+import se.idega.idegaweb.commune.school.music.business.MusicSchoolPendingApplicationWriter;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
 import com.idega.block.school.data.SchoolStudyPath;
@@ -14,13 +15,17 @@ import com.idega.block.school.data.SchoolYear;
 import com.idega.core.location.data.Address;
 import com.idega.core.location.data.PostalCode;
 import com.idega.data.IDORelationshipException;
+import com.idega.idegaweb.IWMainApplication;
+import com.idega.io.MediaWritable;
 import com.idega.presentation.IWContext;
+import com.idega.presentation.Image;
 import com.idega.presentation.Table;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
 import com.idega.presentation.ui.CheckBox;
 import com.idega.presentation.ui.Form;
 import com.idega.presentation.ui.SubmitButton;
+import com.idega.presentation.ui.Window;
 import com.idega.user.data.User;
 import com.idega.util.Age;
 import com.idega.util.IWTimestamp;
@@ -54,6 +59,10 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 			table.setCellpaddingLeft(1, row, 12);
 			table.add(getNavigationTable(), 1, row++);
 			table.setHeight(row++, 12);
+			table.setCellpaddingRight(1, row, 6);
+			table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
+			table.add(getXLSLink(), 1, row++);
+			table.setHeight(row++, 3);
 			table.add(getChoicesTable(iwc), 1, row);
 			table.setHeight(row++, 12);
 
@@ -71,6 +80,22 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 		}
 	}
 	
+	private Link getXLSLink() {
+		Window window = new Window(localize("pending_applications", "Pending applications"), getIWApplicationContext().getIWMainApplication().getMediaServletURI());
+		window.setResizable(true);
+		window.setMenubar(true);
+		window.setHeight(400);
+		window.setWidth(500);
+		
+		Image image = getBundle().getImage("shared/xls.gif");
+		image.setToolTip(localize("excel_list", "Get list in Excel format"));
+
+		Link link = new Link(image);
+		link.setWindow(window);
+		link.addParameter(MediaWritable.PRM_WRITABLE_CLASS, IWMainApplication.getEncryptedClassName(MusicSchoolPendingApplicationWriter.class));
+		return link;
+	}
+
 	private Table getChoicesTable(IWContext iwc) throws RemoteException {
 		Table choicesTable = new Table();
 		choicesTable.setColumns(9);
