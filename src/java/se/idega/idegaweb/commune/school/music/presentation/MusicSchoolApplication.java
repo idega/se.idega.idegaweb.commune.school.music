@@ -1150,32 +1150,28 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 				verifyTable.add(getText(teacherRequest), 2, iRow++);
 			}
 			
-			verifyTable.setHeight(iRow++, 12);
 		}
 		
-		verifyTable.mergeCells(1, iRow, 2, iRow);
-		verifyTable.add(getHeader(localize("other_info", "Other information")), 1, iRow++);
-		verifyTable.setHeight(iRow++, 6);
+		table.setHeight(row++, 12);
+		table.add(getHeader(localize("other_info", "Other information")), 1, row++);
+		table.setHeight(row++, 6);
 		
 		if (elementarySchool != null && elementarySchool.length() > 0) {
-			verifyTable.mergeCells(1, iRow, 2, iRow);
-			verifyTable.add(getSmallHeader(localize("elementary_school", "Elementary school")), 1, iRow++);
-			verifyTable.add(getText(elementarySchool), 1, iRow++);
-			verifyTable.setHeight(iRow++, 3);
+			table.add(getSmallHeader(localize("elementary_school", "Elementary school")), 1, row++);
+			table.add(getText(elementarySchool), 1, row++);
+			table.setHeight(row++, 3);
 		}
 		
 		if (previousStudies != null && previousStudies.length() > 0) {
-			verifyTable.mergeCells(1, iRow, 2, iRow);
-			verifyTable.add(getSmallHeader(localize("previous_studies", "Previous studies")), 1, iRow++);
-			verifyTable.add(getText(previousStudies), 1, iRow++);
-			verifyTable.setHeight(iRow++, 3);
+			table.add(getSmallHeader(localize("previous_studies", "Previous studies")), 1, row++);
+			table.add(getText(previousStudies), 1, row++);
+			table.setHeight(row++, 3);
 		}
 		
 		if (message != null && message.length() > 0) {
-			verifyTable.mergeCells(1, iRow, 2, iRow);
-			verifyTable.add(getSmallHeader(localize("message", "Message")), 1, iRow++);
-			verifyTable.add(getText(message), 1, iRow++);
-			verifyTable.setHeight(iRow++, 3);
+			table.add(getSmallHeader(localize("message", "Message")), 1, row++);
+			table.add(getText(message), 1, row++);
+			table.setHeight(row++, 3);
 		}
 		
 		table.setHeight(row++, 18);

@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolAcceptedApplications.java,v 1.7 2005/03/20 23:53:36 laddi Exp $
+ * $Id: MusicSchoolAcceptedApplications.java,v 1.8 2005/03/21 07:29:30 laddi Exp $
  * Created on 18.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.FinderException;
+import se.idega.idegaweb.commune.school.music.business.MusicSchoolGroupWriter;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
 import se.idega.util.SchoolClassMemberComparatorForSweden;
 import com.idega.block.school.data.SchoolClassMember;
@@ -26,7 +27,10 @@ import com.idega.business.IBORuntimeException;
 import com.idega.core.location.data.Address;
 import com.idega.core.location.data.PostalCode;
 import com.idega.data.IDORelationshipException;
+import com.idega.idegaweb.IWMainApplication;
+import com.idega.io.MediaWritable;
 import com.idega.presentation.IWContext;
+import com.idega.presentation.Image;
 import com.idega.presentation.Table;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
@@ -36,6 +40,7 @@ import com.idega.presentation.ui.DropdownMenu;
 import com.idega.presentation.ui.Form;
 import com.idega.presentation.ui.HiddenInput;
 import com.idega.presentation.ui.SubmitButton;
+import com.idega.presentation.ui.Window;
 import com.idega.user.data.User;
 import com.idega.util.Age;
 import com.idega.util.IWTimestamp;
@@ -92,6 +97,11 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 		add(form);
 
 		if (getSession().getSeason() != null) {
+			table.setCellpaddingRight(1, row, 6);
+			table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
+			table.add(getXLSLink(), 1, row++);
+			table.setHeight(row++, 3);
+
 			Table groupTable = new Table();
 			groupTable.setColumns(9);
 			groupTable.setWidth(Table.HUNDRED_PERCENT);
@@ -312,6 +322,22 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 		add(form);
 	}
 	
+	private Link getXLSLink() {
+		Window window = new Window(localize("Group", "School group"), getIWApplicationContext().getIWMainApplication().getMediaServletURI());
+		window.setResizable(true);
+		window.setMenubar(true);
+		window.setHeight(400);
+		window.setWidth(500);
+		
+		Image image = getBundle().getImage("shared/xls.gif");
+		image.setToolTip(localize("excel_list", "Get list in Excel format"));
+
+		Link link = new Link(image);
+		link.setWindow(window);
+		link.addParameter(MediaWritable.PRM_WRITABLE_CLASS, IWMainApplication.getEncryptedClassName(MusicSchoolGroupWriter.class));
+		return link;
+	}
+
 	private int parseAction(IWContext iwc) {
 		if (iwc.isParameterSet(PARAMETER_ACTION)) {
 			return Integer.parseInt(iwc.getParameter(PARAMETER_ACTION));

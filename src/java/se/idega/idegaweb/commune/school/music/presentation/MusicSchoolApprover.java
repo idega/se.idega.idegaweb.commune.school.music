@@ -266,7 +266,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 				table.setHeight(row++, 12);
 				
 				SubmitButton reject = (SubmitButton) getButton(new SubmitButton(localize("reject", "Reject"), PARAMETER_ACTION, String.valueOf(ACTION_REJECT)));
-				SubmitButton accept = (SubmitButton) getButton(new SubmitButton(localize("save", "Save"), PARAMETER_ACTION, String.valueOf(ACTION_ACCEPT)));
+				SubmitButton accept = (SubmitButton) getButton(new SubmitButton(localize("accept_applications", "Accept applications"), PARAMETER_ACTION, String.valueOf(ACTION_ACCEPT)));
 				
 				table.add(accept, 1, row);
 				table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);

@@ -135,9 +135,6 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 						choiceDate = null;
 					}
 
-					choicesTable.setWidth(iColumn, iRow, 12);
-					choicesTable.add(box, iColumn, iRow);
-					
 					userLink = getSmallLink(user.getName());
 					userLink.setEventListener(MusicSchoolEventListener.class);
 					userLink.addParameter(getSession().getParameterNameChildID(), user.getPrimaryKey().toString());
@@ -188,8 +185,13 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 						}
 					}
 					choicesTable.add(instrumentText, iColumn++, iRow);
-					choicesTable.add(getSmallText(localize(department.getLocalizedKey(), department.getSchoolYearName())), iColumn++, iRow);
+					if (department != null) {
+						choicesTable.add(getSmallText(localize(department.getLocalizedKey(), department.getSchoolYearName())), iColumn, iRow);
+					}
+					iColumn++;
+					choicesTable.setWidth(iColumn, iRow, 12);
 					choicesTable.add(box, iColumn, iRow);
+					
 					
 					choicesTable.setCellpaddingLeft(1, iRow, 12);
 					if (iRow % 2 == 0) {
