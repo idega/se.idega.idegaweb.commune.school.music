@@ -110,6 +110,7 @@ public class MusicSchoolLessonTypeEditor extends MusicSchoolBlock {
 					table.add(name, column++, row);
 					table.add(description, column++, row);
 					table.add(localizedKey, column++, row);
+					table.add(order, column++, row);
 					table.add(selectable, column++, row);
 					table.add(pk, column++, row);
 				}

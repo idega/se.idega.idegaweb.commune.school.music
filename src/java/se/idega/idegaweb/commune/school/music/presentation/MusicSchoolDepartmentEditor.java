@@ -111,6 +111,7 @@ public class MusicSchoolDepartmentEditor extends MusicSchoolBlock {
 					table.add(code, column++, row);
 					table.add(description, column++, row);
 					table.add(localizedKey, column++, row);
+					table.add(order, column++, row);
 					table.add(selectable, column++, row);
 					table.add(pk, column++, row);
 				}
@@ -141,11 +142,15 @@ public class MusicSchoolDepartmentEditor extends MusicSchoolBlock {
 				TextInput code = (TextInput) getStyledInterface(new TextInput(PARAMETER_NAME));
 				TextInput description = (TextInput) getStyledInterface(new TextInput(PARAMETER_DESCRIPTION));
 				TextInput localizedKey = (TextInput) getStyledInterface(new TextInput(PARAMETER_LOCALIZED_KEY));
+				TextInput order = (TextInput) getStyledInterface(new TextInput(PARAMETER_ORDER));
+				order.setAsIntegers(localize("department.only_integers_allowed", "Order can only be integers"));
+				order.setSize(2);
 				CheckBox selectable = getCheckBox(PARAMETER_IS_SELECTABLE, Boolean.TRUE.toString());
 				
 				table.add(code, column++, row);
 				table.add(description, column++, row);
 				table.add(localizedKey, column++, row);
+				table.add(order, column++, row);
 				table.add(selectable, column++, row);
 				table.setCellpaddingLeft(1, row, 12);
 				if (row % 2 == 0) {
