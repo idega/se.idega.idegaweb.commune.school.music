@@ -122,22 +122,22 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 	    style.setFont(font);
 
 			int cellRow = 0;
-			HSSFRow row = sheet.createRow((short)cellRow++);
+			HSSFRow row = sheet.createRow(cellRow++);
 			HSSFCell cell = row.createCell((short)0);
 			cell.setCellValue(schoolName);
 			cell.setCellStyle(style);
 			cell = row.createCell((short)1);
 			
 			if (groupName != null) {
-				row = sheet.createRow((short)cellRow++);
+				row = sheet.createRow(cellRow++);
 				cell = row.createCell((short)0);
 				cell.setCellValue(groupName);
 				cell.setCellStyle(style);
 			}
 			
-			row = sheet.createRow((short)cellRow++);
+			row = sheet.createRow(cellRow++);
 			
-	    row = sheet.createRow((short)cellRow++);
+	    row = sheet.createRow(cellRow++);
 	    cell = row.createCell((short)0);
 	    cell.setCellValue(iwrb.getLocalizedString("name","Name"));
 	    cell.setCellStyle(style);
@@ -162,7 +162,7 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 			
 			Iterator iter = students.iterator();
 			while (iter.hasNext()) {
-				row = sheet.createRow((short)cellRow++);
+				row = sheet.createRow(cellRow++);
 				studentMember = (SchoolClassMember) iter.next();
 				student = studentMember.getStudent();
 				address = userBusiness.getUsersMainAddress(student);
