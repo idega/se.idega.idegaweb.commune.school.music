@@ -531,7 +531,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 			lessonTypeDrop.addMenuElement(type.getPrimaryKey().toString(), localize(type.getLocalizationKey(), type.getSchoolTypeName()));
 		}
 		
-		TextInput otherInstrumentInput = getTextInput(PARAMETER_OTHER_INSTRUMENT, otherInstrument);
+		TextInput otherInstrumentInput = getTextInput(getParameterName(PARAMETER_OTHER_INSTRUMENT, extraApplications), otherInstrument);
 		otherInstrumentInput.keepStatusOnAction(true);
 		
 		TextInput teacherRequestInput = getTextInput(getParameterName(PARAMETER_TEACHER_REQUEST, extraApplications), chosenTeacher);
