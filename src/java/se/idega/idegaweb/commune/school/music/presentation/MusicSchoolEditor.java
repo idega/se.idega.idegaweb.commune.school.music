@@ -131,7 +131,7 @@ public class MusicSchoolEditor extends MusicSchoolBlock {
 			
 			table.setHeight(row++, 12);
 			table.mergeCells(1, row, table.getColumns(), row);
-			SubmitButton newSchool = (SubmitButton) getButton(new SubmitButton(localize("school.new_school", "School"), PARAMETER_ACTION, String.valueOf(ACTION_EDIT)));
+			SubmitButton newSchool = (SubmitButton) getButton(new SubmitButton(localize("school.new_school", "New school"), PARAMETER_ACTION, String.valueOf(ACTION_EDIT)));
 			table.setCellpaddingLeft(1, row, 12);
 			table.add(newSchool, 1, row);
 		}
@@ -152,6 +152,7 @@ public class MusicSchoolEditor extends MusicSchoolBlock {
 		Table table = new Table();
 		table.setCellpadding(2);
 		table.setCellspacing(0);
+		form.add(table);
 		int row = 1;
 		
 		School school = null;
