@@ -130,68 +130,69 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 	public MemoryFileBuffer writeXLS(Collection students, IWContext iwc) throws RemoteException {
 		MemoryFileBuffer buffer = new MemoryFileBuffer();
 		MemoryOutputStream mos = new MemoryOutputStream(buffer);
+
+    HSSFWorkbook wb = new HSSFWorkbook();
+    HSSFSheet sheet = wb.createSheet(schoolName);
+    sheet.setColumnWidth((short)0, (short) (30 * 256));
+    sheet.setColumnWidth((short)1, (short) (14 * 256));
+    sheet.setColumnWidth((short)2, (short) (30 * 256));
+    sheet.setColumnWidth((short)3, (short) (14 * 256));
+		sheet.setColumnWidth((short)4, (short) (14 * 256));
+    HSSFFont font = wb.createFont();
+    font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    font.setFontHeightInPoints((short)12);
+    HSSFCellStyle style = wb.createCellStyle();
+    style.setFont(font);
+
+		int cellRow = 0;
+		int cellColumn = 0;
+		HSSFRow row = sheet.createRow(cellRow++);
+		HSSFCell cell = row.createCell((short)0);
+		cell.setCellValue(schoolName);
+		cell.setCellStyle(style);
+		cell = row.createCell((short)1);
+		
+		row = sheet.createRow(cellRow++);
+		
+    row = sheet.createRow(cellRow++);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("name","Name"));
+    cell.setCellStyle(style);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("personal_id","Personal ID"));
+    cell.setCellStyle(style);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("address","Address"));
+    cell.setCellStyle(style);
+		cell = row.createCell((short) cellColumn++);
+		cell.setCellValue(iwrb.getLocalizedString("zip_code","Postal code"));
+		cell.setCellStyle(style);
+		cell = row.createCell((short) cellColumn++);
+		cell.setCellValue(iwrb.getLocalizedString("zip_area","Area"));
+		cell.setCellStyle(style);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("home_phone","Home phone"));
+    cell.setCellStyle(style);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("work_phone","Work phone"));
+    cell.setCellStyle(style);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("mobile_phone","Mobile phone"));
+    cell.setCellStyle(style);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("email","E-mail"));
+    cell.setCellStyle(style);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("custodian_email","Custodian e-mail"));
+    cell.setCellStyle(style);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("instruments","Instruments"));
+    cell.setCellStyle(style);
+    cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("department","Department"));
+    cell.setCellStyle(style);
+
 		if (!students.isEmpty()) {
-	    HSSFWorkbook wb = new HSSFWorkbook();
-	    HSSFSheet sheet = wb.createSheet(schoolName);
-	    sheet.setColumnWidth((short)0, (short) (30 * 256));
-	    sheet.setColumnWidth((short)1, (short) (14 * 256));
-	    sheet.setColumnWidth((short)2, (short) (30 * 256));
-	    sheet.setColumnWidth((short)3, (short) (14 * 256));
-			sheet.setColumnWidth((short)4, (short) (14 * 256));
-	    HSSFFont font = wb.createFont();
-	    font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-	    font.setFontHeightInPoints((short)12);
-	    HSSFCellStyle style = wb.createCellStyle();
-	    style.setFont(font);
-
-			int cellRow = 0;
-			int cellColumn = 0;
-			HSSFRow row = sheet.createRow(cellRow++);
-			HSSFCell cell = row.createCell((short)0);
-			cell.setCellValue(schoolName);
-			cell.setCellStyle(style);
-			cell = row.createCell((short)1);
-			
-			row = sheet.createRow(cellRow++);
-			
-	    row = sheet.createRow(cellRow++);
-	    cell = row.createCell((short) cellColumn++);
-	    cell.setCellValue(iwrb.getLocalizedString("name","Name"));
-	    cell.setCellStyle(style);
-	    cell = row.createCell((short) cellColumn++);
-	    cell.setCellValue(iwrb.getLocalizedString("personal_id","Personal ID"));
-	    cell.setCellStyle(style);
-	    cell = row.createCell((short) cellColumn++);
-	    cell.setCellValue(iwrb.getLocalizedString("address","Address"));
-	    cell.setCellStyle(style);
-			cell = row.createCell((short) cellColumn++);
-			cell.setCellValue(iwrb.getLocalizedString("zip_code","Postal code"));
-			cell.setCellStyle(style);
-			cell = row.createCell((short) cellColumn++);
-			cell.setCellValue(iwrb.getLocalizedString("zip_area","Area"));
-			cell.setCellStyle(style);
-	    cell = row.createCell((short) cellColumn++);
-	    cell.setCellValue(iwrb.getLocalizedString("home_phone","Home phone"));
-	    cell.setCellStyle(style);
-	    cell = row.createCell((short) cellColumn++);
-	    cell.setCellValue(iwrb.getLocalizedString("work_phone","Work phone"));
-	    cell.setCellStyle(style);
-	    cell = row.createCell((short) cellColumn++);
-	    cell.setCellValue(iwrb.getLocalizedString("mobile_phone","Mobile phone"));
-	    cell.setCellStyle(style);
-	    cell = row.createCell((short) cellColumn++);
-	    cell.setCellValue(iwrb.getLocalizedString("email","E-mail"));
-	    cell.setCellStyle(style);
-	    cell = row.createCell((short) cellColumn++);
-	    cell.setCellValue(iwrb.getLocalizedString("custodian_email","Custodian e-mail"));
-	    cell.setCellStyle(style);
-	    cell = row.createCell((short) cellColumn++);
-	    cell.setCellValue(iwrb.getLocalizedString("instruments","Instruments"));
-	    cell.setCellStyle(style);
-	    cell = row.createCell((short) cellColumn++);
-	    cell.setCellValue(iwrb.getLocalizedString("department","Department"));
-	    cell.setCellStyle(style);
-
 			User student;
 			Address address;
 			PostalCode postalCode = null;
@@ -300,12 +301,12 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 		    row.createCell((short)cellColumn++).setCellValue(instrumentText.toString());
 		    row.createCell((short)cellColumn++).setCellValue(iwrb.getLocalizedString(department.getLocalizedKey(), department.getSchoolYearName()));
 			}
-			try {
-				wb.write(mos);
-			}
-			catch (IOException ie) {
-				ie.printStackTrace();
-			}
+		}
+		try {
+			wb.write(mos);
+		}
+		catch (IOException ie) {
+			ie.printStackTrace();
 		}
 		buffer.setMimeType("application/x-msexcel");
 		return buffer;
