@@ -448,7 +448,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 			boolean hasChildrenApplications = false;
 			while (iter.hasNext()) {
 				Case theCase = (Case) iter.next();
-				if (theCase.getCaseCode().equals(application.getCaseCode())) {
+				if (theCase.getCaseCode().getCode().equals(application.getCaseCode().getCode())) {
 					String subject = getLocalizedString("music_school.choice_received_subject", "Music school choice received");
 					String body = getLocalizedString("music_school.choice_received_body", "{1} has received the application for a music school placing for {0}, {2}.  The application will be handled as soon as possible.");
 					sendMessageToParents((MusicSchoolChoice)theCase, subject, body);
