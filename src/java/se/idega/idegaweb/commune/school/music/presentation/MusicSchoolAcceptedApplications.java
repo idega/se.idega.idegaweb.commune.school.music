@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolAcceptedApplications.java,v 1.4 2005/03/20 14:08:18 laddi Exp $
+ * $Id: MusicSchoolAcceptedApplications.java,v 1.5 2005/03/20 14:42:40 laddi Exp $
  * Created on 18.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -264,6 +264,7 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 		departmentTable.setCellpadding(getCellpadding());
 		departmentTable.setCellspacing(getCellspacing());
 		departmentTable.setColumns(2);
+		table.setCellpaddingLeft(1, row, 12);
 		table.add(departmentTable, 1, row++);
 		int iRow = 1;
 
