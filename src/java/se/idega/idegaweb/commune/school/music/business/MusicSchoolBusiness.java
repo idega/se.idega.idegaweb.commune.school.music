@@ -3,6 +3,8 @@ package se.idega.idegaweb.commune.school.music.business;
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 
+import com.idega.user.data.User;
+
 
 public interface MusicSchoolBusiness extends com.idega.block.process.business.CaseBusiness
 {
@@ -15,6 +17,7 @@ public interface MusicSchoolBusiness extends com.idega.block.process.business.Ca
  public java.util.Collection findAllTypes()throws javax.ejb.FinderException, java.rmi.RemoteException;
  public java.util.Collection findChoicesByChildAndSeason(com.idega.user.data.User p0,com.idega.block.school.data.SchoolSeason p1)throws javax.ejb.FinderException, java.rmi.RemoteException;
  public java.util.Collection findChoicesInSchool(com.idega.block.school.data.School p0,com.idega.block.school.data.SchoolSeason p1,com.idega.block.school.data.SchoolYear p2,com.idega.block.school.data.SchoolStudyPath p3)throws javax.ejb.FinderException, java.rmi.RemoteException;
+ public java.util.Collection findPendingChoicesInSchool(com.idega.block.school.data.School p0,com.idega.block.school.data.SchoolSeason p1,com.idega.block.school.data.SchoolYear p2,com.idega.block.school.data.SchoolStudyPath p3)throws javax.ejb.FinderException, java.rmi.RemoteException;
  public java.util.Collection findDepartmentsInSchool(com.idega.block.school.data.School p0)throws javax.ejb.FinderException, java.rmi.RemoteException;
  public java.util.Collection findGroupsInSchool(com.idega.block.school.data.School p0,com.idega.block.school.data.SchoolSeason p1,com.idega.block.school.data.SchoolYear p2,com.idega.block.school.data.SchoolStudyPath p3)throws javax.ejb.FinderException, java.rmi.RemoteException;
  public java.util.Collection findInstrumentsInSchool(com.idega.block.school.data.School p0)throws javax.ejb.FinderException, java.rmi.RemoteException;
@@ -32,4 +35,5 @@ public interface MusicSchoolBusiness extends com.idega.block.process.business.Ca
  public void saveInstrument(Object instrumentPK, String code, String description, String localizedKey) throws FinderException, CreateException, java.rmi.RemoteException;
  public void saveDepartment(Object instrumentPK, String name, String description, String localizedKey, int order, boolean isSelectable) throws FinderException, CreateException, java.rmi.RemoteException;
  public void saveLessonType(Object lessonTypePK, String name, String description, String localizedKey, int order, boolean isSelectable) throws CreateException, java.rmi.RemoteException;
+ public void reactivateApplication(Object applicationPK, User performer) throws java.rmi.RemoteException;
 }

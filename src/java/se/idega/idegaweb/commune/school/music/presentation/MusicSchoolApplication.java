@@ -372,7 +372,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		}
 		
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("school", "School") + " 1"), 1, row);
+		table.add(getText(localize("first_school", "First choice")), 1, row);
 		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("department", "Department")), 2, row++);
 		
@@ -394,7 +394,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(departmentDrop, 2, row++);
 
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("school", "School") + " 2"), 1, row);
+		table.add(getText(localize("second_school", "Second choice")), 1, row);
 		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("lesson_type", "Lesson type")), 2, row++);
 
@@ -414,7 +414,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(lessonTypeDrop, 2, row++);
 
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("school", "School") + " 3"), 1, row);
+		table.add(getText(localize("third_school", "Third school")), 1, row);
 		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("teacher_request", "Teacher request")), 2, row++);
 

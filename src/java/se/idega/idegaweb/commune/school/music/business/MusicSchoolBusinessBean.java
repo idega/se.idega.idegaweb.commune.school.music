@@ -210,6 +210,11 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		return getMusicSchoolChoiceHome().findAllByStatuses(null, school, season, department, instrument, statuses);
 	}
 	
+	public Collection findPendingChoicesInSchool(School school, SchoolSeason season, SchoolYear department, SchoolStudyPath instrument) throws FinderException {
+		String[] statuses = { getCaseStatusPending().getStatus() };
+		return getMusicSchoolChoiceHome().findAllByStatuses(null, school, season, department, instrument, statuses);
+	}
+	
 	public Map getInstrumentSchoolMap(Locale locale) {
 		try {
 			Collection instruments = findAllInstruments();
@@ -439,6 +444,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		try {
 			MusicSchoolChoice application = findMusicSchoolChoice(applicationPK);
 			Iterator iter = application.getChildren();
+			boolean hasChildrenApplications = false;
 			while (iter.hasNext()) {
 				Case theCase = (Case) iter.next();
 				if (theCase.getCaseCode().equals(application.getCaseCode())) {
@@ -446,17 +452,39 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 					String body = getLocalizedString("music_school.choice_received_body", "{1} has received the application for a music school placing for {0}, {2}.  The application will be handled as soon as possible.");
 					sendMessageToParents((MusicSchoolChoice)theCase, subject, body);
 					changeCaseStatus(theCase, getCaseStatusPreliminary().getStatus(), performer);
+					hasChildrenApplications = true;
 				}
 			}
-			String subject = getLocalizedString("music_school.choice_rejected_subject", "Music school choice rejected");
-			String body = getLocalizedString("music_school.choice_rejected_body", "{1} has rejected the application for a music school placing for {0}, {2}.");
-			sendMessageToParents(application, subject, body);
-			changeCaseStatus(application, getCaseStatusDenied().getStatus(), performer);
+			if (!hasChildrenApplications && application.getChoiceNumber() == 1) {
+				String subject = getLocalizedString("music_school.choice_pending_subject", "Music school choice added to waiting list");
+				String body = getLocalizedString("music_school.choice_pending_body", "{1} has added the application for a music school placing for {0}, {2}, to our waiting list.  If a placement becomes available you may get an offer for placement.");
+				sendMessageToParents(application, subject, body);
+				changeCaseStatus(application, getCaseStatusPending().getStatus(), performer);
+			}
+			else {
+				String subject = getLocalizedString("music_school.choice_rejected_subject", "Music school choice rejected");
+				String body = getLocalizedString("music_school.choice_rejected_body", "{1} has rejected the application for a music school placing for {0}, {2}.");
+				sendMessageToParents(application, subject, body);
+				changeCaseStatus(application, getCaseStatusDenied().getStatus(), performer);
+			}
 			return true;
 		}
 		catch (FinderException fe) {
 			log(fe);
 			return false;
+		}
+	}
+	
+	public void reactivateApplication(Object applicationPK, User performer) {
+		try {
+			MusicSchoolChoice application = findMusicSchoolChoice(applicationPK);
+			String subject = getLocalizedString("music_school.choice_reactivated_subject", "Music school choice reactivated");
+			String body = getLocalizedString("music_school.choice_reactivated_body", "{1} has reactivated the application for a music school placing for {0}, {2}.");
+			sendMessageToParents(application, subject, body);
+			changeCaseStatus(application, getCaseStatusPreliminary().getStatus(), performer);
+		}
+		catch (FinderException fe) {
+			log(fe);
 		}
 	}
 	
