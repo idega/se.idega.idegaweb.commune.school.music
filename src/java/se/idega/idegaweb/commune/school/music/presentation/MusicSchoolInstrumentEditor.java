@@ -77,6 +77,8 @@ public class MusicSchoolInstrumentEditor extends MusicSchoolBlock {
 		table.setCellspacing(0);
 		table.setWidth(getWidth());
 		table.setColumns(5);
+		table.setWidth(4, 12);
+		table.setWidth(5, 12);
 		form.add(table);
 		int column = 1;
 		int row = 1;
@@ -96,7 +98,7 @@ public class MusicSchoolInstrumentEditor extends MusicSchoolBlock {
 				column = 1;
 				SchoolStudyPath instrument = (SchoolStudyPath) iter.next();
 				
-				if (editInstrument && instrument.getPrimaryKey().equals(iInstrumentPK)) {
+				if (editInstrument && instrument.getPrimaryKey().toString().equals(iInstrumentPK.toString())) {
 					TextInput code = (TextInput) getStyledInterface(new TextInput(PARAMETER_CODE, instrument.getCode()));
 					TextInput description = (TextInput) getStyledInterface(new TextInput(PARAMETER_DESCRIPTION, instrument.getDescription()));
 					TextInput localizedKey = (TextInput) getStyledInterface(new TextInput(PARAMETER_LOCALIZED_KEY, instrument.getLocalizedKey()));
