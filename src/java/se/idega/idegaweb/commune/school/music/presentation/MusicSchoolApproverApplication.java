@@ -41,7 +41,6 @@ public class MusicSchoolApproverApplication extends MusicSchoolBlock {
 			Table table = new Table();
 			table.setCellpadding(0);
 			table.setCellspacing(0);
-			table.setWidth(getWidth());
 			table.setColumns(2);
 			int row = 1;
 			
