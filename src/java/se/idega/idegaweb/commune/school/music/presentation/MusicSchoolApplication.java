@@ -488,14 +488,14 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		
 		//Done with current situation
 
-		table.setHeight(row++, 12);
+		table.setHeight(row++, 18);
 		
 		//Showing payment method selection
-		/*table.mergeCells(1, row, 2, row);
-		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
-		table.add(getHeader(localize("application.payment_method", "Payment method")), 1, row++);
-
 		table.mergeCells(1, row, 2, row);
+		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
+		table.add(getHeader(localize("application.information", "Information")), 1, row++);
+
+		/*table.mergeCells(1, row, 2, row);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("payment_method_header", "Payment method for music schools")), 1, row++);*/
 
