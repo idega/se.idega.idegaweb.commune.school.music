@@ -552,19 +552,19 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 					student.addStudyPath(instrument);
 				}
 				catch (IDOAddRelationshipException e) {
-					e.printStackTrace();
+					log("Student " + student.getPrimaryKey().toString() + " already connected to study path " + instrument.getDescription());
 				}
 			}
 			else {
-				try {
-					Iterator iter = instruments.iterator();
-					while (iter.hasNext()) {
-						SchoolStudyPath element = (SchoolStudyPath) iter.next();
+				Iterator iter = instruments.iterator();
+				while (iter.hasNext()) {
+					SchoolStudyPath element = (SchoolStudyPath) iter.next();
+					try {
 						student.addStudyPath(element);
 					}
-				}
-				catch (IDORelationshipException ire) {
-					ire.printStackTrace();
+					catch (IDORelationshipException ire) {
+						log("Student " + student.getPrimaryKey().toString() + " already connected to study path " + element.getDescription());
+					}
 				}
 			}
 			return true;
