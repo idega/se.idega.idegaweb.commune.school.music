@@ -24,6 +24,7 @@ import javax.transaction.UserTransaction;
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
 import se.idega.idegaweb.commune.message.business.MessageBusiness;
 import se.idega.idegaweb.commune.message.data.Message;
+import se.idega.idegaweb.commune.school.business.SchoolCommuneBusiness;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceHome;
 
@@ -73,6 +74,15 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 	private SchoolBusiness getSchoolBusiness() {
 		try {
 			return (SchoolBusiness) IBOLookup.getServiceInstance(getIWApplicationContext(), SchoolBusiness.class);
+		}
+		catch (IBOLookupException ile) {
+			throw new IBORuntimeException(ile);
+		}
+	}
+	
+	private SchoolCommuneBusiness getSchoolCommuneBusiness() {
+		try {
+			return (SchoolCommuneBusiness) IBOLookup.getServiceInstance(getIWApplicationContext(), SchoolCommuneBusiness.class);
 		}
 		catch (IBOLookupException ile) {
 			throw new IBORuntimeException(ile);
@@ -493,6 +503,15 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		}
 		catch (RemoteException re) {
 			re.printStackTrace();
+		}
+	}
+
+	public Map getStudentList(Collection students) {
+		try {
+			return getSchoolCommuneBusiness().getStudentList(students);
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
 		}
 	}
 
