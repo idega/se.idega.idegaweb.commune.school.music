@@ -87,6 +87,7 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 	private Table getTable(IWContext iwc) throws RemoteException {
 		Table connectionTable = new Table();
 		connectionTable.setCellpadding(2);
+		connectionTable.setWidth(getWidth());
 		int iRow = 1;
 		int iColumn = 1;
 		
