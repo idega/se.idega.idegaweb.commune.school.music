@@ -27,6 +27,7 @@ import com.idega.data.IDOException;
 import com.idega.data.IDORelationshipException;
 import com.idega.data.IDORemoveRelationshipException;
 import com.idega.data.query.Column;
+import com.idega.data.query.CountColumn;
 import com.idega.data.query.InCriteria;
 import com.idega.data.query.MatchCriteria;
 import com.idega.data.query.SelectQuery;
@@ -408,7 +409,8 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	public int ejbHomeGetNumberOfApplications(User child, School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String[] statuses) throws IDOException {
 		try {
 			SelectQuery query = getDefaultQuery(child, school, season, year, instrument, statuses);
-			query.setAsCountQuery(true);
+			query.removeColumn(new Column(query.getBaseTable(), this.getIDColumnName()));
+			query.addColumn(new CountColumn(query.getBaseTable(), this.getIDColumnName()));
 			
 			return idoGetNumberOfRecords(query.toString());
 		}
