@@ -95,17 +95,17 @@ public class MusicSchoolReportBean extends IBOSessionBean implements MusicSchool
 				ReportableField allDepartments = new ReportableField(department.getLocalizedKey() + "_all", String.class);
 				allDepartments.setLocalizedName(getLocalizedString(department.getLocalizedKey() + "_all", department.getSchoolYearName() + " all"), currentLocale);
 				reportCollection.addField(allDepartments);
-				map.put(department.getSchoolYearName() + "_all", allDepartments);
+				map.put(department.getLocalizedKey() + "_all", allDepartments);
 				
 				ReportableField singingDepartment = new ReportableField(department.getLocalizedKey() + "_singing", String.class);
 				singingDepartment.setLocalizedName(getLocalizedString(department.getLocalizedKey() + "_singing", department.getSchoolYearName() + " singing"), currentLocale);
 				reportCollection.addField(singingDepartment);
-				map.put(department.getSchoolYearName() + "_singing", singingDepartment);
+				map.put(department.getLocalizedKey() + "_singing", singingDepartment);
 				
 				ReportableField otherDepartments = new ReportableField(department.getLocalizedKey() + "_other", String.class);
 				otherDepartments.setLocalizedName(getLocalizedString(department.getLocalizedKey() + "_other", department.getSchoolYearName() + " other"), currentLocale);
 				reportCollection.addField(otherDepartments);
-				map.put(department.getSchoolYearName() + "_other", otherDepartments);
+				map.put(department.getLocalizedKey() + "_other", otherDepartments);
 				
 			}
 			
