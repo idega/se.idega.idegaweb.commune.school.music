@@ -11,7 +11,12 @@ import java.util.List;
 import javax.ejb.FinderException;
 
 import com.idega.block.school.business.SchoolComparator;
+import com.idega.block.school.business.SchoolContentBusiness;
 import com.idega.block.school.data.School;
+import com.idega.business.IBOLookup;
+import com.idega.business.IBOLookupException;
+import com.idega.business.IBORuntimeException;
+import com.idega.idegaweb.IWUserContext;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Lists;
@@ -49,6 +54,7 @@ public class MusicSchoolViewer extends MusicSchoolBlock {
 					if (linkStyleName != null) {
 						link.setStyleClass(linkStyleName);
 					}
+					link.addParameter(getSchoolContentBusiness(iwc).getParameterSchoolId(), school.getPrimaryKey().toString());
 					list.add(link);
 				}
 				else {
@@ -60,6 +66,15 @@ public class MusicSchoolViewer extends MusicSchoolBlock {
 		}
 		catch (FinderException fe) {
 			add(getErrorText(localize("no_music_schools_found", "No music school were found...")));
+		}
+	}
+	
+	private SchoolContentBusiness getSchoolContentBusiness(IWUserContext iwuc) {
+		try {
+			return (SchoolContentBusiness) IBOLookup.getSessionInstance(iwuc, SchoolContentBusiness.class);
+		}
+		catch (IBOLookupException ile) {
+			throw new IBORuntimeException(ile);
 		}
 	}
 	
