@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 
 import se.idega.idegaweb.commune.school.business.SchoolCommuneBusiness;
@@ -77,6 +78,10 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 	private static final String PARAMETER_CURRENT_YEAR = "prm_current_year";
 	private static final String PARAMETER_CURRENT_INSTRUMENT = "prm_current_instrument";
 	private static final String PARAMETER_PAYMENT_METHOD = "prm_payment_method";
+
+	private static final String PARAMETER_HOME_PHONE = "prm_home_phone";
+	private static final String PARAMETER_MOBILE_PHONE = "prm_mobile_phone";
+	private static final String PARAMETER_EMAIL = "prm_email";
 
 	/* (non-Javadoc)
 	 * @see se.idega.idegaweb.commune.school.music.presentation.MusicSchoolBlock#init(com.idega.presentation.IWContext)
@@ -296,8 +301,8 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(getText(localize("home_phone", "Home phone")), 1, row);
 		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("mobile_phone", "Mobile phone")), 2, row++);
-		TextInput homePhone = getTextInput("home_phone", null, false);
-		TextInput mobilePhone = getTextInput("mobile_phone", null, false);
+		TextInput homePhone = getTextInput(PARAMETER_HOME_PHONE, null, true);
+		TextInput mobilePhone = getTextInput(PARAMETER_MOBILE_PHONE, null, true);
 		if (phone != null) {
 			homePhone.setContent(phone.getNumber());
 		}
@@ -311,7 +316,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("email", "E-mail")), 1, row++);
-		TextInput mail = getTextInput("email", null, false);
+		TextInput mail = getTextInput(PARAMETER_EMAIL, null, true);
 		if (email != null) {
 			mail.setContent(email.getEmailAddress());
 		}
@@ -738,6 +743,9 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		String message = iwc.getParameter(PARAMETER_MESSAGE);
 		String previousStudies = iwc.getParameter(PARAMETER_PREVIOUS_STUDIES);
 		String elementarySchool = iwc.getParameter(PARAMETER_ELEMENTARY_SCHOOL);
+		String homePhone = iwc.getParameter(PARAMETER_HOME_PHONE);
+		String mobilePhone = iwc.getParameter(PARAMETER_MOBILE_PHONE);
+		String email = iwc.getParameter(PARAMETER_EMAIL);
 		
 		String currentYear = null;
 		if (iwc.isParameterSet(PARAMETER_CURRENT_YEAR)) {
@@ -754,6 +762,22 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		
 		try {
 			boolean success = getBusiness().saveChoices(iwc.getCurrentUser(), getSession().getChild(), schools, season, department, lessonType, instruments, teacherRequest, message, currentYear, currentInstrument, previousStudies, elementarySchool, paymentMethod);
+			
+			if (homePhone != null) {
+				getUserBusiness().updateUserHomePhone(getSession().getChild(), homePhone);
+			}
+			if (mobilePhone != null) {
+				getUserBusiness().updateUserMobilePhone(getSession().getChild(), mobilePhone);
+			}
+			if (email != null) {
+				try {
+					getUserBusiness().updateUserMail(getSession().getChild(), email);
+				}
+				catch (CreateException ce) {
+					log(ce);
+				}
+			}
+			
 			if (success) {
 				if (getResponsePage() != null) {
 					iwc.forwardToIBPage(getParentPage(), getResponsePage());
