@@ -92,17 +92,17 @@ public class MusicSchoolReportBean extends IBOSessionBean implements MusicSchool
 			while (iter.hasNext()) {
 				SchoolYear department = (SchoolYear) iter.next();
 				
-				ReportableField allDepartments = new ReportableField(department.getLocalizedKey().replaceAll(".", "_") + "_all", String.class);
+				ReportableField allDepartments = new ReportableField(department.getLocalizedKey().replaceAll(".", "_") + "_all", Integer.class);
 				allDepartments.setLocalizedName(getLocalizedString(department.getLocalizedKey().replaceAll(".", "_") + "_all", department.getSchoolYearName() + " all"), currentLocale);
 				reportCollection.addField(allDepartments);
 				map.put(department.getLocalizedKey().replaceAll(".", "_") + "_all", allDepartments);
 				
-				ReportableField singingDepartment = new ReportableField(department.getLocalizedKey().replaceAll(".", "_") + "_singing", String.class);
+				ReportableField singingDepartment = new ReportableField(department.getLocalizedKey().replaceAll(".", "_") + "_singing", Integer.class);
 				singingDepartment.setLocalizedName(getLocalizedString(department.getLocalizedKey().replaceAll(".", "_") + "_singing", department.getSchoolYearName() + " singing"), currentLocale);
 				reportCollection.addField(singingDepartment);
 				map.put(department.getLocalizedKey().replaceAll(".", "_") + "_singing", singingDepartment);
 				
-				ReportableField otherDepartments = new ReportableField(department.getLocalizedKey().replaceAll(".", "_") + "_other", String.class);
+				ReportableField otherDepartments = new ReportableField(department.getLocalizedKey().replaceAll(".", "_") + "_other", Integer.class);
 				otherDepartments.setLocalizedName(getLocalizedString(department.getLocalizedKey().replaceAll(".", "_") + "_other", department.getSchoolYearName() + " other"), currentLocale);
 				reportCollection.addField(otherDepartments);
 				map.put(department.getLocalizedKey().replaceAll(".", "_") + "_other", otherDepartments);
