@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolAcceptedApplications.java,v 1.9 2005/03/30 14:00:47 laddi Exp $
+ * $Id: MusicSchoolAcceptedApplications.java,v 1.10 2005/03/30 19:38:30 laddi Exp $
  * Created on 18.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -288,7 +288,8 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 				SchoolClassMember member = getSchoolBusiness().getSchoolClassMemberHome().findByPrimaryKey(students[i]);
 				User user = member.getStudent();
 
-				DropdownMenu departmentDrop = getDropdown(PARAMETER_DEPARTMENT, new Integer(member.getSchoolYearId()));
+				DropdownMenu departmentDrop = (DropdownMenu) getStyledInterface(new DropdownMenu(PARAMETER_DEPARTMENT));
+				departmentDrop.setSelectedElement(member.getSchoolYearId());
 				Iterator iter = departments.iterator();
 				while (iter.hasNext()) {
 					SchoolYear year = (SchoolYear) iter.next();
