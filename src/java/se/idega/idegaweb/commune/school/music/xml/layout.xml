@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport name="GeneratedReport" pageWidth="595" pageHeight="842" columnWidth="529" columnSpacing="15" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="30" columnCount="1" printOrder="Vertical" orientation="Portrait" whenNoDataType="AllSectionsNoDetail" isTitleNewPage="false" isSummaryNewPage="false">
+  <parameter name="ReportTitle" class="java.lang.String" isForPrompting="true" />
+  <parameter name="label_school_season" class="java.lang.String" />
+  <parameter name="school_season" class="java.lang.String" />
+  <parameter name="school" class="java.lang.String" />
+  <parameter name="sch_year_base_level_all" class="java.lang.String" />
+  <parameter name="sch_year_base_level_singing" class="java.lang.String" />
+  <parameter name="sch_year_base_level_other" class="java.lang.String" />
+  <parameter name="sch_year_middle_level_all" class="java.lang.String" />
+  <parameter name="sch_year_middle_level_singing" class="java.lang.String" />
+  <parameter name="sch_year_middle_level_other" class="java.lang.String" />
+  <parameter name="sch_year_pre_level_all" class="java.lang.String" />
+  <parameter name="sch_year_pre_level_singing" class="java.lang.String" />
+  <parameter name="sch_year_pre_level_other" class="java.lang.String" />
+  <parameter name="sch_year_advanced_level_all" class="java.lang.String" />
+  <parameter name="sch_year_advanced_level_singing" class="java.lang.String" />
+  <parameter name="sch_year_advanced_level_other" class="java.lang.String" />
+  <parameter name="sch_year_teacher_level_all" class="java.lang.String" />
+  <parameter name="sch_year_teacher_level_singing" class="java.lang.String" />
+  <parameter name="sch_year_teacher_level_other" class="java.lang.String" />
+  <field name="school" class="java.lang.String" />
+  <field name="sch_year_base_level_all" class="java.lang.Integer" />
+  <field name="sch_year_base_level_singing" class="java.lang.Integer" />
+  <field name="sch_year_base_level_other" class="java.lang.Integer" />
+  <field name="sch_year_middle_level_all" class="java.lang.Integer" />
+  <field name="sch_year_middle_level_singing" class="java.lang.Integer" />
+  <field name="sch_year_middle_level_other" class="java.lang.Integer" />
+  <field name="sch_year_pre_level_all" class="java.lang.Integer" />
+  <field name="sch_year_pre_level_singing" class="java.lang.Integer" />
+  <field name="sch_year_pre_level_other" class="java.lang.Integer" />
+  <field name="sch_year_advanced_level_all" class="java.lang.Integer" />
+  <field name="sch_year_advanced_level_singing" class="java.lang.Integer" />
+  <field name="sch_year_advanced_level_other" class="java.lang.Integer" />
+  <field name="sch_year_teacher_level_all" class="java.lang.Integer" />
+  <field name="sch_year_teacher_level_singing" class="java.lang.Integer" />
+  <field name="sch_year_teacher_level_other" class="java.lang.Integer" />
+  <title>
+    <band height="40">
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="0" y="0" width="500" height="40" positionType="FixRelativeToTop" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+          <font size="16" isBold="true" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{ReportTitle}]]></textFieldExpression>
+      </textField>
+    </band>
+  </title>
+  <pageHeader>
+    <band height="36">
+      <textField isBlankWhenNull="false" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="0" y="0" width="46" height="16" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isUnderline="false" isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{label_school_season}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="false" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="46" y="0" width="51" height="16" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isUnderline="false" isBold="false" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{school_season}]]></textFieldExpression>
+      </textField>
+    </band>
+  </pageHeader>
+  <columnHeader>
+    <band height="20">
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="0" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{school}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="19" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_base_level_all}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="38" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_base_level_singing}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="57" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_base_level_other}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="76" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_middle_level_all}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="95" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_middle_level_singing}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="114" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_middle_level_other}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="133" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_pre_level_all}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="152" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_pre_level_singing}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="171" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_pre_level_other}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="190" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_advanced_level_all}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="209" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_advanced_level_singing}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="228" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_advanced_level_other}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="247" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_teacher_level_all}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="266" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_teacher_level_singing}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="285" y="0" width="19" height="20" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font isBold="true" size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{sch_year_teacher_level_other}]]></textFieldExpression>
+      </textField>
+    </band>
+  </columnHeader>
+  <detail>
+    <band height="12">
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="0" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$F{school}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="19" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_base_level_all}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="38" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_base_level_singing}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="57" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_base_level_other}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="76" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_middle_level_all}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="95" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_middle_level_singing}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="114" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_middle_level_other}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="133" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_pre_level_all}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="152" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_pre_level_singing}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="171" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_pre_level_other}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="190" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_advanced_level_all}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="209" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_advanced_level_singing}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="228" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_advanced_level_other}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="247" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_teacher_level_all}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="266" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_teacher_level_singing}]]></textFieldExpression>
+      </textField>
+      <textField isBlankWhenNull="true" isStretchWithOverflow="true" evaluationTime="Now" hyperlinkType="None">
+        <reportElement x="285" y="0" width="19" height="12" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
+          <font size="10" />
+        </textElement>
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$F{sch_year_teacher_level_other}]]></textFieldExpression>
+      </textField>
+    </band>
+  </detail>
+  <columnFooter>
+    <band height="0" />
+  </columnFooter>
+  <pageFooter>
+    <band height="60">
+      <staticText>
+        <reportElement x="0" y="0" width="40" height="15" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <text><![CDATA[Page:]]></text>
+      </staticText>
+      <textField isStretchWithOverflow="false" evaluationTime="Now" isBlankWhenNull="false" hyperlinkType="None">
+        <reportElement x="40" y="0" width="100" height="15" positionType="Float" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+        <textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single" />
+        <textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+      </textField>
+    </band>
+  </pageFooter>
+  <summary>
+    <band height="0" />
+  </summary>
+</jasperReport>
+
