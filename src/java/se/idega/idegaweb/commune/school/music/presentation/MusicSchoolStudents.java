@@ -98,7 +98,7 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 
 		headerTable.setCellpaddingLeft(1, 1, 12);
 		headerTable.add(getNavigationTable(), 1, 1);
-		headerTable.setCellpaddingLeft(1, 1, 12);
+		headerTable.setCellpaddingLeft(1, 3, 12);
 		headerTable.add(getSortTable(), 1, 3);
 		headerTable.setVerticalAlignment(1, 3, Table.VERTICAL_ALIGN_BOTTOM);
 
@@ -140,7 +140,7 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 
 		List students = null;
 		if (!_group.getIsSubGroup()) {
-			students = new ArrayList(getSchoolBusiness().findStudentsInClassAndYear(((Integer) getSession().getGroupPK()).intValue(), ((Integer) getSession().getDepartmentPK()).intValue()));
+			students = new ArrayList(getSchoolBusiness().findStudentsInClassAndYear(new Integer(getSession().getGroupPK().toString()).intValue(), new Integer(getSession().getDepartmentPK().toString()).intValue()));
 		}
 		else {
 			students = new ArrayList(getSchoolBusiness().findSubGroupPlacements(_group));
@@ -246,6 +246,7 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		table.add(getSmallHeader(localize("school.sort_by", "Sort by") + ":" + Text.NON_BREAKING_SPACE), 1, 3);
 
 		DropdownMenu menu = (DropdownMenu) getStyledInterface(new DropdownMenu(PARAMETER_SORT));
+		menu.addMenuElement(SchoolChoiceComparator.NAME_SORT, localize("school.sort_by", "- Sort by -"));
 		menu.addMenuElement(SchoolChoiceComparator.NAME_SORT, localize("school.sort_name", "Name"));
 		menu.addMenuElement(SchoolChoiceComparator.PERSONAL_ID_SORT, localize("school.sort_personal_id", "Personal ID"));
 		menu.addMenuElement(SchoolChoiceComparator.ADDRESS_SORT, localize("school.sort_address", "Address"));
