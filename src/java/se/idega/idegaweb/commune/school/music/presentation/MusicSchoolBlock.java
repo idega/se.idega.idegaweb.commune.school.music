@@ -95,7 +95,9 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 	
 	public Collection getDepartments() throws NoDepartmentFoundException {
 		try {
-			return getBusiness().findAllDepartments();
+			List coll = new ArrayList(getBusiness().findAllDepartments());
+			Collections.sort(coll, new SchoolYearComparator());
+			return coll;
 		}
 		catch (FinderException fe) {
 			throw new NoDepartmentFoundException(fe);
@@ -107,7 +109,9 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 	
 	public Collection getSelectableDepartments() throws NoDepartmentFoundException {
 		try {
-			return getBusiness().findAllSelectableDepartments();
+			List coll = new ArrayList(getBusiness().findAllSelectableDepartments());
+			Collections.sort(coll, new SchoolYearComparator());
+			return coll;
 		}
 		catch (FinderException fe) {
 			throw new NoDepartmentFoundException(fe);
@@ -164,7 +168,6 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 			departments.addMenuElementFirst("", localize("department", "- Department -"));
 			try {
 				List coll = new ArrayList(getBusiness().findDepartmentsInSchool(getSession().getProvider()));
-				Collections.sort(coll, new SchoolYearComparator());
 				Iterator iter = coll.iterator();
 				while (iter.hasNext()) {
 					SchoolYear department = (SchoolYear) iter.next();
