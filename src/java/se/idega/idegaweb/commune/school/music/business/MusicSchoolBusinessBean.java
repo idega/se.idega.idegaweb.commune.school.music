@@ -379,6 +379,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 			try {
 				MusicSchoolChoice choice = findMusicSchoolChoice(choiceIDs[i]);
 				changeCaseStatus(choice, getCaseStatusPlaced().getStatus(), performer);
+				sendMessageToParents(choice, "music_choice.placed_application", "The child {0}, {2}, has been offered a placement at school {1}.");
 				
 				try {
 					SchoolClassMember student = getSchoolBusiness().getSchoolClassMemberHome().create();
