@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolStudentEditor.java,v 1.4 2005/03/31 07:22:28 laddi Exp $
+ * $Id: MusicSchoolStudentEditor.java,v 1.5 2005/03/31 09:42:14 laddi Exp $
  * Created on 20.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -148,6 +148,7 @@ public class MusicSchoolStudentEditor extends MusicSchoolBlock {
 		}
 		
 		DropdownMenu departmentDrop = getDropdown(PARAMETER_DEPARTMENT, new Integer(student.getSchoolYearId()));
+		departmentDrop.addMenuElementFirst("", localize("select_department", "Select department"));
 		Iterator iter = departments.iterator();
 		while (iter.hasNext()) {
 			SchoolYear year = (SchoolYear) iter.next();
@@ -157,6 +158,7 @@ public class MusicSchoolStudentEditor extends MusicSchoolBlock {
 		}
 
 		DropdownMenu lessonTypeDrop = getDropdown(PARAMETER_LESSON_TYPE, new Integer(student.getSchoolTypeId()));
+		lessonTypeDrop.addMenuElementFirst("", localize("select_lesson_type", "Select lesson type"));
 		iter = lessonTypes.iterator();
 		while (iter.hasNext()) {
 			SchoolType type = (SchoolType) iter.next();
