@@ -1,8 +1,8 @@
 /*
- * $Id: MusicSchoolChoice.java,v 1.4 2004/09/26 10:14:17 laddi Exp $
- * Created on 26.9.2004
+ * $Id: MusicSchoolChoice.java,v 1.5 2005/03/19 16:37:29 laddi Exp $
+ * Created on 19.3.2005
  *
- * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
+ * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
  * This software is the proprietary information of Idega hf.
  * Use is subject to license terms.
@@ -12,7 +12,6 @@ package se.idega.idegaweb.commune.school.music.data;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Collection;
-
 import com.idega.block.process.data.Case;
 import com.idega.block.school.data.School;
 import com.idega.block.school.data.SchoolSeason;
@@ -26,11 +25,13 @@ import com.idega.user.data.User;
 
 
 /**
- * 
- *  Last modified: $Date: 2004/09/26 10:14:17 $ by $Author: laddi $
+ * <p>
+ * TODO laddi Describe Type MusicSchoolChoice
+ * </p>
+ *  Last modified: $Date: 2005/03/19 16:37:29 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface MusicSchoolChoice extends Case {
 
@@ -95,6 +96,11 @@ public interface MusicSchoolChoice extends Case {
 	public Object getSchoolYearPK();
 
 	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getOtherInstrument
+	 */
+	public String getOtherInstrument();
+
+	/**
 	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getPlacementDate
 	 */
 	public Date getPlacementDate();
@@ -155,6 +161,11 @@ public interface MusicSchoolChoice extends Case {
 	public int getPaymentMethod();
 
 	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#isExtraApplication
+	 */
+	public boolean isExtraApplication();
+
+	/**
 	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getStudyPaths
 	 */
 	public Collection getStudyPaths() throws IDORelationshipException;
@@ -208,6 +219,11 @@ public interface MusicSchoolChoice extends Case {
 	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setSchoolYear
 	 */
 	public void setSchoolYear(Object schoolYearID);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setOtherInstrument
+	 */
+	public void setOtherInstrument(String otherInstrument);
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setPlacementDate
@@ -270,6 +286,11 @@ public interface MusicSchoolChoice extends Case {
 	public void setPaymentMethod(int paymentMethod);
 
 	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setAsExtraApplication
+	 */
+	public void setAsExtraApplication(boolean extraApplication);
+
+	/**
 	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#addStudyPaths
 	 */
 	public void addStudyPaths(Object[] studyPathIDs) throws IDOAddRelationshipException;
@@ -293,5 +314,4 @@ public interface MusicSchoolChoice extends Case {
 	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#removeStudyPath
 	 */
 	public void removeStudyPath(SchoolStudyPath studyPath) throws IDORemoveRelationshipException;
-
 }

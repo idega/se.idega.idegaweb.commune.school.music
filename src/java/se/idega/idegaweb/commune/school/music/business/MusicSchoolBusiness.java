@@ -1,8 +1,8 @@
 /*
- * $Id: MusicSchoolBusiness.java,v 1.12 2004/10/21 10:57:27 thomas Exp $
- * Created on Oct 21, 2004
+ * $Id: MusicSchoolBusiness.java,v 1.13 2005/03/19 16:37:28 laddi Exp $
+ * Created on 19.3.2005
  *
- * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
+ * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
  * This software is the proprietary information of Idega hf.
  * Use is subject to license terms.
@@ -30,11 +30,13 @@ import com.idega.user.data.User;
 
 
 /**
+ * <p>
+ * TODO laddi Describe Type MusicSchoolBusiness
+ * </p>
+ *  Last modified: $Date: 2005/03/19 16:37:28 $ by $Author: laddi $
  * 
- *  Last modified: $Date: 2004/10/21 10:57:27 $ by $Author: thomas $
- * 
- * @author <a href="mailto:thomas@idega.com">thomas</a>
- * @version $Revision: 1.12 $
+ * @author <a href="mailto:laddi@idega.com">laddi</a>
+ * @version $Revision: 1.13 $
  */
 public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 
@@ -56,13 +58,18 @@ public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#findChoicesByChildAndSeason
 	 */
-	public Collection findChoicesByChildAndSeason(User child, SchoolSeason season) throws FinderException,
-			java.rmi.RemoteException;
+	public Collection findChoicesByChildAndSeason(User child, SchoolSeason season, boolean showExtraApplications)
+			throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#findAllMusicSchools
 	 */
 	public Collection findAllMusicSchools() throws FinderException, java.rmi.RemoteException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#findMusicSchool
+	 */
+	public School findMusicSchool(Object schoolPK) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#findAllInstruments
@@ -125,10 +132,22 @@ public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#saveChoices
 	 */
-	public boolean saveChoices(User user, User child, Object[] schools, Object seasonPK, Object departmentPK,
-			Object lessonTypePK, Object[] instruments, String teacherRequest, String message, Object currentYear,
-			Object currentInstrument, String previousStudy, String elementarySchool, int paymentMethod)
-			throws IDOCreateException, java.rmi.RemoteException;
+	public boolean saveChoices(User user, User child, Collection schools, Object seasonPK, Object departmentPK,
+			Object lessonTypePK, Collection instruments, String otherInstrument, String teacherRequest, String message,
+			Object currentYear, Object currentInstrument, String previousStudy, String elementarySchool, int paymentMethod,
+			boolean extraApplications) throws IDOCreateException, java.rmi.RemoteException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#updateChoice
+	 */
+	public MusicSchoolChoice updateChoice(Object choicePK, Object departmentPK, Object lessonTypePK,
+			Collection instrumentsPKs, String teacherRequest, String message, String otherInstrument, String previousStudy,
+			String elementarySchool) throws FinderException, java.rmi.RemoteException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#getDefaultGroup
+	 */
+	public SchoolClass getDefaultGroup(School school, SchoolSeason season) throws java.rmi.RemoteException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#addStudentsToGroup
@@ -142,9 +161,19 @@ public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 	public boolean removeChoiceFromGroup(Object studentPK, User performer) throws java.rmi.RemoteException;
 
 	/**
+	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#rejectApplications
+	 */
+	public void rejectApplications(Object[] applicationPKs, User performer) throws java.rmi.RemoteException;
+
+	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#rejectApplication
 	 */
 	public boolean rejectApplication(Object applicationPK, User performer) throws java.rmi.RemoteException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#reactivateApplications
+	 */
+	public void reactivateApplications(Object[] applicationPKs, User performer) throws java.rmi.RemoteException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#reactivateApplication
@@ -161,6 +190,11 @@ public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#hasGrantedApplication
 	 */
 	public boolean hasGrantedApplication(User student, SchoolSeason season) throws java.rmi.RemoteException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#hasNextSeason
+	 */
+	public boolean hasNextSeason(SchoolSeason season) throws java.rmi.RemoteException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#getMusicSchoolStatistics
@@ -189,6 +223,12 @@ public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 	 */
 	public void saveLessonType(Object lessonTypePK, String name, String description, String localizedKey, int order,
 			boolean isSelectable) throws CreateException, java.rmi.RemoteException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#transferToNextSchoolSeason
+	 */
+	public void transferToNextSchoolSeason(Object[] studentPKs, School school, SchoolSeason currentSeason, User performer)
+			throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#getBundleIdentifier

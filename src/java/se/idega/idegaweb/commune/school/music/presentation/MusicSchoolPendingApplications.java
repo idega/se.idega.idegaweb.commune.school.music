@@ -21,7 +21,9 @@ import com.idega.presentation.IWContext;
 import com.idega.presentation.Table;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
+import com.idega.presentation.ui.CheckBox;
 import com.idega.presentation.ui.Form;
+import com.idega.presentation.ui.SubmitButton;
 import com.idega.user.data.User;
 import com.idega.util.PersonalIDFormatter;
 
@@ -32,6 +34,7 @@ import com.idega.util.PersonalIDFormatter;
 public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 
 	private static final String PARAMETER_REACTIVATE ="prm_reactivate";
+	private static final String PARAMETER_APPLICATION ="prm_application";
 	
 	/* (non-Javadoc)
 	 * @see se.idega.idegaweb.commune.school.music.presentation.MusicSchoolBlock#init(com.idega.presentation.IWContext)
@@ -42,7 +45,6 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 			
 			Form form = new Form();
 			form.setEventListener(MusicSchoolEventListener.class);
-			form.setMethod("get");
 			
 			Table table = new Table();
 			table.setWidth(Table.HUNDRED_PERCENT);
@@ -55,7 +57,15 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 			table.add(getNavigationTable(), 1, row++);
 			table.setHeight(row++, 12);
 			table.add(getChoicesTable(iwc), 1, row);
-	
+			table.setHeight(row++, 12);
+
+			SubmitButton reactivate = (SubmitButton) getButton(new SubmitButton(localize("reactivate", "Reactivate"), PARAMETER_REACTIVATE, "true"));
+			
+			table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
+			table.add(reactivate, 1, row);
+			table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
+			table.add(getHelpButton("Help_music_school_reactivate"), 1, row);
+			table.setCellpaddingRight(1, row, 12);
 			add(form);
 		}
 		else {
@@ -91,7 +101,7 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 				Collection instruments;
 				SchoolYear department;
 				Link userLink;
-				Link reactivate;
+				CheckBox box;
 				
 				Iterator iter = choices.iterator();
 				while (iter.hasNext()) {
@@ -113,8 +123,9 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 						instruments = null;
 					}
 					department = choice.getSchoolYear();
-					reactivate = new Link(getEditIcon(localize("reactivate", "Reactivate application")));
-					reactivate.addParameter(PARAMETER_REACTIVATE, choice.getPrimaryKey().toString());
+					box = getCheckBox(PARAMETER_APPLICATION, choice.getPrimaryKey().toString());
+					choicesTable.setWidth(iColumn, iRow, 12);
+					choicesTable.add(box, iColumn, iRow);
 					
 					userLink = getSmallLink(user.getName());
 					userLink.setEventListener(MusicSchoolEventListener.class);
@@ -156,7 +167,7 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 						}
 					}
 					choicesTable.add(instrumentText, iColumn++, iRow);
-					choicesTable.add(reactivate, iColumn, iRow);
+					choicesTable.add(box, iColumn, iRow);
 					
 					choicesTable.setCellpaddingLeft(1, iRow, 12);
 					if (iRow % 2 == 0) {
@@ -179,7 +190,8 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 	private void parseAction(IWContext iwc) {
 		if (iwc.isParameterSet(PARAMETER_REACTIVATE)) {
 			try {
-				getBusiness().reactivateApplication(iwc.getParameter(PARAMETER_REACTIVATE), iwc.getCurrentUser());
+				String[] applications = iwc.getParameterValues(PARAMETER_APPLICATION);
+				getBusiness().reactivateApplications(applications, iwc.getCurrentUser());
 			}
 			catch (RemoteException re) {
 				log(re);

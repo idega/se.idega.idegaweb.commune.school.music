@@ -4,17 +4,21 @@
 package se.idega.idegaweb.commune.school.music.presentation;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
-
+import java.util.List;
 import javax.ejb.FinderException;
-
+import se.idega.idegaweb.commune.school.music.business.InstrumentComparator;
+import se.idega.idegaweb.commune.school.music.business.NoDepartmentFoundException;
+import se.idega.idegaweb.commune.school.music.business.NoInstrumentFoundException;
+import se.idega.idegaweb.commune.school.music.business.NoLessonTypeFoundException;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
-
-import com.idega.block.school.data.SchoolClassMember;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
+import com.idega.block.school.data.SchoolType;
 import com.idega.block.school.data.SchoolYear;
 import com.idega.business.IBORuntimeException;
 import com.idega.core.location.data.Address;
@@ -25,11 +29,15 @@ import com.idega.presentation.Table;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
 import com.idega.presentation.ui.CheckBox;
+import com.idega.presentation.ui.DropdownMenu;
 import com.idega.presentation.ui.Form;
 import com.idega.presentation.ui.SubmitButton;
+import com.idega.presentation.ui.TextArea;
+import com.idega.presentation.ui.TextInput;
+import com.idega.presentation.ui.util.SelectorUtility;
 import com.idega.user.data.User;
+import com.idega.util.Age;
 import com.idega.util.IWTimestamp;
-import com.idega.util.PersonalIDFormatter;
 
 
 /**
@@ -37,44 +45,51 @@ import com.idega.util.PersonalIDFormatter;
  */
 public class MusicSchoolApprover extends MusicSchoolBlock {
 
-	private static final String PARAMETER_ACTION ="prm_action";
-	private static final String PARAMETER_REMOVE ="prm_remove";
-	private static final String PARAMETER_ADD ="prm_add";
-	
-	private static final int ACTION_FORM = 1;
-	private static final int ACTION_SAVE = 2;
+	private static final String PARAMETER_EDIT = "prm_edit";
+	private static final String PARAMETER_ACTION = "prm_action";
+	private static final String PARAMETER_APPLICATION = "prm_application";
+	private static final String PARAMETER_DEPARTMENT = "prm_department";
+	private static final String PARAMETER_INSTRUMENTS = "prm_instruments";
+	private static final String PARAMETER_LESSON_TYPE = "prm_lesson_type";
+
+	private static final String PARAMETER_TEACHER_REQUEST = "prm_teacher_request";
+	private static final String PARAMETER_OTHER_INSTRUMENT = "prm_other_instrument";
+	private static final String PARAMETER_MESSAGE = "prm_message";
+	private static final String PARAMETER_PREVIOUS_STUDIES = "prm_previoues_studies";
+	private static final String PARAMETER_ELEMENTARY_SCHOOL = "prm_elementary_school";
+
+	private static final int ACTION_ACCEPT = 1;
+	private static final int ACTION_REJECT = 2;
+	private static final int ACTION_SAVE = 3;
 	
 	/* (non-Javadoc)
 	 * @see se.idega.idegaweb.commune.school.music.presentation.MusicSchoolBlock#init(com.idega.presentation.IWContext)
 	 */
 	public void init(IWContext iwc) throws Exception {
 		if (getSession().getProvider() != null) {
-			Form form = new Form();
-			form.setEventListener(MusicSchoolEventListener.class);
-			form.setMethod("get");
-			
-			Table table = new Table();
-			table.setWidth(Table.HUNDRED_PERCENT);
-			table.setCellpadding(0);
-			table.setCellspacing(0);
-			form.add(table);
-			int row = 1;
-			
-			table.setCellpaddingLeft(1, row, 12);
-			table.add(getNavigationTable(), 1, row++);
-			table.setHeight(row++, 12);
-			
-			switch (parseAction(iwc)) {
-				case ACTION_FORM:
-					getChoicesTable(iwc, table, row);
-					break;
-	
-				case ACTION_SAVE:
-					getGroupsTable(iwc, table, row);
-					break;
+			if (!iwc.isParameterSet(PARAMETER_EDIT)) {
+				Form form = new Form();
+				form.setEventListener(MusicSchoolEventListener.class);
+				
+				Table table = new Table();
+				table.setWidth(Table.HUNDRED_PERCENT);
+				table.setCellpadding(0);
+				table.setCellspacing(0);
+				form.add(table);
+				int row = 1;
+				
+				table.setCellpaddingLeft(1, row, 12);
+				table.add(getNavigationTable(), 1, row++);
+				table.setHeight(row++, 12);
+				
+				parseAction(iwc);
+				getChoicesTable(iwc, table, row);
+		
+				add(form);
 			}
-	
-			add(form);
+			else {
+				add(getEditForm(iwc));
+			}
 		}
 		else {
 			add(getErrorText(localize("no_school_found", "No school found for user")));
@@ -83,12 +98,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 	
 	private void getChoicesTable(IWContext iwc, Table table, int row) throws RemoteException {
 		Table choicesTable = new Table();
-		if (getSession().getGroupPK() != null) {
-			choicesTable.setColumns(9);
-		}
-		else {
-			choicesTable.setColumns(8);
-		}
+		choicesTable.setColumns(9);
 		choicesTable.setWidth(Table.HUNDRED_PERCENT);
 		choicesTable.setCellpadding(0);
 		choicesTable.setCellspacing(0);
@@ -97,13 +107,13 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		int iRow = 1;
 		
 		choicesTable.add(getSmallHeader(localize("number", "Nr.")), iColumn++, iRow);
-		choicesTable.add(getSmallHeader(localize("name", "Name")), iColumn++, iRow);
-		choicesTable.add(getSmallHeader(localize("personal_id", "Personal ID")), iColumn++, iRow);
-		choicesTable.add(getSmallHeader(localize("address", "Address")), iColumn++, iRow);
-		choicesTable.add(getSmallHeader(localize("postal_code", "Postal code")), iColumn++, iRow);
 		choicesTable.add(getSmallHeader(localize("choice_date", "Choice date")), iColumn++, iRow);
-		choicesTable.add(getSmallHeader(localize("department", "Department")), iColumn++, iRow);
+		choicesTable.add(getSmallHeader(localize("name", "Name")), iColumn++, iRow);
+		choicesTable.add(getSmallHeader(localize("date_of_birth", "Date of birth")), iColumn++, iRow);
+		choicesTable.add(getSmallHeader(localize("age", "Age")), iColumn++, iRow);
+		choicesTable.add(getSmallHeader(localize("postal_code", "Postal code")), iColumn++, iRow);
 		choicesTable.add(getSmallHeader(localize("instruments.plural_or_singular", "Instrument/s")), iColumn++, iRow);
+		choicesTable.add(getSmallHeader(localize("department", "Department")), iColumn++, iRow);
 		choicesTable.setCellpaddingLeft(1, iRow, 12);
 		choicesTable.setRowStyleClass(iRow++, getHeaderRow2Class());
 		
@@ -133,6 +143,20 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					
 					choice = (MusicSchoolChoice) iter.next();
 					user = choice.getChild();
+					IWTimestamp dateOfBirth = new IWTimestamp(user.getDateOfBirth());
+					Age age = new Age(user.getDateOfBirth());
+					isPlaced = choice.getCaseStatus().equals(getBusiness().getCaseStatusPlaced());
+					if (isPlaced && getSession().getInstrument() != null) {
+						hasInstrumentPlacement = getBusiness().isPlacedInSchool(user, getSession().getProvider(), getSession().getSeason(), getSession().getInstrument());
+					}
+					else {
+						hasInstrumentPlacement = false;
+					}
+					
+					if (hasInstrumentPlacement || (getSession().getInstrument() == null && isPlaced)) {
+						continue;
+					}
+
 					address = getUserBusiness().getUsersMainAddress(user);
 					if (address != null) {
 						code = address.getPostalCode();
@@ -154,13 +178,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 						instruments = null;
 					}
 					department = choice.getSchoolYear();
-					isPlaced = choice.getCaseStatus().equals(getBusiness().getCaseStatusPlaced());
-					if (isPlaced && getSession().getInstrument() != null) {
-						hasInstrumentPlacement = getBusiness().isPlacedInSchool(user, getSession().getProvider(), getSession().getSeason(), getSession().getInstrument());
-					}
-					else {
-						hasInstrumentPlacement = false;
-					}
+					
 					if (previousSeason != null) {
 						olderStudent = getBusiness().isPlacedInSchool(user, getSession().getProvider(), previousSeason, null);
 					}
@@ -177,27 +195,10 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					userLink.setEventListener(MusicSchoolEventListener.class);
 					userLink.addParameter(getSession().getParameterNameChildID(), user.getPrimaryKey().toString());
 					userLink.addParameter(getSession().getParameterNameApplicationID(), choice.getPrimaryKey().toString());
-					if (getResponsePage() != null) {
-						userLink.setPage(getResponsePage());
-					}
+					userLink.addParameter(PARAMETER_EDIT, "true");
 					
 					choicesTable.add(getSmallText(String.valueOf(applicationCount)), iColumn++, iRow);
-					choicesTable.add(userLink, iColumn++, iRow);
-					choicesTable.add(getSmallText(PersonalIDFormatter.format(user.getPersonalID(), iwc.getCurrentLocale())), iColumn++, iRow);
-					if (address != null) {
-						choicesTable.add(getSmallText(address.getStreetAddress()), iColumn++, iRow);
-						if (code != null) {
-							choicesTable.add(getSmallText(code.getPostalAddress()), iColumn++, iRow);
-						}
-						else {
-							choicesTable.add(getSmallText("-"), iColumn++, iRow);
-						}
-					}
-					else {
-						choicesTable.add(getSmallText("-"), iColumn++, iRow);
-						choicesTable.add(getSmallText("-"), iColumn++, iRow);
-					}
-					
+
 					if (choiceDate != null) {
 						choicesTable.add(getSmallText(choiceDate.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), iColumn++, iRow);
 					}
@@ -205,7 +206,21 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 						choicesTable.add(getSmallText("-"), iColumn++, iRow);
 					}
 					
-					choicesTable.add(getSmallText(localize(department.getLocalizedKey(), department.getSchoolYearName())), iColumn++, iRow);
+					choicesTable.add(userLink, iColumn++, iRow);
+					choicesTable.add(getSmallText(dateOfBirth.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), iColumn++, iRow);
+					choicesTable.add(getSmallText(String.valueOf(age.getYears())), iColumn++, iRow);
+					if (address != null) {
+						if (code != null) {
+							choicesTable.add(getSmallText(code.getPostalCode()), iColumn++, iRow);
+						}
+						else {
+							choicesTable.add(getSmallText("-"), iColumn++, iRow);
+						}
+					}
+					else {
+						choicesTable.add(getSmallText("-"), iColumn++, iRow);
+					}
+					
 					Iterator iterator = instruments.iterator();
 					Text instrumentText = null;
 					while (iterator.hasNext()) {
@@ -222,13 +237,11 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 						}
 					}
 					choicesTable.add(instrumentText, iColumn++, iRow);
+					choicesTable.add(getSmallText(localize(department.getLocalizedKey(), department.getSchoolYearName())), iColumn++, iRow);
 					
-					if (getSession().getGroupPK() != null) {
-						box = getCheckBox(PARAMETER_ADD, choice.getPrimaryKey().toString());
-						box.setDisabled(hasInstrumentPlacement);
-						choicesTable.setWidth(iColumn, iRow, 12);
-						choicesTable.add(box, iColumn, iRow);
-					}
+					box = getCheckBox(PARAMETER_APPLICATION, choice.getPrimaryKey().toString());
+					choicesTable.setWidth(iColumn, iRow, 12);
+					choicesTable.add(box, iColumn, iRow);
 					
 					choicesTable.setCellpaddingLeft(1, iRow, 12);
 					if (iRow % 2 == 0) {
@@ -236,13 +249,6 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					}
 					else {
 						choicesTable.setRowStyleClass(iRow, getDarkRowClass());
-					}
-					
-					if (hasInstrumentPlacement) {
-						choicesTable.setRowColor(iRow, PLACED_FOR_INSTRUMENT_COLOR);
-					}
-					else if (isPlaced) {
-						choicesTable.setRowColor(iRow, PLACED_COLOR);
 					}
 					
 					iRow++;
@@ -257,20 +263,17 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 				}
 				
 				table.setHeight(row++, 12);
-				table.setCellpaddingLeft(1, row, 12);
-				table.add(getLegendTable(), 1, row++);
 				
-				if (getSession().getGroup() != null) {
-					table.setHeight(row++, 12);
-					
-					SubmitButton showGroup = (SubmitButton) getButton(new SubmitButton(localize("show_group", "Show group"), PARAMETER_ACTION, String.valueOf(ACTION_SAVE)));
-					SubmitButton submit = (SubmitButton) getButton(new SubmitButton(localize("save", "Save"), PARAMETER_ACTION, String.valueOf(ACTION_SAVE)));
-					
-					table.add(showGroup, 1, row);
-					table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
-					table.add(submit, 1, row);
-					table.setCellpaddingLeft(1, row, 12);
-				}
+				SubmitButton reject = (SubmitButton) getButton(new SubmitButton(localize("reject", "Reject"), PARAMETER_ACTION, String.valueOf(ACTION_REJECT)));
+				SubmitButton accept = (SubmitButton) getButton(new SubmitButton(localize("save", "Save"), PARAMETER_ACTION, String.valueOf(ACTION_ACCEPT)));
+				
+				table.add(accept, 1, row);
+				table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
+				table.add(reject, 1, row);
+				table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
+				table.add(getHelpButton("help_music_school_approve_applications"), 1, row);
+				table.setCellpaddingRight(1, row, 12);
+				table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
 			}
 			catch (FinderException fe) {
 				table.setHeight(row++, 6);
@@ -280,115 +283,307 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		}
 	}
 	
-	private void getGroupsTable(IWContext iwc, Table table, int row) throws RemoteException {
-		if (getSession().getGroup() != null && getSession().getDepartment() != null && getSession().getInstrument() != null) {
-			Table groupTable = new Table();
-			groupTable.setColumns(5);
-			groupTable.setWidth(Table.HUNDRED_PERCENT);
-			groupTable.setCellpadding(0);
-			groupTable.setCellspacing(0);
-			table.add(groupTable, 1, row++);
-			int iColumn = 1;
-			int iRow = 1;
-			
-			groupTable.add(getSmallHeader(localize("name", "Name")), iColumn++, iRow);
-			groupTable.add(getSmallHeader(localize("personal_id", "Personal ID")), iColumn++, iRow);
-			groupTable.add(getSmallHeader(localize("address", "Address")), iColumn++, iRow);
-			groupTable.add(getSmallHeader(localize("postal_code", "Postal code")), iColumn++, iRow);
-			groupTable.setCellpaddingLeft(1, iRow, 12);
-			groupTable.setRowStyleClass(iRow++, getHeaderRow2Class());
-			
-			try {
-				Collection students = getSchoolBusiness().getSchoolClassMemberHome().findBySchoolClassAndYearAndStudyPath(getSession().getGroup(), getSession().getDepartment(), getSession().getInstrument());
-				SchoolClassMember student;
-				User user;
-				Address address;
-				PostalCode code;
-				Link remove;
-				
-				Iterator iter = students.iterator();
-				while (iter.hasNext()) {
-					iColumn = 1;
-					student = (SchoolClassMember) iter.next();
-					user = student.getStudent();
-					address = getUserBusiness().getUsersMainAddress(user);
-					if (address != null) {
-						code = address.getPostalCode();
-					}
-					else {
-						code = null;
-					}
-					remove = new Link(getDeleteIcon(localize("remove_from_group", "Remove student from group")));
-					remove.addParameter(PARAMETER_REMOVE, student.getPrimaryKey().toString());
-					remove.addParameter(PARAMETER_ACTION, String.valueOf(ACTION_SAVE));
+	private Form getEditForm(IWContext iwc) throws FinderException, RemoteException {
+		Object choicePK = iwc.getParameter(PARAMETER_APPLICATION);
+		MusicSchoolChoice choice = null;
+		try {
+			choice = getBusiness().findMusicSchoolChoice(choicePK);
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+		User user = choice.getChild();
+		Age age = new Age(user.getDateOfBirth());
+		
+		Form form = new Form();
+		form.addParameter(PARAMETER_APPLICATION, choice.getPrimaryKey().toString());
+		
+		Table table = new Table();
+		table.setCellpadding(0);
+		table.setCellspacing(0);
+		table.setWidth(Table.HUNDRED_PERCENT);
+		form.add(table);
+		int row = 1;
+		
+		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
+		table.add(getHeader(localize("application.applicant", "Applicant")), 1, row++);
+		table.add(getPersonInfoTable(iwc, choice.getChild()), 1, row++);
+		
+		table.setHeight(row++, 18);
+		
+		Table editTable = new Table(5, 4);
+		editTable.setCellpadding(0);
+		editTable.setCellspacing(0);
+		editTable.setWidth(3, 12);
+		editTable.setWidth(Table.HUNDRED_PERCENT);
+		table.add(editTable, 1, row++);
+		int editRow = 1;
+		
+		List instruments = null;
+		try {
+			instruments = new ArrayList(getInstruments());
+		}
+		catch (NoInstrumentFoundException nife) {
+			throw new FinderException("No instruments found...");
+		}
+		Collections.sort(instruments, new InstrumentComparator(getResourceBundle()));
+		
+		Collection departments = null;
+		try {
+			departments = getDepartments();
+		}
+		catch (NoDepartmentFoundException ndfe) {
+			throw new FinderException("No departments found...");
+		}
+		
+		Collection lessonTypes = null;
+		try {
+			lessonTypes = getLessonTypes();
+		}
+		catch (NoLessonTypeFoundException ndfe) {
+			throw new FinderException("No lesson types found...");
+		}
+		
+		Collection chosenInstruments = null;
+		try {
+			chosenInstruments = new ArrayList(choice.getStudyPaths());
+		}
+		catch (IDORelationshipException ire) {
+			log(ire);
+		}
 
-					groupTable.add(getSmallText(user.getName()), iColumn++, iRow);
-					groupTable.add(getSmallText(PersonalIDFormatter.format(user.getPersonalID(), iwc.getCurrentLocale())), iColumn++, iRow);
-					if (address != null) {
-						groupTable.add(getSmallText(address.getStreetAddress()), iColumn++, iRow);
-						if (code != null) {
-							groupTable.add(getSmallText(code.getPostalAddress()), iColumn++, iRow);
-						}
-						else {
-							groupTable.add(getSmallText("-"), iColumn++, iRow);
-						}
-					}
-					else {
-						groupTable.add(getSmallText("-"), iColumn++, iRow);
-						groupTable.add(getSmallText("-"), iColumn++, iRow);
-					}
-					groupTable.add(remove, iColumn++, iRow);
-
-					groupTable.setCellpaddingLeft(1, iRow, 12);
-					if (iRow % 2 == 0) {
-						groupTable.setRowStyleClass(iRow++, getLightRowClass());
-					}
-					else {
-						groupTable.setRowStyleClass(iRow++, getDarkRowClass());
-					}
+		SelectorUtility util = new SelectorUtility();
+		DropdownMenu instrumentsDrop1 = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_1"), instruments, "getLocalizedKey", getResourceBundle());
+		DropdownMenu instrumentsDrop2 = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_2"), instruments, "getLocalizedKey", getResourceBundle());
+		DropdownMenu instrumentsDrop3 = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_INSTRUMENTS + "_3"), instruments, "getLocalizedKey", getResourceBundle());
+		if (chosenInstruments != null) {
+			int index = 1;
+			Iterator iter = chosenInstruments.iterator();
+			while (iter.hasNext()) {
+				SchoolStudyPath instrument = (SchoolStudyPath) iter.next();
+				if (index == 1) {
+					instrumentsDrop1.setSelectedElement(instrument.getPrimaryKey().toString());
 				}
-				
-				table.setHeight(row++, 12);
-				
-				table.setCellpaddingLeft(1, row, 12);
-				SubmitButton showChoices = (SubmitButton) getButton(new SubmitButton(localize("show_choices", "Show choices"), PARAMETER_ACTION, String.valueOf(ACTION_FORM)));
-				table.add(showChoices, 1, row);
-			}
-			catch (FinderException fe) {
-				table.add(getErrorText(localize("no_students_found", "No students found...")), 1, row);
+				else if (index == 2) {
+					instrumentsDrop2.setSelectedElement(instrument.getPrimaryKey().toString());
+				}
+				else if (index == 3) {
+					instrumentsDrop3.setSelectedElement(instrument.getPrimaryKey().toString());
+				}
+				index++;
 			}
 		}
-		else {
-			table.add(getErrorText(localize("must_select", "You must select year, department, season and group...")), 1, row);
+		
+		DropdownMenu departmentDrop = getDropdown(PARAMETER_DEPARTMENT, choice.getSchoolYearPK());
+		departmentDrop.addMenuElementFirst("-1", localize("select_department", "Select department"));
+		Iterator iter = departments.iterator();
+		while (iter.hasNext()) {
+			SchoolYear year = (SchoolYear) iter.next();
+			if (year.isSelectable()) {
+				departmentDrop.addMenuElement(year.getPrimaryKey().toString(), localize(year.getSchoolYearName(), year.getSchoolYearName()));
+			}
 		}
+
+		DropdownMenu lessonTypeDrop = getDropdown(PARAMETER_LESSON_TYPE, choice.getSchoolTypePK());
+		lessonTypeDrop.addMenuElementFirst("-1", localize("select_lesson_type", "Select lesson type"));
+		iter = lessonTypes.iterator();
+		while (iter.hasNext()) {
+			SchoolType type = (SchoolType) iter.next();
+			lessonTypeDrop.addMenuElement(type.getPrimaryKey().toString(), localize(type.getLocalizationKey(), type.getSchoolTypeName()));
+		}
+		
+		TextInput teacherRequest = getTextInput(PARAMETER_TEACHER_REQUEST, choice.getTeacherRequest());
+		TextInput otherInstrument = getTextInput(PARAMETER_OTHER_INSTRUMENT, choice.getOtherInstrument());
+
+		table.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("instrument_1", "Instrument 1")), 1, editRow);
+		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
+		editTable.add(instrumentsDrop1, 2, editRow);
+
+		table.setStyleClass(4, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("department", "Department")), 4, editRow);
+		editTable.setStyleClass(5, editRow, getStyleName(STYLENAME_INPUT_CELL));
+		editTable.add(departmentDrop, 5, editRow++);
+
+		table.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("instrument_2", "Instrument 2")), 1, editRow);
+		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
+		editTable.add(instrumentsDrop2, 2, editRow);
+
+		table.setStyleClass(4, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("lesson_type", "Lesson type")), 4, editRow);
+		table.setStyleClass(5, editRow, getStyleName(STYLENAME_INPUT_CELL));
+		table.add(lessonTypeDrop, 5, editRow++);
+
+		table.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("instrument_3", "Instrument 3")), 1, editRow);
+		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
+		editTable.add(instrumentsDrop3, 2, editRow);
+
+		table.setStyleClass(4, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("teacher_request", "Teacher request")), 4, editRow);
+		table.setStyleClass(5, editRow, getStyleName(STYLENAME_INPUT_CELL));
+		table.add(teacherRequest, 5, editRow++);
+		
+		table.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("other_instrument", "Other instrument")), 1, editRow);
+		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
+		editTable.add(otherInstrument, 2, editRow);
+
+		table.setHeight(row++, 18);
+		
+		if (age.getYears() < 16) {
+			table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
+			table.add(getText(localize("elementary_school", "Elementary school")), 2, row++);
+			table.setStyleClass(2, row, getStyleName(STYLENAME_INPUT_CELL));
+			table.add(getTextInput(PARAMETER_ELEMENTARY_SCHOOL, choice.getElementarySchool()), 2, row++);
+			table.setHeight(row++, 6);
+		}
+		
+		TextArea previousStudies = getTextArea(PARAMETER_PREVIOUS_STUDIES, choice.getPreviousStudies());
+		previousStudies.setHeight("50");
+		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("message", "message")), 1, row++);
+		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
+		table.add(previousStudies, 1, row++);
+		
+		table.setHeight(row++, 12);
+		
+		TextArea message = getTextArea(PARAMETER_MESSAGE, choice.getMessage());
+		message.setHeight("50");
+		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("message", "message")), 1, row++);
+		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
+		table.add(message, 1, row++);
+		
+		table.setHeight(row++, 18);
+
+		SubmitButton submit = (SubmitButton) getButton(new SubmitButton(localize("change", "Change"), PARAMETER_ACTION, String.valueOf(ACTION_SAVE)));
+		table.add(submit, 1, row);
+		table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
+		table.add(getHelpButton("help_music_school_edit_application"), 1, row);
+		table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
+		table.setCellpaddingRight(1, row, 12);
+		submit.setOnSubmitFunction("checkApplication", getSubmitConfirmScript());
+		form.setToDisableOnSubmit(submit, true);
+
+		return form;
 	}
 	
-	private int parseAction(IWContext iwc) {
-		if (iwc.isParameterSet(PARAMETER_ADD)) {
-			String[] students = iwc.getParameterValues(PARAMETER_ADD);
-			try {
-				getBusiness().addStudentsToGroup(students, getSession().getGroup(), getSession().getDepartment(), getSession().getInstrument(), iwc.getCurrentUser());
-			}
-			catch (RemoteException re) {
-				throw new IBORuntimeException(re);
-			}
-		}
+	private String getSubmitConfirmScript() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("function checkApplication() {").append("\n\t");
+		buffer.append("\n\t var dropDepartment = ").append("findObj('").append(PARAMETER_DEPARTMENT).append("');");
+		buffer.append("\n\t var dropLessonTypes = ").append("findObj('").append(PARAMETER_LESSON_TYPE).append("');");
+		buffer.append("\n\t var dropInstrumentOne = ").append("findObj('").append(PARAMETER_INSTRUMENTS + "_1").append("');");
+		buffer.append("\n\t var dropInstrumentTwo = ").append("findObj('").append(PARAMETER_INSTRUMENTS + "_2").append("');");
+		buffer.append("\n\t var dropInstrumentThree = ").append("findObj('").append(PARAMETER_INSTRUMENTS + "_3").append("');");
+
+		buffer.append("\n\t var department = -1;");
+		buffer.append("\n\t var lessonType = -1;");
+		buffer.append("\n\t var instrumentOne = 0;");
+		buffer.append("\n\t var instrumentTwo = 0;");
+		buffer.append("\n\t var instrumentThree = 0;");
+
+		buffer.append("\n\t if (dropDepartment.selectedIndex > 0) {\n\t\t department = dropDepartment.options[dropDepartment.selectedIndex].value;\n\t }");
+		buffer.append("\n\t if (dropLessonTypes.selectedIndex > 0) {\n\t\t lessonType = dropLessonTypes.options[dropLessonTypes.selectedIndex].value;\n\t }");
+		buffer.append("\n\t if (dropInstrumentOne.selectedIndex > 0) {\n\t\t instrumentOne = dropInstrumentOne.options[dropInstrumentOne.selectedIndex].value;\n\t }");
+		buffer.append("\n\t if (dropInstrumentTwo.selectedIndex > 0) {\n\t\t instrumentTwo = dropInstrumentTwo.options[dropInstrumentTwo.selectedIndex].value;\n\t }");
+		buffer.append("\n\t if (dropInstrumentThree.selectedIndex > 0) {\n\t\t instrumentThree = dropInstrumentThree.options[dropInstrumentThree.selectedIndex].value;\n\t }");
+
+		String message = localize("must_fill_out_department", "Please fill out department.");
+		buffer.append("\n\t if(department < 0){");
+		buffer.append("\n\t\t alert('").append(message).append("');");
+		buffer.append("\n\t\t return false;");
+		buffer.append("\n\t }");
 		
-		if (iwc.isParameterSet(PARAMETER_REMOVE)) {
-			String student = iwc.getParameter(PARAMETER_REMOVE);
-			try {
-				getBusiness().removeChoiceFromGroup(student, iwc.getCurrentUser());
-			}
-			catch (RemoteException re) {
-				throw new IBORuntimeException(re);
-			}
-		}
+		message = localize("must_fill_out_lesson_type", "Please fill out lesson type.");
+		buffer.append("\n\t if(lessonType < 0){");
+		buffer.append("\n\t\t alert('").append(message).append("');");
+		buffer.append("\n\t\t return false;");
+		buffer.append("\n\t }");
 		
+		buffer.append("\n\t if(instrumentOne > 0 && (instrumentOne == instrumentTwo || instrumentOne == instrumentThree)){");
+		message = localize("instrument_must_not_be_the_same", "Please do not choose the same instrument more than once.");
+		buffer.append("\n\t\t alert('").append(message).append("');");
+		buffer.append("\n\t\t return false;");
+		buffer.append("\n\t }");
+		buffer.append("\n\t if(instrumentTwo > 0 && (instrumentTwo == instrumentOne || instrumentTwo == instrumentThree)){");
+		buffer.append("\n\t\t alert('").append(message).append("');");
+		buffer.append("\n\t\t return false;");
+		buffer.append("\n\t }");
+		buffer.append("\n\t if(instrumentThree > 0 && (instrumentThree == instrumentOne || instrumentThree == instrumentTwo )){");
+		buffer.append("\n\t\t alert('").append(message).append("');");
+		buffer.append("\n\t\t return false;");
+		buffer.append("\n\t }");
+		message = localize("must_fill_out_instrument", "Please select at least one instrument.");
+		buffer.append("\n\t if(instrumentOne == 0 && instrumentTwo == 0 && instrumentThree == 0){");
+		buffer.append("\n\t\t alert('").append(message).append("');");
+		buffer.append("\n\t\t return false;");
+		buffer.append("\n\t }");
+
+		buffer.append("\n\t document.body.style.cursor = 'wait'");
+		buffer.append("\n\t return true;");
+		buffer.append("\n}\n");
+
+		return buffer.toString();
+	}
+	
+	private void parseAction(IWContext iwc) {
+		int action = -1;
 		if (iwc.isParameterSet(PARAMETER_ACTION)) {
-			return Integer.parseInt(iwc.getParameter(PARAMETER_ACTION));
+			action = Integer.parseInt(iwc.getParameter(PARAMETER_ACTION));
 		}
 		else {
-			return ACTION_FORM;
+			action = -1;
+		}
+
+		String[] students = iwc.getParameterValues(PARAMETER_APPLICATION);
+		switch (action) {
+			case ACTION_ACCEPT:
+				try {
+					getBusiness().addStudentsToGroup(students, getBusiness().getDefaultGroup(getSession().getProvider(), getSession().getSeason()), getSession().getDepartment(), getSession().getInstrument(), iwc.getCurrentUser());
+				}
+				catch (RemoteException re) {
+					throw new IBORuntimeException(re);
+				}
+				break;
+
+			case ACTION_REJECT:
+				try {
+					getBusiness().rejectApplications(students, iwc.getCurrentUser());
+				}
+				catch (RemoteException re) {
+					throw new IBORuntimeException(re);
+				}
+				break;
+
+			case ACTION_SAVE:
+				Collection instrumentPKs = new ArrayList();
+				for (int i = 0; i < 3; i++) {
+					if (iwc.isParameterSet(PARAMETER_INSTRUMENTS + "_" + (i+1))) {
+						instrumentPKs.add(iwc.getParameter(PARAMETER_INSTRUMENTS + "_" + (i+1)));
+					}
+				}
+				String application = iwc.getParameter(PARAMETER_APPLICATION);
+				String lessonType = iwc.getParameter(PARAMETER_LESSON_TYPE);
+				String department = iwc.getParameter(PARAMETER_DEPARTMENT);
+				String otherInstrument = iwc.getParameter(PARAMETER_OTHER_INSTRUMENT);
+				String teacherRequest = iwc.getParameter(PARAMETER_TEACHER_REQUEST);
+				String elementarySchool = iwc.getParameter(PARAMETER_ELEMENTARY_SCHOOL);
+				String previousStudies = iwc.getParameter(PARAMETER_PREVIOUS_STUDIES);
+				String message = iwc.getParameter(PARAMETER_MESSAGE);
+				
+				try {
+					getBusiness().updateChoice(application, department, lessonType, instrumentPKs, teacherRequest, message, otherInstrument, previousStudies, elementarySchool);
+				}
+				catch (RemoteException re) {
+					throw new IBORuntimeException(re);
+				}
+				catch (FinderException fe) {
+					fe.printStackTrace();
+				}
+				break;
 		}
 	}
 }

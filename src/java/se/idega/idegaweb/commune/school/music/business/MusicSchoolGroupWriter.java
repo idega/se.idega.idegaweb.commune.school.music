@@ -56,7 +56,6 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 	private IWResourceBundle iwrb;
 	
 	private String schoolName;
-	private String groupName;
 
 	public MusicSchoolGroupWriter() {
 		// empty
@@ -69,9 +68,8 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 			userBusiness = getUserBusiness(iwc);
 			iwrb = iwc.getIWMainApplication().getBundle(MusicSchoolBlock.IW_BUNDLE_IDENTIFIER).getResourceBundle(locale);
 			schoolName = getSession(iwc).getProvider().getSchoolName();
-			groupName = getSession(iwc).getGroup().getSchoolClassName();
 			
-			List students = new ArrayList(getSchoolBusiness(iwc).getSchoolClassMemberHome().findBySchoolClassAndYearAndStudyPath(getSession(iwc).getGroup(), getSession(iwc).getDepartment(), getSession(iwc).getInstrument()));
+			List students = new ArrayList(getSchoolBusiness(iwc).getSchoolClassMemberHome().findBySchoolAndSeasonAndYearAndStudyPath(getSession(iwc).getProvider(), getSession(iwc).getSeason(), getSession(iwc).getDepartment(), getSession(iwc).getInstrument()));
 			Map studentMap = careBusiness.getStudentList(students);
 			Collections.sort(students, SchoolClassMemberComparatorForSweden.getComparatorSortByName(iwc.getCurrentLocale(), userBusiness, studentMap));
 			
@@ -124,13 +122,6 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 			cell.setCellValue(schoolName);
 			cell.setCellStyle(style);
 			cell = row.createCell((short)1);
-			
-			if (groupName != null) {
-				row = sheet.createRow(cellRow++);
-				cell = row.createCell((short)0);
-				cell.setCellValue(groupName);
-				cell.setCellStyle(style);
-			}
 			
 			row = sheet.createRow(cellRow++);
 			

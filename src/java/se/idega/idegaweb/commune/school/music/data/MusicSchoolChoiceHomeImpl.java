@@ -1,8 +1,8 @@
 /*
- * $Id: MusicSchoolChoiceHomeImpl.java,v 1.4 2004/09/26 10:14:17 laddi Exp $
- * Created on 26.9.2004
+ * $Id: MusicSchoolChoiceHomeImpl.java,v 1.5 2005/03/19 16:37:29 laddi Exp $
+ * Created on 19.3.2005
  *
- * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
+ * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
  * This software is the proprietary information of Idega hf.
  * Use is subject to license terms.
@@ -10,9 +10,7 @@
 package se.idega.idegaweb.commune.school.music.data;
 
 import java.util.Collection;
-
 import javax.ejb.FinderException;
-
 import com.idega.block.school.data.School;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
@@ -23,11 +21,13 @@ import com.idega.user.data.User;
 
 
 /**
- * 
- *  Last modified: $Date: 2004/09/26 10:14:17 $ by $Author: laddi $
+ * <p>
+ * TODO laddi Describe Type MusicSchoolChoiceHomeImpl
+ * </p>
+ *  Last modified: $Date: 2005/03/19 16:37:29 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MusicSchoolChoiceHomeImpl extends IDOFactory implements MusicSchoolChoiceHome {
 
@@ -85,23 +85,37 @@ public class MusicSchoolChoiceHomeImpl extends IDOFactory implements MusicSchool
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
-	public MusicSchoolChoice findAllByStatuses(User child, School school, SchoolSeason season, String[] statuses) throws FinderException {
+	public MusicSchoolChoice findAllByStatuses(User child, School school, SchoolSeason season, String[] statuses)
+			throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 		Object pk = ((MusicSchoolChoiceBMPBean) entity).ejbFindAllByStatuses(child, school, season, statuses);
 		this.idoCheckInPooledEntity(entity);
 		return this.findByPrimaryKey(pk);
 	}
 
-	public Collection findAllByStatuses(User child, School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String[] statuses) throws FinderException {
+	public Collection findAllByStatuses(User child, School school, SchoolSeason season, SchoolYear year,
+			SchoolStudyPath instrument, String[] statuses, Boolean showExtraApplications) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((MusicSchoolChoiceBMPBean) entity).ejbFindAllByStatuses(child, school, season, year, instrument, statuses);
+		java.util.Collection ids = ((MusicSchoolChoiceBMPBean) entity).ejbFindAllByStatuses(child, school, season, year,
+				instrument, statuses, showExtraApplications);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
-	public MusicSchoolChoice findAllByChildAndChoiceNumberAndSeason(User child, int choiceNumber, SchoolSeason season) throws FinderException {
+	public MusicSchoolChoice findAllByChildAndChoiceNumberAndSeason(User child, int choiceNumber, SchoolSeason season)
+			throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		Object pk = ((MusicSchoolChoiceBMPBean) entity).ejbFindAllByChildAndChoiceNumberAndSeason(child, choiceNumber, season);
+		Object pk = ((MusicSchoolChoiceBMPBean) entity).ejbFindAllByChildAndChoiceNumberAndSeason(child, choiceNumber,
+				season);
+		this.idoCheckInPooledEntity(entity);
+		return this.findByPrimaryKey(pk);
+	}
+
+	public MusicSchoolChoice findAllByChildAndChoiceNumberAndSeason(User child, int choiceNumber, SchoolSeason season,
+			boolean showExtraApplications) throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		Object pk = ((MusicSchoolChoiceBMPBean) entity).ejbFindAllByChildAndChoiceNumberAndSeason(child, choiceNumber,
+				season, showExtraApplications);
 		this.idoCheckInPooledEntity(entity);
 		return this.findByPrimaryKey(pk);
 	}
@@ -113,16 +127,20 @@ public class MusicSchoolChoiceHomeImpl extends IDOFactory implements MusicSchool
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
-	public Collection findAllByStatuses(User child, SchoolSeason season, String[] statuses) throws FinderException {
+	public Collection findAllByStatuses(User child, SchoolSeason season, String[] statuses, Boolean showExtraApplications)
+			throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((MusicSchoolChoiceBMPBean) entity).ejbFindAllByStatuses(child, season, statuses);
+		java.util.Collection ids = ((MusicSchoolChoiceBMPBean) entity).ejbFindAllByStatuses(child, season, statuses,
+				showExtraApplications);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
-	public Collection findAllByStatuses(User child, SchoolSeason season, SchoolYear year, String[] statuses) throws FinderException {
+	public Collection findAllByStatuses(User child, SchoolSeason season, SchoolYear year, String[] statuses,
+			Boolean showExtraApplications) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((MusicSchoolChoiceBMPBean) entity).ejbFindAllByStatuses(child, season, year, statuses);
+		java.util.Collection ids = ((MusicSchoolChoiceBMPBean) entity).ejbFindAllByStatuses(child, season, year, statuses,
+				showExtraApplications);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
@@ -148,16 +166,20 @@ public class MusicSchoolChoiceHomeImpl extends IDOFactory implements MusicSchool
 		return theReturn;
 	}
 
-	public int getNumberOfApplications(School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String types, String[] statuses) throws IDOException {
+	public int getNumberOfApplications(School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument,
+			String types, String[] statuses) throws IDOException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		int theReturn = ((MusicSchoolChoiceBMPBean) entity).ejbHomeGetNumberOfApplications(school, season, year, instrument, types, statuses);
+		int theReturn = ((MusicSchoolChoiceBMPBean) entity).ejbHomeGetNumberOfApplications(school, season, year,
+				instrument, types, statuses);
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}
 
-	public int getNumberOfApplications(User child, School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String types, String[] statuses) throws IDOException {
+	public int getNumberOfApplications(User child, School school, SchoolSeason season, SchoolYear year,
+			SchoolStudyPath instrument, String types, String[] statuses) throws IDOException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		int theReturn = ((MusicSchoolChoiceBMPBean) entity).ejbHomeGetNumberOfApplications(child, school, season, year, instrument, types, statuses);
+		int theReturn = ((MusicSchoolChoiceBMPBean) entity).ejbHomeGetNumberOfApplications(child, school, season, year,
+				instrument, types, statuses);
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}
@@ -168,5 +190,4 @@ public class MusicSchoolChoiceHomeImpl extends IDOFactory implements MusicSchool
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}
-
 }

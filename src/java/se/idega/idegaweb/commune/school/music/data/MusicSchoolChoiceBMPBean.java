@@ -29,6 +29,7 @@ import com.idega.data.query.Column;
 import com.idega.data.query.CountColumn;
 import com.idega.data.query.InCriteria;
 import com.idega.data.query.MatchCriteria;
+import com.idega.data.query.OR;
 import com.idega.data.query.SelectQuery;
 import com.idega.data.query.Table;
 import com.idega.user.data.User;
@@ -44,6 +45,7 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	private final static String SCHOOL_SEASON = "school_season_id";
 	private final static String SCHOOL_TYPE = "school_type_id";
 	private final static String SCHOOL_YEAR = "school_year_id";
+	private final static String OTHER_INSTRUMENT = "other_instrument";
 	private final static String SCHOOL = "school_id";
 	private final static String CHILD = "child_id";
 	private final static String PREFERRED_PLACEMENT_DATE = "placement_date";
@@ -58,6 +60,8 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	private final static String PREVIOUS_STUDIES = "previous_studies";
 	private final static String CURRENT_YEAR = "current_year";
 	private final static String CURRENT_STUDY_PATH = "current_study_path";
+	
+	private final static String EXTRA_APPLICATION = "extra_application";
 
 	/* (non-Javadoc)
 	 * @see com.idega.block.process.data.AbstractCaseBMPBean#getCaseCodeKey()
@@ -92,6 +96,7 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		addManyToOneRelationship(SCHOOL_SEASON, SchoolSeason.class);
 		addManyToOneRelationship(SCHOOL_YEAR, SchoolYear.class);
 
+		addAttribute(OTHER_INSTRUMENT, "Other instrument", true, true, String.class);
 		addAttribute(PREFERRED_PLACEMENT_DATE, "Preferred placement date", true, true, Date.class);
 		addAttribute(CHOICE_DATE, "Choice date", Timestamp.class);
 		addAttribute(MESSAGE, "Message", String.class, 4000);
@@ -99,11 +104,13 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		addAttribute(TEACHER_REQUEST, "Request for a teacher", String.class);
 		addAttribute(ELEMENTARY_SCHOOL, "Elementary school", String.class);
 
-		addAttribute(PREVIOUS_STUDIES, "Previous studies", String.class);
+		addAttribute(PREVIOUS_STUDIES, "Previous studies", String.class, 4000);
 		addManyToOneRelationship(CURRENT_YEAR, SchoolYear.class);
 		addManyToOneRelationship(CURRENT_STUDY_PATH, SchoolStudyPath.class);
 
 		addAttribute(PAYMENT_METHOD, "Payment method", Integer.class);
+		
+		addAttribute(EXTRA_APPLICATION, "Extra application", Boolean.class);
 
 		addManyToManyRelationShip(SchoolStudyPath.class, "comm_music_choice_study_path");
 	}
@@ -148,6 +155,10 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	
 	public Object getSchoolYearPK() {
 		return getIntegerColumnValue(SCHOOL_YEAR);
+	}
+	
+	public String getOtherInstrument() {
+		return getStringColumnValue(OTHER_INSTRUMENT);
 	}
 	
 	public Date getPlacementDate() {
@@ -197,6 +208,10 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	public int getPaymentMethod() {
 		return getIntColumnValue(PAYMENT_METHOD);
 	}
+
+	public boolean isExtraApplication() {
+		return getBooleanColumnValue(EXTRA_APPLICATION, false);
+	}
 	
 	public Collection getStudyPaths() throws IDORelationshipException {
 		return idoGetRelatedEntities(SchoolStudyPath.class);
@@ -242,6 +257,10 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	
 	public void setSchoolYear(Object schoolYearID) {
 		setColumn(SCHOOL_YEAR, schoolYearID);
+	}
+	
+	public void setOtherInstrument(String otherInstrument) {
+		setColumn(OTHER_INSTRUMENT, otherInstrument);
 	}
 	
 	public void setPlacementDate(Date placementDate) {
@@ -290,6 +309,10 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	
 	public void setPaymentMethod(int paymentMethod) {
 		setColumn(PAYMENT_METHOD, paymentMethod);
+	}
+	
+	public void setAsExtraApplication(boolean extraApplication) {
+		setColumn(EXTRA_APPLICATION, extraApplication);
 	}
 	
 	public void addStudyPaths(Object[] studyPathIDs) throws IDOAddRelationshipException {
@@ -341,34 +364,38 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	}
 	
 	public Collection ejbFindAllByStatuses(School school, String[] statuses) throws FinderException {
-		return ejbFindAllByStatuses(null, school, null, null, null, statuses);
+		return ejbFindAllByStatuses(null, school, null, null, null, statuses, null);
 	}
 
 	public Collection ejbFindAllByStatuses(School school, SchoolSeason season, String[] statuses) throws FinderException {
-		return ejbFindAllByStatuses(null, school, season, null, null, statuses);
+		return ejbFindAllByStatuses(null, school, season, null, null, statuses, null);
 	}
 	
 	public Collection ejbFindAllByStatuses(School school, SchoolYear year, String[] statuses) throws FinderException {
-		return ejbFindAllByStatuses(null, school, null, year, null, statuses);
+		return ejbFindAllByStatuses(null, school, null, year, null, statuses, null);
 	}
 
 	public Collection ejbFindAllByStatuses(User child, School school, String[] statuses) throws FinderException {
-		return ejbFindAllByStatuses(child, school, null, null, null, statuses);
+		return ejbFindAllByStatuses(child, school, null, null, null, statuses, null);
 	}
 
 	public Integer ejbFindAllByStatuses(User child, School school, SchoolSeason season, String[] statuses) throws FinderException {
-		SelectQuery query = getDefaultQuery(child, school, season, null, null, null, statuses);
+		SelectQuery query = getDefaultQuery(child, school, season, null, null, null, statuses, null);
 		
 		return (Integer) idoFindOnePKBySQL(query.toString());
 	}
 
-	public Collection ejbFindAllByStatuses(User child, School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String[] statuses) throws FinderException {
-		SelectQuery query = getDefaultQuery(child, school, season, year, instrument, null, statuses);
+	public Collection ejbFindAllByStatuses(User child, School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String[] statuses, Boolean showExtraApplications) throws FinderException {
+		SelectQuery query = getDefaultQuery(child, school, season, year, instrument, null, statuses, showExtraApplications);
 		
 		return idoFindPKsBySQL(query.toString());
 	}
-	
+
 	public Integer ejbFindAllByChildAndChoiceNumberAndSeason(User child, int choiceNumber, SchoolSeason season) throws FinderException {
+		return ejbFindAllByChildAndChoiceNumberAndSeason(child, choiceNumber, season, false);
+	}
+	
+	public Integer ejbFindAllByChildAndChoiceNumberAndSeason(User child, int choiceNumber, SchoolSeason season, boolean showExtraApplications) throws FinderException {
 		Table choice = new Table(this);
 		
 		SelectQuery query = new SelectQuery(choice);
@@ -376,20 +403,28 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		query.addCriteria(new MatchCriteria(choice, CHILD, MatchCriteria.EQUALS, child));
 		query.addCriteria(new MatchCriteria(choice, SCHOOL_SEASON, MatchCriteria.EQUALS, season));
 		query.addCriteria(new MatchCriteria(choice, CHOICE_ORDER, MatchCriteria.EQUALS, choiceNumber));
+		if (showExtraApplications) {
+			query.addCriteria(new MatchCriteria(choice, EXTRA_APPLICATION, MatchCriteria.EQUALS, true));
+		}
+		else {
+			MatchCriteria isNull = new MatchCriteria(choice.getColumn(EXTRA_APPLICATION), false);
+			MatchCriteria isFalse = new MatchCriteria(choice, EXTRA_APPLICATION, MatchCriteria.EQUALS, false);
+			query.addCriteria(new OR(isNull, isFalse));
+		}
 		
 		return (Integer) idoFindOnePKBySQL(query.toString());
 	}
 
 	public Collection ejbFindAllByStatuses(User child, String[] statuses) throws FinderException {
-		return ejbFindAllByStatuses(child, null, null, null, null, statuses);
+		return ejbFindAllByStatuses(child, null, null, null, null, statuses, null);
 	}
 	
-	public Collection ejbFindAllByStatuses(User child, SchoolSeason season, String[] statuses) throws FinderException {
-		return ejbFindAllByStatuses(child, season, null, statuses);
+	public Collection ejbFindAllByStatuses(User child, SchoolSeason season, String[] statuses, Boolean showExtraApplications) throws FinderException {
+		return ejbFindAllByStatuses(child, season, null, statuses, showExtraApplications);
 	}
 	
-	public Collection ejbFindAllByStatuses(User child, SchoolSeason season, SchoolYear year, String[] statuses) throws FinderException {
-		return ejbFindAllByStatuses(child, null, season, year, null, statuses);
+	public Collection ejbFindAllByStatuses(User child, SchoolSeason season, SchoolYear year, String[] statuses, Boolean showExtraApplications) throws FinderException {
+		return ejbFindAllByStatuses(child, null, season, year, null, statuses, showExtraApplications);
 	}
 	
 	public int ejbHomeGetNumberOfApplications(User child, String[] statuses) throws IDOException {
@@ -410,7 +445,7 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	
 	public int ejbHomeGetNumberOfApplications(User child, School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String types, String[] statuses) throws IDOException {
 		try {
-			SelectQuery query = getDefaultQuery(child, school, season, year, instrument, types, statuses);
+			SelectQuery query = getDefaultQuery(child, school, season, year, instrument, types, statuses, null);
 			query.removeAllColumns();
 			query.removeAllOrder();
 			query.addColumn(new CountColumn(query.getBaseTable(), this.getIDColumnName()));
@@ -442,7 +477,7 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		return idoGetNumberOfRecords(query.toString());
 	}
 	
-	private SelectQuery getDefaultQuery(User child, School school, SchoolSeason season, SchoolYear department, SchoolStudyPath instrument, String types, String[] statuses) throws FinderException {
+	private SelectQuery getDefaultQuery(User child, School school, SchoolSeason season, SchoolYear department, SchoolStudyPath instrument, String types, String[] statuses, Boolean showExtraApplications) throws FinderException {
 		Table choice = new Table(this, "c");
 		Table process = new Table(Case.class, "p");
 		Table instruments = new Table(SchoolStudyPath.class, "sp");
@@ -488,6 +523,17 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		if (types != null) {
 			query.addCriteria(new InCriteria(choice, SCHOOL_TYPE, types));
 		}
+		if (showExtraApplications != null) {
+			if (showExtraApplications.booleanValue()) {
+				query.addCriteria(new MatchCriteria(choice, EXTRA_APPLICATION, MatchCriteria.EQUALS, true));
+			}
+			else {
+				MatchCriteria isNull = new MatchCriteria(choice.getColumn(EXTRA_APPLICATION), false);
+				MatchCriteria isFalse = new MatchCriteria(choice, EXTRA_APPLICATION, MatchCriteria.EQUALS, false);
+				query.addCriteria(new OR(isNull, isFalse));
+			}
+		}
+		
 		query.addOrder(choice, CHOICE_DATE, true);
 		
 		return query;

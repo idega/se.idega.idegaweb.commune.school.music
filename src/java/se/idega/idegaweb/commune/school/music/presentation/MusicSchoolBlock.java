@@ -13,6 +13,7 @@ import javax.ejb.FinderException;
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
 import se.idega.idegaweb.commune.care.business.CareBusiness;
 import se.idega.idegaweb.commune.presentation.CommuneBlock;
+import se.idega.idegaweb.commune.school.music.business.MusicConstants;
 import se.idega.idegaweb.commune.school.music.business.MusicSchoolBusiness;
 import se.idega.idegaweb.commune.school.music.business.MusicSchoolSession;
 import se.idega.idegaweb.commune.school.music.business.NoDepartmentFoundException;
@@ -20,18 +21,30 @@ import se.idega.idegaweb.commune.school.music.business.NoInstrumentFoundExceptio
 import se.idega.idegaweb.commune.school.music.business.NoLessonTypeFoundException;
 import com.idega.block.school.business.SchoolBusiness;
 import com.idega.block.school.business.SchoolYearComparator;
-import com.idega.block.school.data.SchoolClass;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolYear;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
+import com.idega.core.contact.data.Email;
+import com.idega.core.contact.data.Phone;
+import com.idega.core.location.data.Address;
+import com.idega.core.location.data.PostalCode;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWUserContext;
+import com.idega.idegaweb.help.presentation.Help;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Table;
 import com.idega.presentation.ui.DropdownMenu;
+import com.idega.presentation.ui.SubmitButton;
+import com.idega.presentation.ui.TextArea;
+import com.idega.presentation.ui.TextInput;
+import com.idega.user.business.NoEmailFoundException;
+import com.idega.user.business.NoPhoneFoundException;
+import com.idega.user.data.User;
+import com.idega.util.Age;
+import com.idega.util.PersonalIDFormatter;
 
 /**
  * @author laddi
@@ -253,7 +266,7 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		}
 	}
 	
-	public DropdownMenu getGroupsDropdown() {
+	/*public DropdownMenu getGroupsDropdown() {
 		try {
 			DropdownMenu groups = (DropdownMenu) getStyledInterface(new DropdownMenu(getSession().getParameterNameGroupID()));
 			groups.setToSubmit(true);
@@ -286,7 +299,7 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		catch (RemoteException re) {
 			throw new IBORuntimeException(re);
 		}
-	}
+	}*/
 	
 	protected Table getNavigationTable() {
 		Table table = new Table(4, 1);
@@ -294,18 +307,22 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		table.setCellspacing(0);
 		int column = 1;
 		
-		table.add(getSeasonsDropdown(), column, 1);
+		DropdownMenu seasons = getSeasonsDropdown();
+		table.add(seasons, column, 1);
 		table.setCellpaddingRight(column++, 1, 3);
 		
-		table.add(getDepartmentsDropdown(), column, 1);
+		DropdownMenu departments = getDepartmentsDropdown();
+		table.add(departments, column, 1);
 		table.setCellpaddingRight(column, 1, 3);
 		table.setCellpaddingLeft(column++, 1, 3);
 		
-		table.add(getInstrumentsDropdown(), column, 1);
+		DropdownMenu instruments = getInstrumentsDropdown();
+		table.add(instruments, column, 1);
 		table.setCellpaddingRight(column, 1, 3);
 		table.setCellpaddingLeft(column++, 1, 3);
 		
-		table.add(getGroupsDropdown(), column, 1);
+		SubmitButton fetch = (SubmitButton) getButton(new SubmitButton(getResourceBundle().getLocalizedString("get", "Get")));
+		table.add(fetch, column, 1);
 		table.setCellpaddingLeft(column++, 1, 3);
 		
 		return table;
@@ -327,11 +344,184 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		return table;
 	}
 	
+	protected Table getPersonInfoTable(IWContext iwc, User user) throws RemoteException {
+		Table table = new Table();
+		table.setCellpadding(0);
+		table.setCellspacing(0);
+		table.setColumns(5);
+		table.setWidth(3, 12);
+		int row = 1;
+		
+		Age age = new Age(user.getDateOfBirth());
+		Address address = getUserBusiness().getUsersMainAddress(user);
+		PostalCode postal = null;
+		if (address != null) {
+			postal = address.getPostalCode();
+		}
+		Phone phone = null;
+		try {
+			phone = getUserBusiness().getUsersHomePhone(user);
+		}
+		catch (NoPhoneFoundException npfe) {
+			phone = null;
+		}
+		Phone mobile = null;
+		try {
+			mobile = getUserBusiness().getUsersMobilePhone(user);
+		}
+		catch (NoPhoneFoundException npfe) {
+			mobile = null;
+		}
+		Email email = null;
+		try {
+			email = getUserBusiness().getUsersMainEmail(user);
+		}
+		catch (NoEmailFoundException nefe) {
+			email = null;
+		}
+		
+		table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getSmallHeader(localize("personal_id", "Personal ID")), 1, row);
+		table.add(getText(PersonalIDFormatter.format(user.getPersonalID(), iwc.getCurrentLocale())), 2, row);
+		
+		table.add(getSmallHeader(localize("name", "Name")), 4, row);
+		table.add(getText(user.getName()), 5, row++);
+		
+		table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getSmallHeader(localize("address", "Address")), 1, row);
+		table.add(getSmallHeader(localize("zip_code", "Postal code")), 4, row);
+		if (address != null) {
+			table.add(getText(address.getStreetAddress()), 2, row);
+		}
+		if (postal != null) {
+			table.add(getText(postal.getPostalAddress()), 5, row);
+		}
+		row++;
+		
+		table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getSmallHeader(localize("home_phone", "Home phone")), 1, row);
+		table.add(getSmallHeader(localize("mobile_phone", "Mobile phone")), 4, row);
+		if (phone != null) {
+			table.add(getText(phone.getNumber()), 2, row);
+		}
+		if (mobile != null) {
+			table.add(getText(mobile.getNumber()), 5, row);
+		}
+		row++;
+		
+		table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getSmallHeader(localize("email", "E-mail")), 1, row);
+		if (email != null) {
+			table.add(getText(email.getEmailAddress()), 2, row);
+		}
+		
+		if (age.getYears() < 18) {
+			User custodian = getUserBusiness().getCustodianForChild(user);
+			if (custodian != null) {
+				phone = null;
+				try {
+					phone = getUserBusiness().getUsersHomePhone(custodian);
+				}
+				catch (NoPhoneFoundException npfe) {
+					phone = null;
+				}
+				mobile = null;
+				try {
+					mobile = getUserBusiness().getUsersMobilePhone(custodian);
+				}
+				catch (NoPhoneFoundException npfe) {
+					mobile = null;
+				}
+				 email = null;
+				try {
+					email = getUserBusiness().getUsersMainEmail(custodian);
+				}
+				catch (NoEmailFoundException nefe) {
+					email = null;
+				}
+
+				table.setHeight(row++, 12);
+				table.mergeCells(1, row, table.getColumns(), row);
+				table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
+				table.add(getHeader(localize("custodian", "Custodian")), 1, row++);
+
+				table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
+				table.add(getSmallHeader(localize("personal_id", "Personal ID")), 1, row);
+				table.add(getText(PersonalIDFormatter.format(custodian.getPersonalID(), iwc.getCurrentLocale())), 2, row);
+				
+				table.add(getSmallHeader(localize("name", "Name")), 4, row);
+				table.add(getText(custodian.getName()), 5, row++);
+				
+				table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
+				table.add(getSmallHeader(localize("home_phone", "Home phone")), 1, row);
+				table.add(getSmallHeader(localize("mobile_phone", "Mobile phone")), 4, row);
+				if (phone != null) {
+					table.add(getText(phone.getNumber()), 2, row);
+				}
+				if (mobile != null) {
+					table.add(getText(mobile.getNumber()), 5, row);
+				}
+				row++;
+				
+				table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
+				table.add(getSmallHeader(localize("email", "E-mail")), 1, row);
+				if (email != null) {
+					table.add(getText(email.getEmailAddress()), 2, row);
+				}
+			}
+		}
+		
+		return table;
+	}
+	
 	protected void setColorToCell(Table table, int column, int row, String color) {
 		table.setColor(column, row, color);
 		table.setCellBorder(column, row, 1, "#000000", "solid");
 	}
 	
+	protected DropdownMenu getDropdown(String parameterName, Object selectedElement) {
+		DropdownMenu drop = (DropdownMenu) getStyledInterface(new DropdownMenu(parameterName));
+		drop.setWidth("100%");
+		if (selectedElement != null) {
+			drop.setSelectedElement(selectedElement.toString());
+		}
+		
+		return drop;
+	}
+	
+	protected TextInput getTextInput(String parameterName, Object content) {
+		return getTextInput(parameterName, content, false);
+	}
+	
+	protected TextInput getTextInput(String parameterName, Object content, boolean disabled) {
+		TextInput input = (TextInput) getStyledInterface(new TextInput(parameterName));
+		input.setWidth("100%");
+		if (content != null) {
+			input.setContent(content.toString());
+		}
+		input.setDisabled(disabled);
+		
+		return input;
+	}
+	
+	protected TextArea getTextArea(String parameterName, Object content) {
+		TextArea area = (TextArea) getStyledInterface(new TextArea(parameterName));
+		area.setWidth("100%");
+		if (content != null) {
+			area.setContent(content.toString());
+		}
+		
+		return area;
+	}
+	
+	protected Help getHelpButton(String key) {
+		Help help = new Help();
+		help.setHelpTextBundle(MusicConstants.HELP_BUNDLE_IDENTFIER);
+		help.setHelpTextKey(key);
+		help.setImage(getBundle().getImage("help.gif"));
+		return help;
+	}
+
 	public String getBundleIdentifier() {
 		return IW_BUNDLE_IDENTIFIER;
 	}

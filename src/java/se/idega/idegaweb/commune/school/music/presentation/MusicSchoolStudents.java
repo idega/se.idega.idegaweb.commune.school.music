@@ -1,5 +1,5 @@
 /**
- * Created on 1.2.2003 This class does something very clever.
+ * Created on 1.2.2003
  */
 package se.idega.idegaweb.commune.school.music.presentation;
 
@@ -13,7 +13,6 @@ import javax.ejb.FinderException;
 import se.idega.idegaweb.commune.school.music.business.MusicSchoolGroupWriter;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
 import se.idega.util.SchoolClassMemberComparatorForSweden;
-import com.idega.block.school.data.SchoolClass;
 import com.idega.block.school.data.SchoolClassMember;
 import com.idega.core.contact.data.Phone;
 import com.idega.core.location.data.Address;
@@ -36,10 +35,7 @@ import com.idega.util.PersonalIDFormatter;
 import com.idega.util.text.Name;
 
 /**
- * @author laddi To change this generated comment edit the template variable
- *         "typecomment": Window>Preferences>Java>Templates. To enable and
- *         disable the creation of type comments go to
- *         Window>Preferences>Java>Code Generation.
+ * @author laddi
  */
 public class MusicSchoolStudents extends MusicSchoolBlock {
 
@@ -50,8 +46,6 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 
 	private int action = 0;
 	private int sortStudentsBy = SchoolClassMemberComparatorForSweden.NAME_SORT;
-
-	private SchoolClass _group;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.presentation.SchoolCommuneBlock#init(com.idega.presentation.IWContext)
@@ -109,13 +103,13 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		headerTable.add(getSortTable(), 1, 3);
 		headerTable.setVerticalAlignment(1, 3, Table.VERTICAL_ALIGN_BOTTOM);
 
-		if (getSession().getGroup() != null) {
-			_group = getSession().getGroup();
+		if (getSession().getSeason() != null) {
 			table.setCellpaddingRight(1, 3, 6);
 			table.setAlignment(1, 3, Table.HORIZONTAL_ALIGN_RIGHT);
 			table.add(getXLSLink(), 1, 3);
 			table.add(getStudentTable(iwc), 1, 5);
 		}
+		
 		add(form);
 	}
 
@@ -166,16 +160,11 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		IWTimestamp startDate;
 
 		List students = null;
-		if (!_group.getIsSubGroup()) {
-			try {
-				students = new ArrayList(getSchoolBusiness().getSchoolClassMemberHome().findBySchoolClassAndYearAndStudyPath(getSession().getGroup(), getSession().getDepartment(), getSession().getInstrument()));
-			}
-			catch (FinderException fe) {
-				students = new ArrayList();
-			}
+		try {
+			students = new ArrayList(getSchoolBusiness().getSchoolClassMemberHome().findBySchoolAndSeasonAndYearAndStudyPath(getSession().getProvider(), getSession().getSeason(), getSession().getDepartment(), getSession().getInstrument()));
 		}
-		else {
-			students = new ArrayList(getSchoolBusiness().findSubGroupPlacements(_group));
+		catch (FinderException fe) {
+			students = new ArrayList();
 		}
 
 		if (!students.isEmpty()) {
