@@ -1,0 +1,408 @@
+/*
+ * Created on 3.5.2004
+ */
+package se.idega.idegaweb.commune.school.music.business;
+
+import is.idega.idegaweb.member.business.NoCustodianFound;
+
+import java.rmi.RemoteException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.ejb.CreateException;
+import javax.ejb.FinderException;
+import javax.transaction.UserTransaction;
+
+import se.idega.idegaweb.commune.business.CommuneUserBusiness;
+import se.idega.idegaweb.commune.message.business.MessageBusiness;
+import se.idega.idegaweb.commune.message.data.Message;
+import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
+import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceHome;
+
+import com.idega.block.process.business.CaseBusinessBean;
+import com.idega.block.process.data.Case;
+import com.idega.block.process.data.CaseStatus;
+import com.idega.block.school.business.SchoolBusiness;
+import com.idega.block.school.business.SchoolComparator;
+import com.idega.block.school.data.School;
+import com.idega.block.school.data.SchoolSeason;
+import com.idega.block.school.data.SchoolStudyPath;
+import com.idega.block.school.data.SchoolYear;
+import com.idega.business.IBOLookup;
+import com.idega.business.IBOLookupException;
+import com.idega.business.IBORuntimeException;
+import com.idega.data.IDOAddRelationshipException;
+import com.idega.data.IDOCreateException;
+import com.idega.data.IDOLookup;
+import com.idega.data.IDOLookupException;
+import com.idega.data.IDORelationshipException;
+import com.idega.data.IDORemoveRelationshipException;
+import com.idega.data.IDOStoreException;
+import com.idega.user.data.User;
+import com.idega.util.IWTimestamp;
+import com.idega.util.PersonalIDFormatter;
+
+/**
+ * @author laddi
+ */
+public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSchoolBusiness {
+	
+	private final static String IW_BUNDLE_IDENTIFIER = "se.idega.idegaweb.commune.school.music";
+	private final static String CASE_CODE_KEY = "MUSICCH";
+
+	private MusicSchoolChoiceHome getMusicSchoolChoiceHome() {
+		try {
+			return (MusicSchoolChoiceHome) IDOLookup.getHome(MusicSchoolChoice.class);
+		}
+		catch (IDOLookupException ile) {
+			throw new IBORuntimeException(ile);
+		}
+	}
+	
+	private SchoolBusiness getSchoolBusiness() {
+		try {
+			return (SchoolBusiness) IBOLookup.getServiceInstance(getIWApplicationContext(), SchoolBusiness.class);
+		}
+		catch (IBOLookupException ile) {
+			throw new IBORuntimeException(ile);
+		}
+	}
+	
+	public MessageBusiness getMessageBusiness() {
+		try {
+			return (MessageBusiness) this.getServiceInstance(MessageBusiness.class);
+		}
+		catch (RemoteException e) {
+			throw new IBORuntimeException(e.getMessage());
+		}
+	}
+
+	private CommuneUserBusiness getUserBusiness() {
+		try {
+			return (CommuneUserBusiness) this.getServiceInstance(CommuneUserBusiness.class);
+		}
+		catch (RemoteException e) {
+			throw new IBORuntimeException(e.getMessage());
+		}
+	}
+
+	public MusicSchoolChoice findMusicSchoolChoice(Object primaryKey) throws FinderException {
+		return getMusicSchoolChoiceHome().findByPrimaryKey(primaryKey);
+	}
+	
+	public Collection findChoicesByChildAndSeason(User child, SchoolSeason season) throws FinderException {
+		String[] statuses = { getCaseStatusPreliminary().getStatus(), getCaseStatusInactive().getStatus() };
+		return getMusicSchoolChoiceHome().findAllByStatuses(child, season, statuses);
+	}
+	
+	public Collection findAllInstruments() throws FinderException {
+		try {
+			Collection instruments = getSchoolBusiness().getSchoolStudyPathHome().findBySchoolCategory(getSchoolBusiness().getCategoryMusicSchool());
+			if (instruments.isEmpty()) {
+				throw new FinderException("No instruments installed.");
+			}
+			return instruments;
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
+	public Collection findAllDepartments() throws FinderException {
+		try {
+			Collection departments = getSchoolBusiness().getSchoolYearHome().findAllSchoolYearBySchoolCategory(getSchoolBusiness().getCategoryMusicSchool());
+			if (departments.isEmpty()) {
+				throw new FinderException("No departments installed.");
+			}
+			return departments;
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
+	public Collection findAllSelectableDepartments() throws FinderException {
+		try {
+			Collection departments = getSchoolBusiness().getSchoolYearHome().findAllSchoolYearsBySchoolCategory(getSchoolBusiness().getCategoryMusicSchool(), true);
+			if (departments.isEmpty()) {
+				throw new FinderException("No departments installed.");
+			}
+			return departments;
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
+	public Collection findAllTypes() throws FinderException {
+		try {
+			Collection types = getSchoolBusiness().getSchoolTypeHome().findAllByCategory(getSchoolBusiness().getCategoryMusicSchool().getCategory());
+			if (types.isEmpty()) {
+				throw new FinderException("No types installed.");
+			}
+			return types;
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
+	public Collection findInstrumentsInSchool(School school) throws FinderException {
+		try {
+			return getSchoolBusiness().getSchoolStudyPathHome().findBySchoolAndSchoolCategory(school, getSchoolBusiness().getCategoryMusicSchool());
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
+	public Collection findDepartmentsInSchool(School school) throws FinderException {
+		try {
+			return getSchoolBusiness().getSchoolYearHome().findAllBySchoolAndSchoolCategory(school, getSchoolBusiness().getCategoryMusicSchool(), true);
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
+	public Collection findGroupsInSchool(School school, SchoolSeason season, SchoolYear department, SchoolStudyPath instrument) throws FinderException {
+		try {
+			return getSchoolBusiness().getSchoolClassHome().findBySchoolAndSeasonAndYearAndStudyPath(school, season, department, instrument, false);
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
+	public Collection findChoicesInSchool(School school, SchoolSeason season, SchoolYear department, SchoolStudyPath instrument) throws FinderException {
+		String[] statuses = { getCaseStatusPreliminary().getStatus(), getCaseStatusPlaced().getStatus() };
+		return getMusicSchoolChoiceHome().findAllByStatuses(null, school, season, department, instrument, statuses);
+	}
+	
+	public Map getInstrumentSchoolMap(Locale locale) {
+		try {
+			Collection instruments = findAllInstruments();
+			return getInstrumentSchoolMap(instruments, locale);
+		}
+		catch (FinderException fe) {
+			log(fe);
+			return new HashMap();
+		}
+	}
+	
+	public Map getInstrumentSchoolMap(Collection instruments, Locale locale) {
+		Map map = new HashMap();
+
+		Iterator iter = instruments.iterator();
+		while (iter.hasNext()) {
+			SchoolStudyPath instrument = (SchoolStudyPath) iter.next();
+			try {
+				List schools = new ArrayList(instrument.getSchools());
+				Collections.sort(schools, new SchoolComparator(locale));
+				map.put(instrument.getPrimaryKey().toString(), schools);
+			}
+			catch (IDORelationshipException ire) {
+				log(ire);
+			}
+		}
+		
+		return map;
+	}
+
+	public boolean saveChoices(User user, User child, Object[] schools, Object seasonPK, Object departmentPK, Object lessonTypePK, Object[] instruments, String teacherRequest, String message, Object currentYear, Object currentInstrument, String previousStudy, String elementarySchool, int paymentMethod) throws IDOCreateException {
+		int caseCount = 3;
+		UserTransaction trans = getSessionContext().getUserTransaction();
+
+		try {
+			trans.begin();
+			
+			Collection instrumentsCollection = new ArrayList();
+			for (int i = 0; i < instruments.length; i++) {
+				instrumentsCollection.add(getSchoolBusiness().getSchoolStudyPathHome().findByPrimaryKey(new Integer(instruments[i].toString())));
+			}
+			
+			CaseStatus first = super.getCaseStatusPreliminary();
+			CaseStatus other = super.getCaseStatusInactive();
+			CaseStatus status = null;
+			MusicSchoolChoice choice = null;
+			int choiceNumber = 1;
+			
+			IWTimestamp timeNow = new IWTimestamp();
+			for (int i = 0; i < caseCount; i++) {
+				if (schools[i] != null && Integer.parseInt(schools[i].toString()) > 0) {
+					if (i == 0) {
+						status = first;
+					}
+					else {
+						status = other;
+					}
+					
+					choice = saveChoice(user, child, schools[i], seasonPK, departmentPK, lessonTypePK, instrumentsCollection, teacherRequest, message, currentYear, currentInstrument, previousStudy, elementarySchool, paymentMethod, status, choice, choiceNumber, timeNow);
+				}
+			}
+			trans.commit();
+
+			return true;
+		}
+		catch (Exception ex) {
+			try {
+				trans.rollback();
+			}
+			catch (javax.transaction.SystemException e) {
+				throw new IDOCreateException(e.getMessage());
+			}
+			ex.printStackTrace();
+			throw new IDOCreateException(ex);
+		}
+	}
+
+	private MusicSchoolChoice saveChoice(User user, User child, Object schoolPK, Object seasonPK, Object departmentPK, Object lessonTypePK, Collection instruments, String teacherRequest, String message, Object currentYear, Object currentInstrument, String previousStudy, String elementarySchool, int paymentMethod, CaseStatus status, Case parentCase, int choiceNumber, IWTimestamp stamp) throws IDOCreateException {
+		SchoolSeason season = null;
+		try {
+			season = getSchoolBusiness().getSchoolSeason(new Integer(seasonPK.toString()));
+		}
+		catch (RemoteException fe) {
+			season = null;
+		}
+		MusicSchoolChoice choice = null;
+		stamp.addSeconds(1 - choiceNumber);
+
+		if (season != null) {
+			try {
+				choice = getMusicSchoolChoiceHome().findAllByChildAndChoiceNumberAndSeason(child, choiceNumber, season);
+				try {
+					choice.removeStudyPaths();
+				}
+				catch (IDORemoveRelationshipException irre) {
+					throw new IDOCreateException(irre);
+				}
+			}
+			catch (FinderException fex) {
+				choice = null;
+			}
+		}
+		if (choice == null) {
+			try {
+				choice = getMusicSchoolChoiceHome().create();
+			}
+			catch (CreateException ce) {
+				throw new IDOCreateException(ce);
+			}
+		}
+		choice.setOwner(user);
+		choice.setChild(child);
+		choice.setSchool(schoolPK);
+		choice.setSchoolSeason(season);
+		choice.setSchoolType(lessonTypePK);
+		choice.setSchoolYear(departmentPK);
+		choice.setChoiceNumber(choiceNumber);
+		choice.setTeacherRequest(teacherRequest);
+		choice.setElementarySchool(elementarySchool);
+		choice.setChoiceDate(stamp.getTimestamp());
+		choice.setPaymentMethod(paymentMethod);
+		choice.setPlacementDate(season.getSchoolSeasonStart());
+		choice.setPreviousStudies(previousStudy);
+		choice.setPreviousStudyPath(currentInstrument);
+		choice.setPreviousYear(currentYear);
+		choice.setMessage(message);
+		
+		choice.setCreated(stamp.getTimestamp());
+		choice.setCaseStatus(status);
+		choice.setParentCase(parentCase);
+		
+		try {
+			choice.store();
+			Iterator iter = instruments.iterator();
+			while (iter.hasNext()) {
+				SchoolStudyPath instrument = (SchoolStudyPath) iter.next();
+				try {
+					choice.addStudyPath(instrument);
+				}
+				catch (IDOAddRelationshipException iare) {
+					throw new IDOCreateException(iare);
+				}
+			}
+		}
+		catch (IDOStoreException idos) {
+			idos.printStackTrace();
+			throw new IDOCreateException(idos);
+		}
+
+		if (status.equals(getCaseStatusPreliminary())) {
+			String subject = "";
+			String body = "";
+			sendMessageToParents(choice, subject, body);
+		}
+
+		return choice;
+	}
+	
+	private void sendMessageToParents(MusicSchoolChoice choice, String subject, String body) {
+		sendMessageToParents(choice, subject, body, body, false);
+	}
+
+	private void sendMessageToParents(MusicSchoolChoice application, String subject, String body, String letterBody, boolean alwaysSendLetter) {
+		try {
+			User child = application.getChild();
+			Object[] arguments = {child.getNameLastFirst(true), application.getSchool().getSchoolName(), PersonalIDFormatter.format(child.getPersonalID(), getIWApplicationContext().getApplicationSettings().getDefaultLocale()) };
+
+			User appParent = application.getOwner();
+			if (getUserBusiness().getMemberFamilyLogic().isChildInCustodyOf(child, appParent)) {
+				Message message = getMessageBusiness().createUserMessage(application, appParent, subject, MessageFormat.format(body, arguments), MessageFormat.format(letterBody, arguments), true, alwaysSendLetter);
+				message.setParentCase(application);
+				message.store();
+			}
+
+			try {
+				Collection parents = getUserBusiness().getMemberFamilyLogic().getCustodiansFor(child);
+				Iterator iter = parents.iterator();
+				while (iter.hasNext()) {
+					User parent = (User) iter.next();
+					if (!getUserBusiness().haveSameAddress(parent, appParent)) {
+						getMessageBusiness().createUserMessage(application, parent, subject, MessageFormat.format(body, arguments), MessageFormat.format(letterBody, arguments), true, alwaysSendLetter);
+					}
+				}
+			}
+			catch (NoCustodianFound ncf) {
+				getMessageBusiness().createUserMessage(application, child, subject, MessageFormat.format(body, arguments), MessageFormat.format(letterBody, arguments), true, alwaysSendLetter);
+			}
+		}
+		catch (RemoteException re) {
+			re.printStackTrace();
+		}
+	}
+
+	public String getBundleIdentifier() {
+		return IW_BUNDLE_IDENTIFIER;
+	}
+
+	public String getLocalizedCaseDescription(Case theCase, Locale locale) {
+		MusicSchoolChoice choice = getMusicSchoolChoiceInstance(theCase);
+		Object[] arguments = {choice.getChild().getFirstName(), String.valueOf(choice.getChoiceNumber()), choice.getSchool().getName()};
+
+		String desc = super.getLocalizedCaseDescription(theCase, locale);
+		return MessageFormat.format(desc, arguments);
+	}
+
+	protected MusicSchoolChoice getMusicSchoolChoiceInstance(Case theCase) throws RuntimeException {
+		String caseCode = "unreachable";
+		try {
+			caseCode = theCase.getCode();
+			if (CASE_CODE_KEY.equals(caseCode)) {
+				int caseID = ((Integer) theCase.getPrimaryKey()).intValue();
+				return findMusicSchoolChoice(new Integer(caseID));
+			}
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
+		throw new ClassCastException("Case with casecode: " + caseCode + " cannot be converted to a schoolchoice");
+	}
+}
