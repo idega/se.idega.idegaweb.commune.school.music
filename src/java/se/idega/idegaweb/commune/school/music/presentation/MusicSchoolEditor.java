@@ -285,7 +285,7 @@ public class MusicSchoolEditor extends MusicSchoolBlock {
 		iter = lessonTypes.iterator();
 		while (iter.hasNext()) {
 			SchoolType lessonType = (SchoolType) iter.next();
-			CheckBox addDepartment = getCheckBox(PARAMETER_DEPARTMENTS, lessonType.getPrimaryKey().toString());
+			CheckBox addDepartment = getCheckBox(PARAMETER_LESSON_TYPES, lessonType.getPrimaryKey().toString());
 			addDepartment.setChecked(schoolLessonTypes.contains(lessonType));
 			
 			table.add(addDepartment, 2, row);
