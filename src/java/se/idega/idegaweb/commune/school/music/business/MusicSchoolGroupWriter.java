@@ -11,21 +11,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
+import se.idega.idegaweb.commune.care.business.CareBusiness;
 import se.idega.idegaweb.commune.school.business.SchoolChoiceComparator;
 import se.idega.idegaweb.commune.school.business.SchoolClassMemberComparator;
 import se.idega.idegaweb.commune.school.music.presentation.MusicSchoolBlock;
-
 import com.idega.block.school.business.SchoolBusiness;
 import com.idega.block.school.data.SchoolClassMember;
 import com.idega.business.IBOLookup;
@@ -54,7 +51,7 @@ import com.idega.util.PersonalIDFormatter;
 public class MusicSchoolGroupWriter implements MediaWritable {
 
 	private MemoryFileBuffer buffer = null;
-	private MusicSchoolBusiness business;
+	private CareBusiness careBusiness;
 	private CommuneUserBusiness userBusiness;
 	private Locale locale;
 	private IWResourceBundle iwrb;
@@ -63,19 +60,20 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 	private String groupName;
 
 	public MusicSchoolGroupWriter() {
+		// empty
 	}
 	
 	public void init(HttpServletRequest req, IWContext iwc) {
 		try {
 			locale = iwc.getApplicationSettings().getApplicationLocale();
-			business = getMusicSchoolBusiness(iwc);
+			careBusiness = getCareBusiness(iwc);
 			userBusiness = getUserBusiness(iwc);
 			iwrb = iwc.getIWMainApplication().getBundle(MusicSchoolBlock.IW_BUNDLE_IDENTIFIER).getResourceBundle(locale);
 			schoolName = getSession(iwc).getProvider().getSchoolName();
 			groupName = getSession(iwc).getGroup().getSchoolClassName();
 			
 			List students = new ArrayList(getSchoolBusiness(iwc).getSchoolClassMemberHome().findBySchoolClassAndYearAndStudyPath(getSession(iwc).getGroup(), getSession(iwc).getDepartment(), getSession(iwc).getInstrument()));
-			Map studentMap = business.getStudentList(students);
+			Map studentMap = careBusiness.getStudentList(students);
 			Collections.sort(students, new SchoolClassMemberComparator(SchoolChoiceComparator.NAME_SORT, iwc.getCurrentLocale(), userBusiness, studentMap));
 			
 			buffer = writeXLS(students);
@@ -190,8 +188,8 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 		return (MusicSchoolSession) IBOLookup.getSessionInstance(iwc, MusicSchoolSession.class);	
 	}
 
-	protected MusicSchoolBusiness getMusicSchoolBusiness(IWApplicationContext iwc) throws RemoteException {
-		return (MusicSchoolBusiness) IBOLookup.getServiceInstance(iwc, MusicSchoolBusiness.class);	
+	protected CareBusiness getCareBusiness(IWApplicationContext iwc) throws RemoteException {
+		return (CareBusiness) IBOLookup.getServiceInstance(iwc, CareBusiness.class);	
 	}
 
 	protected CommuneUserBusiness getUserBusiness(IWApplicationContext iwc) throws RemoteException {

@@ -184,7 +184,7 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 
 		if (!students.isEmpty()) {
 			numberOfStudents = students.size();
-			Map studentMap = getBusiness().getStudentList(students);
+			Map studentMap = getCareBusiness().getStudentList(students);
 			Collections.sort(students, new SchoolClassMemberComparator(sortStudentsBy, iwc.getCurrentLocale(), getUserBusiness(), studentMap));
 			Iterator iter = students.iterator();
 			while (iter.hasNext()) {

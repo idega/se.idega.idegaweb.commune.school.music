@@ -4,7 +4,6 @@
 package se.idega.idegaweb.commune.school.music.business;
 
 import is.idega.block.family.business.NoCustodianFound;
-
 import java.rmi.RemoteException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -15,19 +14,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 import javax.transaction.UserTransaction;
-
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
 import se.idega.idegaweb.commune.message.business.MessageBusiness;
 import se.idega.idegaweb.commune.message.data.Message;
-import se.idega.idegaweb.commune.school.business.SchoolCommuneBusiness;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceHome;
-
+import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.CaseBusinessBean;
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseStatus;
@@ -58,7 +54,7 @@ import com.idega.util.PersonalIDFormatter;
 /**
  * @author laddi
  */
-public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSchoolBusiness {
+public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSchoolBusiness, CaseBusiness {
 	
 	private final static String IW_BUNDLE_IDENTIFIER = "se.idega.idegaweb.commune.school.music";
 
@@ -74,15 +70,6 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 	private SchoolBusiness getSchoolBusiness() {
 		try {
 			return (SchoolBusiness) IBOLookup.getServiceInstance(getIWApplicationContext(), SchoolBusiness.class);
-		}
-		catch (IBOLookupException ile) {
-			throw new IBORuntimeException(ile);
-		}
-	}
-	
-	private SchoolCommuneBusiness getSchoolCommuneBusiness() {
-		try {
-			return (SchoolCommuneBusiness) IBOLookup.getServiceInstance(getIWApplicationContext(), SchoolCommuneBusiness.class);
 		}
 		catch (IBOLookupException ile) {
 			throw new IBORuntimeException(ile);
@@ -556,14 +543,6 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		}
 	}
 
-	public Map getStudentList(Collection students) {
-		try {
-			return getSchoolCommuneBusiness().getStudentList(students);
-		}
-		catch (RemoteException re) {
-			throw new IBORuntimeException(re);
-		}
-	}
 	
 	public void deleteInstrument(Object instrumentPK) {
 		try {
@@ -681,4 +660,6 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		}
 		throw new ClassCastException("Case with casecode: " + caseCode + " cannot be converted to a schoolchoice");
 	}
+	
+
 }

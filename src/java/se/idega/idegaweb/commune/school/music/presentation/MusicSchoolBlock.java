@@ -9,17 +9,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.ejb.FinderException;
-
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
+import se.idega.idegaweb.commune.care.business.CareBusiness;
 import se.idega.idegaweb.commune.presentation.CommuneBlock;
 import se.idega.idegaweb.commune.school.music.business.MusicSchoolBusiness;
 import se.idega.idegaweb.commune.school.music.business.MusicSchoolSession;
 import se.idega.idegaweb.commune.school.music.business.NoDepartmentFoundException;
 import se.idega.idegaweb.commune.school.music.business.NoInstrumentFoundException;
 import se.idega.idegaweb.commune.school.music.business.NoLessonTypeFoundException;
-
 import com.idega.block.school.business.SchoolBusiness;
 import com.idega.block.school.business.SchoolYearComparator;
 import com.idega.block.school.data.SchoolClass;
@@ -59,6 +57,7 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 	private SchoolBusiness sBusiness;
 	private CommuneUserBusiness uBusiness;
 	private MusicSchoolBusiness business;
+	private CareBusiness careBusiness;
 	private MusicSchoolSession session;
 
 	public void main(IWContext iwc) throws Exception {
@@ -78,6 +77,10 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 
 	public MusicSchoolBusiness getBusiness() {
 		return business;
+	}
+	
+	public CareBusiness getCareBusiness() {
+		return careBusiness;
 	}
 
 	public MusicSchoolSession getSession() {
@@ -340,6 +343,7 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		session = getMusicSchoolSession(iwc);
 		sBusiness = getSchoolBusiness(iwc);
 		uBusiness = getUserBusiness(iwc);
+		careBusiness = getCareBusiness(iwc);
 		
 		PLACED_COLOR = getBundle().getProperty("placed_color", "#FFE0E0");
 		PLACED_FOR_INSTRUMENT_COLOR = getBundle().getProperty("placed_for_instrument_color", "#E0FFE0");
@@ -371,6 +375,16 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 			throw new IBORuntimeException(ile);
 		}
 	}
+	
+	private CareBusiness getCareBusiness(IWApplicationContext iwac) {
+		try {
+			return (CareBusiness) IBOLookup.getServiceInstance(iwac, CareBusiness.class);
+		}
+		catch (IBOLookupException ile) {
+			throw new IBORuntimeException(ile);
+		}
+	}
+
 
 	private MusicSchoolSession getMusicSchoolSession(IWUserContext iwuc) {
 		try {
@@ -380,4 +394,6 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 			throw new IBORuntimeException(ile);
 		}
 	}
+	
+
 }
