@@ -70,6 +70,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 	private static final String EXTRA_PREFIX = "extra_";
 	
 	private static final String PARAMETER_ACTION = "prm_action";
+	private static final String PARAMETER_BACK = "prm_back";
 
 	private static final String PARAMETER_SCHOOLS = "prm_school";
 	private static final String PARAMETER_SEASON = "prm_season";
@@ -277,12 +278,9 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		table.setHeight(row++, 18);
 		
-		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));
 		SubmitButton next = (SubmitButton) getButton(new SubmitButton(localize("next", "Next"), PARAMETER_ACTION, String.valueOf(ACTION_PHASE_2)));
 		
 		table.mergeCells(1, row, table.getColumns(), row);
-		table.add(previous, 1, row);
-		table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
 		table.add(next, 1, row);
 		table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
 		table.add(getHelpButton("help_music_school_application_phase_1"), 1, row);
@@ -321,6 +319,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.maintainParameter(PARAMETER_MESSAGE);
 		form.maintainParameter(PARAMETER_PREVIOUS_STUDIES);
 		form.maintainParameter(PARAMETER_ELEMENTARY_SCHOOL);
+		form.addParameter(PARAMETER_BACK, "-1");
 		
 		Table table = new Table();
 		table.setCellpadding(0);
@@ -344,7 +343,8 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(getChoiceTable(iwc, false), 1, row++);
 		table.setHeight(row++, 18);
 
-		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));
+		SubmitButton previous = (SubmitButton) getButton(new SubmitButton(localize("previous", "Previous"), PARAMETER_ACTION, String.valueOf(ACTION_PHASE_1)));
+		previous.setValueOnClick(PARAMETER_BACK, "0");
 		SubmitButton next = (SubmitButton) getButton(new SubmitButton(localize("next", "Next"), PARAMETER_ACTION, String.valueOf(ACTION_PHASE_3)));
 		
 		table.add(previous, 1, row);
@@ -713,7 +713,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(choiceTable, 1, row++);
 		table.setHeight(row++, 18);
 		
-		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));
+		SubmitButton previous = (SubmitButton) getButton(new SubmitButton(localize("previous", "Previous"), PARAMETER_ACTION, String.valueOf(ACTION_PHASE_2)));
 		SubmitButton next = (SubmitButton) getButton(new SubmitButton(localize("next", "Next"), PARAMETER_ACTION, String.valueOf(ACTION_PHASE_4)));
 		
 		table.add(previous, 1, row);
@@ -757,6 +757,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.maintainParameter(PARAMETER_PREVIOUS_STUDIES);
 		form.maintainParameter(PARAMETER_ELEMENTARY_SCHOOL);
 		form.addParameter(PARAMETER_HAS_EXTRA_APPLICATIONS, "true");
+		form.addParameter(PARAMETER_BACK, "-1");
 		
 		Table table = new Table();
 		table.setCellpadding(0);
@@ -780,7 +781,8 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(getChoiceTable(iwc, true), 1, row++);
 		table.setHeight(row++, 18);
 
-		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));
+		SubmitButton previous = (SubmitButton) getButton(new SubmitButton(localize("previous", "Previous"), PARAMETER_ACTION, String.valueOf(ACTION_PHASE_3)));
+		previous.setValueOnClick(PARAMETER_BACK, "0");
 		SubmitButton next = (SubmitButton) getButton(new SubmitButton(localize("next", "Next"), PARAMETER_ACTION, String.valueOf(ACTION_PHASE_5)));
 		
 		table.add(previous, 1, row);
@@ -888,7 +890,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		
 		table.setHeight(row++, 18);
 
-		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));
+		SubmitButton previous = (SubmitButton) getButton(new SubmitButton(localize("previous", "Previous"), PARAMETER_ACTION, String.valueOf(ACTION_PHASE_4)));
 		SubmitButton next = (SubmitButton) getButton(new SubmitButton(localize("next", "Next"), PARAMETER_ACTION, String.valueOf(ACTION_VERIFY)));
 		
 		table.add(previous, 1, row);
@@ -1199,7 +1201,9 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 	private String getSubmitConfirmScript(String prefix) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("function checkApplication() {").append("\n\t");
-		buffer.append("\n\t var dropOne = ").append("findObj('").append(prefix + PARAMETER_SCHOOLS + "_1").append("');");
+		buffer.append("\n\t var back = ").append("findObj('").append(PARAMETER_BACK).append("').value;");
+		buffer.append("\n\t if (back == '0') return true;");
+		buffer.append("\n\n\t var dropOne = ").append("findObj('").append(prefix + PARAMETER_SCHOOLS + "_1").append("');");
 		buffer.append("\n\t var dropTwo = ").append("findObj('").append(prefix + PARAMETER_SCHOOLS + "_2").append("');");
 		buffer.append("\n\t var dropThree = ").append("findObj('").append(prefix + PARAMETER_SCHOOLS + "_3").append("');");
 		buffer.append("\n\t var dropDepartment = ").append("findObj('").append(prefix + PARAMETER_DEPARTMENT).append("');");
