@@ -38,6 +38,7 @@ import com.idega.presentation.ExceptionWrapper;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Script;
 import com.idega.presentation.Table;
+import com.idega.presentation.text.Break;
 import com.idega.presentation.text.Text;
 import com.idega.presentation.ui.CheckBox;
 import com.idega.presentation.ui.DropdownMenu;
@@ -124,6 +125,13 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 			return;
 		}
 		
+		if (getBusiness().hasGrantedApplication(getSession().getChild(), season)) {
+			add(getErrorText(localize("student_already_has_placement", "Student already has a granted placement for the school season")));
+			add(new Break(2));
+			add(new UserHomeLink());
+			return;
+		}
+		
 		Collection instruments = null;
 		try {
 			instruments = getInstruments();
@@ -176,6 +184,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 			int choiceNumber = 1;
 			while (iter.hasNext()) {
 				MusicSchoolChoice choice = (MusicSchoolChoice) iter.next();
+				choiceNumber = choice.getChoiceNumber();
 				if (!initialValuesSet) {
 					try {
 						chosenInstruments = choice.getStudyPaths();
@@ -184,7 +193,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 						log(ire);
 						break;
 					}
-					chosenSchool1 = choice.getSchoolPK();
 					chosenDepartment = choice.getSchoolYearPK();
 					chosenLessonType = choice.getSchoolTypePK();
 					chosenTeacher = choice.getTeacherRequest();
@@ -194,18 +202,19 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 					chosenMessage = choice.getMessage();
 					chosenElementarySchool = choice.getElementarySchool();
 					//chosenPaymentMethod = choice.getPaymentMethod();
-					getParentPage().setOnLoad("filter(findObj('" + PARAMETER_INSTRUMENTS + "'), findObj('" + PARAMETER_SCHOOLS + "_1'), '"+chosenSchool1+"');");
 					initialValuesSet = true;
 				}
-				else {
-					if (choiceNumber == 2) {
-						chosenSchool2 = choice.getSchoolPK();
-						getParentPage().setOnLoad("filter(findObj('" + PARAMETER_INSTRUMENTS + "'), findObj('" + PARAMETER_SCHOOLS + "_2'), '"+chosenSchool2+"');");
-					}
-					else if (choiceNumber == 3) {
-						chosenSchool3 = choice.getSchoolPK();
-						getParentPage().setOnLoad("filter(findObj('" + PARAMETER_INSTRUMENTS + "'), findObj('" + PARAMETER_SCHOOLS + "_3'), '"+chosenSchool3+"');");
-					}
+				if (choiceNumber == 1) {
+					chosenSchool1 = choice.getSchoolPK();
+					getParentPage().setOnLoad("filter(findObj('" + PARAMETER_INSTRUMENTS + "'), findObj('" + PARAMETER_SCHOOLS + "_1'), '"+chosenSchool1+"');");
+				}
+				else if (choiceNumber == 2) {
+					chosenSchool2 = choice.getSchoolPK();
+					getParentPage().setOnLoad("filter(findObj('" + PARAMETER_INSTRUMENTS + "'), findObj('" + PARAMETER_SCHOOLS + "_2'), '"+chosenSchool2+"');");
+				}
+				else if (choiceNumber == 3) {
+					chosenSchool3 = choice.getSchoolPK();
+					getParentPage().setOnLoad("filter(findObj('" + PARAMETER_INSTRUMENTS + "'), findObj('" + PARAMETER_SCHOOLS + "_3'), '"+chosenSchool3+"');");
 				}
 				choiceNumber++;
 			}
