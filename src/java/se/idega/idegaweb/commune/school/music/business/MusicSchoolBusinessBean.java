@@ -512,6 +512,16 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		}
 	}
 	
+	public int getMusicSchoolStatistics(boolean showFirstChoiceOnly) {
+		try {
+			String status = getCaseStatusDeleted().getStatus();
+			return getMusicSchoolChoiceHome().getMusicChoiceStatistics(status, showFirstChoiceOnly);
+		}
+		catch (IDOException ie) {
+			return 0;
+		}
+	}
+	
 	private void sendMessageToParents(MusicSchoolChoice choice, String subject, String body) {
 		sendMessageToParents(choice, subject, body, body, false);
 	}

@@ -41,4 +41,5 @@ public interface MusicSchoolBusiness extends com.idega.block.process.business.Ca
  public void saveDepartment(Object instrumentPK, String name, String description, String localizedKey, int order, boolean isSelectable) throws FinderException, CreateException, java.rmi.RemoteException;
  public void saveLessonType(Object lessonTypePK, String name, String description, String localizedKey, int order, boolean isSelectable) throws CreateException, java.rmi.RemoteException;
  public void reactivateApplication(Object applicationPK, User performer) throws java.rmi.RemoteException;
+ public int getMusicSchoolStatistics(boolean showFirstChoiceOnly) throws java.rmi.RemoteException;
 }

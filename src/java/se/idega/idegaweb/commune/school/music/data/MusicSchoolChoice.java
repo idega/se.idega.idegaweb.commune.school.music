@@ -1,58 +1,297 @@
+/*
+ * $Id: MusicSchoolChoice.java,v 1.4 2004/09/26 10:14:17 laddi Exp $
+ * Created on 26.9.2004
+ *
+ * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
+ *
+ * This software is the proprietary information of Idega hf.
+ * Use is subject to license terms.
+ */
 package se.idega.idegaweb.commune.school.music.data;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Collection;
 
-public interface MusicSchoolChoice extends com.idega.block.process.data.Case
-{
- public void addStudyPath(com.idega.block.school.data.SchoolStudyPath p0)throws com.idega.data.IDOAddRelationshipException;
- public void addStudyPaths(java.lang.Object[] p0)throws com.idega.data.IDOAddRelationshipException;
- public void addStudyPaths(java.util.Collection p0)throws com.idega.data.IDOAddRelationshipException;
- public java.lang.String getCaseCodeDescription();
- public java.lang.String getCaseCodeKey();
- public com.idega.user.data.User getChild();
- public java.lang.Object getChildPK();
- public java.sql.Timestamp getChoiceDate();
- public int getChoiceNumber();
- public java.lang.String getElementarySchool();
- public java.lang.String getMessage();
- public int getPaymentMethod();
- public java.sql.Date getPlacementDate();
- public java.lang.String getPreviousStudies();
- public com.idega.block.school.data.SchoolStudyPath getPreviousStudyPath();
- public java.lang.Object getPreviousStudyPathPK();
- public com.idega.block.school.data.SchoolYear getPreviousYear();
- public java.lang.Object getPreviousYearPK();
- public com.idega.block.school.data.School getSchool();
- public java.lang.Object getSchoolPK();
- public com.idega.block.school.data.SchoolSeason getSchoolSeason();
- public java.lang.Object getSchoolSeasonPK();
- public com.idega.block.school.data.SchoolType getSchoolType();
- public java.lang.Object getSchoolTypePK();
- public com.idega.block.school.data.SchoolYear getSchoolYear();
- public java.lang.Object getSchoolYearPK();
- public java.util.Collection getStudyPaths()throws com.idega.data.IDORelationshipException;
- public java.lang.String getTeacherRequest();
- public void removeStudyPath(com.idega.block.school.data.SchoolStudyPath p0)throws com.idega.data.IDORemoveRelationshipException;
- public void removeStudyPaths()throws com.idega.data.IDORemoveRelationshipException;
- public void setChild(com.idega.user.data.User p0);
- public void setChild(java.lang.Object p0);
- public void setChoiceDate(java.sql.Timestamp p0);
- public void setChoiceNumber(int p0);
- public void setElementarySchool(java.lang.String p0);
- public void setMessage(java.lang.String p0);
- public void setPaymentMethod(int p0);
- public void setPlacementDate(java.sql.Date p0);
- public void setPreviousStudies(java.lang.String p0);
- public void setPreviousStudyPath(com.idega.block.school.data.SchoolStudyPath p0);
- public void setPreviousStudyPath(java.lang.Object p0);
- public void setPreviousYear(com.idega.block.school.data.SchoolYear p0);
- public void setPreviousYear(java.lang.Object p0);
- public void setSchool(java.lang.Object p0);
- public void setSchool(com.idega.block.school.data.School p0);
- public void setSchoolSeason(java.lang.Object p0);
- public void setSchoolSeason(com.idega.block.school.data.SchoolSeason p0);
- public void setSchoolType(java.lang.Object p0);
- public void setSchoolType(com.idega.block.school.data.SchoolType p0);
- public void setSchoolYear(java.lang.Object p0);
- public void setSchoolYear(com.idega.block.school.data.SchoolYear p0);
- public void setTeacherRequest(java.lang.String p0);
+import com.idega.block.process.data.Case;
+import com.idega.block.school.data.School;
+import com.idega.block.school.data.SchoolSeason;
+import com.idega.block.school.data.SchoolStudyPath;
+import com.idega.block.school.data.SchoolType;
+import com.idega.block.school.data.SchoolYear;
+import com.idega.data.IDOAddRelationshipException;
+import com.idega.data.IDORelationshipException;
+import com.idega.data.IDORemoveRelationshipException;
+import com.idega.user.data.User;
+
+
+/**
+ * 
+ *  Last modified: $Date: 2004/09/26 10:14:17 $ by $Author: laddi $
+ * 
+ * @author <a href="mailto:laddi@idega.com">laddi</a>
+ * @version $Revision: 1.4 $
+ */
+public interface MusicSchoolChoice extends Case {
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getCaseCodeKey
+	 */
+	public String getCaseCodeKey();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getCaseCodeDescription
+	 */
+	public String getCaseCodeDescription();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getChild
+	 */
+	public User getChild();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getChildPK
+	 */
+	public Object getChildPK();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getSchool
+	 */
+	public School getSchool();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getSchoolPK
+	 */
+	public Object getSchoolPK();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getSchoolType
+	 */
+	public SchoolType getSchoolType();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getSchoolTypePK
+	 */
+	public Object getSchoolTypePK();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getSchoolSeason
+	 */
+	public SchoolSeason getSchoolSeason();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getSchoolSeasonPK
+	 */
+	public Object getSchoolSeasonPK();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getSchoolYear
+	 */
+	public SchoolYear getSchoolYear();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getSchoolYearPK
+	 */
+	public Object getSchoolYearPK();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getPlacementDate
+	 */
+	public Date getPlacementDate();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getChoiceDate
+	 */
+	public Timestamp getChoiceDate();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getChoiceNumber
+	 */
+	public int getChoiceNumber();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getMessage
+	 */
+	public String getMessage();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getTeacherRequest
+	 */
+	public String getTeacherRequest();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getElementarySchool
+	 */
+	public String getElementarySchool();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getPreviousStudies
+	 */
+	public String getPreviousStudies();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getPreviousYear
+	 */
+	public SchoolYear getPreviousYear();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getPreviousYearPK
+	 */
+	public Object getPreviousYearPK();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getPreviousStudyPath
+	 */
+	public SchoolStudyPath getPreviousStudyPath();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getPreviousStudyPathPK
+	 */
+	public Object getPreviousStudyPathPK();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getPaymentMethod
+	 */
+	public int getPaymentMethod();
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#getStudyPaths
+	 */
+	public Collection getStudyPaths() throws IDORelationshipException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setChild
+	 */
+	public void setChild(User child);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setChild
+	 */
+	public void setChild(Object childID);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setSchool
+	 */
+	public void setSchool(School school);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setSchool
+	 */
+	public void setSchool(Object schoolID);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setSchoolSeason
+	 */
+	public void setSchoolSeason(SchoolSeason schoolSeason);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setSchoolSeason
+	 */
+	public void setSchoolSeason(Object schoolSeasonID);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setSchoolType
+	 */
+	public void setSchoolType(SchoolType schoolType);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setSchoolType
+	 */
+	public void setSchoolType(Object schoolTypeID);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setSchoolYear
+	 */
+	public void setSchoolYear(SchoolYear schoolYear);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setSchoolYear
+	 */
+	public void setSchoolYear(Object schoolYearID);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setPlacementDate
+	 */
+	public void setPlacementDate(Date placementDate);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setChoiceDate
+	 */
+	public void setChoiceDate(Timestamp choiceDate);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setChoiceNumber
+	 */
+	public void setChoiceNumber(int choiceNumber);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setMessage
+	 */
+	public void setMessage(String message);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setTeacherRequest
+	 */
+	public void setTeacherRequest(String teacherRequest);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setElementarySchool
+	 */
+	public void setElementarySchool(String elementarySchool);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setPreviousStudies
+	 */
+	public void setPreviousStudies(String previousStudies);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setPreviousYear
+	 */
+	public void setPreviousYear(SchoolYear previousYear);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setPreviousYear
+	 */
+	public void setPreviousYear(Object previousYearID);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setPreviousStudyPath
+	 */
+	public void setPreviousStudyPath(SchoolStudyPath studyPath);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setPreviousStudyPath
+	 */
+	public void setPreviousStudyPath(Object studyPathID);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#setPaymentMethod
+	 */
+	public void setPaymentMethod(int paymentMethod);
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#addStudyPaths
+	 */
+	public void addStudyPaths(Object[] studyPathIDs) throws IDOAddRelationshipException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#addStudyPaths
+	 */
+	public void addStudyPaths(Collection studyPaths) throws IDOAddRelationshipException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#addStudyPath
+	 */
+	public void addStudyPath(SchoolStudyPath studyPath) throws IDOAddRelationshipException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#removeStudyPaths
+	 */
+	public void removeStudyPaths() throws IDORemoveRelationshipException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceBMPBean#removeStudyPath
+	 */
+	public void removeStudyPath(SchoolStudyPath studyPath) throws IDORemoveRelationshipException;
+
 }

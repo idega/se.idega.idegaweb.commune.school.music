@@ -424,6 +424,26 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		}
 	}
 	
+	public int ejbHomeGetMusicChoiceStatistics(String status, boolean firstChoiceOnly) throws IDOException {
+		Table choice = new Table(this, "c");
+		Table process = new Table(Case.class, "p");
+		
+		SelectQuery query = new SelectQuery(choice);
+		query.addColumn(new CountColumn(choice, this.getIDColumnName()));
+		try {
+			query.addJoin(choice, process);
+		}
+		catch (IDORelationshipException ile) {
+			throw new IDOException(ile.getMessage());
+		}
+		query.addCriteria(new MatchCriteria(process, "CASE_STATUS", MatchCriteria.NOTEQUALS, status));
+		if (firstChoiceOnly) {
+			query.addCriteria(new MatchCriteria(new Column(process, "PARENT_CASE_ID"), false));
+		}
+
+		return idoGetNumberOfRecords(query.toString());
+	}
+	
 	private SelectQuery getDefaultQuery(User child, School school, SchoolSeason season, SchoolYear department, SchoolStudyPath instrument, String types, String[] statuses) throws FinderException {
 		Table choice = new Table(this, "c");
 		Table process = new Table(Case.class, "p");
