@@ -160,7 +160,7 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 					choicesTable.add(getSmallText(String.valueOf(age.getYears())), iColumn++, iRow);
 					if (address != null) {
 						if (code != null) {
-							choicesTable.add(getSmallText(code.getPostalAddress()), iColumn++, iRow);
+							choicesTable.add(getSmallText(code.getPostalCode()), iColumn++, iRow);
 						}
 						else {
 							choicesTable.add(getSmallText("-"), iColumn++, iRow);

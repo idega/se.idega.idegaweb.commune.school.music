@@ -260,7 +260,7 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 				table.add(getSmallText(String.valueOf(age.getYears())), iColumn++, iRow);
 
 				if (postal != null) {
-					table.add(getSmallText(postal.getPostalAddress()), iColumn++, iRow);
+					table.add(getSmallText(postal.getPostalCode()), iColumn++, iRow);
 				}
 				else {
 					table.add(getSmallText("-"), iColumn++, iRow);
