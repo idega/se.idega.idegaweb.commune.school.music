@@ -19,6 +19,11 @@ import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolType;
 import com.idega.block.school.data.SchoolYear;
+import com.idega.core.location.data.Address;
+import com.idega.core.location.data.AddressBMPBean;
+import com.idega.core.location.data.AddressTypeBMPBean;
+import com.idega.core.location.data.Commune;
+import com.idega.core.location.data.PostalCode;
 import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOCompositePrimaryKeyException;
 import com.idega.data.IDOEntity;
@@ -544,5 +549,65 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		query.addOrder(choice, CHOICE_DATE, true);
 		
 		return query;
+	}
+
+	public int ejbHomeGetApplicationCount(School school, SchoolSeason season, SchoolYear department, SchoolStudyPath instrument, String types, String[] statuses, int choiceNumber, Commune commune) throws IDOException {
+		Table choice = new Table(this, "c");
+		Table process = new Table(Case.class, "p");
+		Table instruments = new Table(SchoolStudyPath.class, "sp");
+		Table user = new Table(User.class);
+		Table address = new Table(Address.class);
+		Table postal = new Table(PostalCode.class);
+		
+		SelectQuery query = new SelectQuery(choice);
+		query.addColumn(new CountColumn(choice, this.getIDColumnName()));
+		try {
+			query.addJoin(choice, process);
+		}
+		catch (IDORelationshipException ile) {
+			throw new IDOException(ile.getMessage());
+		}
+		if (instrument != null) {
+			try {
+				query.addManyToManyJoin(choice, instruments, "csp");
+			}
+			catch (IDORelationshipException ile) {
+				throw new IDOException(ile.getMessage());
+			}
+		}
+		
+		query.addCriteria(new InCriteria(process, "case_status", statuses));
+		if (school != null) {
+			query.addCriteria(new MatchCriteria(choice, SCHOOL, MatchCriteria.EQUALS, school));
+		}
+		if (season != null) {
+			query.addCriteria(new MatchCriteria(choice, SCHOOL_SEASON, MatchCriteria.EQUALS, season));
+		}
+		if (department != null) {
+			query.addCriteria(new MatchCriteria(choice, SCHOOL_YEAR, MatchCriteria.EQUALS, department));
+		}
+		if (instrument != null) {
+			try {
+				query.addCriteria(new MatchCriteria(instruments, instruments.getPrimaryKeyColumnName(), MatchCriteria.EQUALS, instrument));
+			}
+			catch (IDOCompositePrimaryKeyException icpke) {
+				throw new IDOException(icpke.getMessage());
+			}
+		}
+		if (types != null) {
+			query.addCriteria(new InCriteria(choice, SCHOOL_TYPE, types));
+		}
+		if (choiceNumber > 0) {
+			query.addCriteria(new MatchCriteria(choice, CHOICE_ORDER, MatchCriteria.EQUALS, choiceNumber));
+		}
+		if (commune != null) {
+			query.addJoin(choice, user);
+			query.addJoin(user, address);
+			query.addJoin(address, postal);
+			query.addCriteria(new MatchCriteria(address, AddressBMPBean.getColumnNameAddressTypeId(), MatchCriteria.EQUALS, AddressTypeBMPBean.ADDRESS_1));
+			query.addCriteria(new MatchCriteria(postal, "ic_commune_id", MatchCriteria.EQUALS, commune));
+		}
+		
+		return idoGetNumberOfRecords(query);
 	}
 }

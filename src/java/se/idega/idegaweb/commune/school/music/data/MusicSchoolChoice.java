@@ -1,6 +1,6 @@
 /*
- * $Id: MusicSchoolChoice.java,v 1.7 2005/04/04 11:53:40 laddi Exp $
- * Created on 4.4.2005
+ * $Id: MusicSchoolChoice.java,v 1.8 2005/04/06 09:29:06 laddi Exp $
+ * Created on 6.4.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -28,10 +28,10 @@ import com.idega.user.data.User;
  * <p>
  * TODO laddi Describe Type MusicSchoolChoice
  * </p>
- *  Last modified: $Date: 2005/04/04 11:53:40 $ by $Author: laddi $
+ *  Last modified: $Date: 2005/04/06 09:29:06 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface MusicSchoolChoice extends Case {
 

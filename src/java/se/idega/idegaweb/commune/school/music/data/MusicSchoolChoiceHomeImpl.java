@@ -1,6 +1,6 @@
 /*
- * $Id: MusicSchoolChoiceHomeImpl.java,v 1.7 2005/04/04 11:53:40 laddi Exp $
- * Created on 4.4.2005
+ * $Id: MusicSchoolChoiceHomeImpl.java,v 1.8 2005/04/06 09:29:06 laddi Exp $
+ * Created on 6.4.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -15,6 +15,7 @@ import com.idega.block.school.data.School;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolYear;
+import com.idega.core.location.data.Commune;
 import com.idega.data.IDOException;
 import com.idega.data.IDOFactory;
 import com.idega.user.data.User;
@@ -24,10 +25,10 @@ import com.idega.user.data.User;
  * <p>
  * TODO laddi Describe Type MusicSchoolChoiceHomeImpl
  * </p>
- *  Last modified: $Date: 2005/04/04 11:53:40 $ by $Author: laddi $
+ *  Last modified: $Date: 2005/04/06 09:29:06 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class MusicSchoolChoiceHomeImpl extends IDOFactory implements MusicSchoolChoiceHome {
 
@@ -196,6 +197,15 @@ public class MusicSchoolChoiceHomeImpl extends IDOFactory implements MusicSchool
 	public int getMusicChoiceStatistics(String status, SchoolSeason season, boolean firstChoiceOnly) throws IDOException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 		int theReturn = ((MusicSchoolChoiceBMPBean) entity).ejbHomeGetMusicChoiceStatistics(status, season, firstChoiceOnly);
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
+	}
+
+	public int getApplicationCount(School school, SchoolSeason season, SchoolYear department, SchoolStudyPath instrument,
+			String types, String[] statuses, int choiceNumber, Commune commune) throws IDOException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		int theReturn = ((MusicSchoolChoiceBMPBean) entity).ejbHomeGetApplicationCount(school, season, department,
+				instrument, types, statuses, choiceNumber, commune);
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}

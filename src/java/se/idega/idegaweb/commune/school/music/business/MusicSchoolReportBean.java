@@ -10,9 +10,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.ejb.FinderException;
-
+import se.idega.idegaweb.commune.business.CommuneUserBusiness;
 import com.idega.block.datareport.util.ReportableCollection;
 import com.idega.block.datareport.util.ReportableData;
 import com.idega.block.datareport.util.ReportableField;
@@ -25,6 +24,7 @@ import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.business.IBOSessionBean;
+import com.idega.core.location.data.Commune;
 import com.idega.data.IDOException;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWResourceBundle;
@@ -52,7 +52,63 @@ public class MusicSchoolReportBean extends IBOSessionBean implements MusicSchool
 		_iwrb = _iwb.getResourceBundle(this.getUserContext().getCurrentLocale());
 	}
 	
+	public ReportableCollection getPendingChoicesReport(SchoolSeason season) {
+		try {
+			String[] statuses = { getMusicSchoolBusiness().getCaseStatusPending().toString() };
+			return getReport(season, null, statuses, false);
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
+	public ReportableCollection getPendingCommuneChoicesReport(SchoolSeason season) {
+		try {
+			Commune commune = getUserBusiness().getDefaultCommune();
+			String[] statuses = { getMusicSchoolBusiness().getCaseStatusPending().toString() };
+			return getReport(season, commune, statuses, false);
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
 	public ReportableCollection getChoicesReport(SchoolSeason season) {
+		try {
+			String[] statuses = { getMusicSchoolBusiness().getCaseStatusPreliminary().toString(), getMusicSchoolBusiness().getCaseStatusInactive().toString() };
+			return getReport(season, null, statuses, false);
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
+	public ReportableCollection getCommuneChoicesReport(SchoolSeason season) {
+		try {
+			Commune commune = getUserBusiness().getDefaultCommune();
+			String[] statuses = { getMusicSchoolBusiness().getCaseStatusPreliminary().toString(), getMusicSchoolBusiness().getCaseStatusInactive().toString() };
+			return getReport(season, commune, statuses, false);
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
+	public ReportableCollection getPlacingsReport(SchoolSeason season) {
+		return getReport(season, null, null, true);
+	}
+	
+	public ReportableCollection getCommunePlacingsReport(SchoolSeason season) {
+		try {
+			Commune commune = getUserBusiness().getDefaultCommune();
+			return getReport(season, commune, null, true);
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
+	private ReportableCollection getReport(SchoolSeason season, Commune commune, String[] statuses, boolean getPlacements) {
 		try {
 			initializeBundlesIfNeeded();
 			Locale currentLocale = this.getUserContext().getCurrentLocale();
@@ -110,7 +166,6 @@ public class MusicSchoolReportBean extends IBOSessionBean implements MusicSchool
 				
 			}
 			
-			String[] statuses = { getMusicSchoolBusiness().getCaseStatusPreliminary().getStatus(), getMusicSchoolBusiness().getCaseStatusPlaced().getStatus() }; 
 			iter = schools.iterator();
 			while (iter.hasNext()) {
 				School school = (School) iter.next();
@@ -125,8 +180,14 @@ public class MusicSchoolReportBean extends IBOSessionBean implements MusicSchool
 				while (iterator.hasNext()) {
 					SchoolYear department = (SchoolYear) iterator.next();
 					try {
-						singingNR = getMusicSchoolBusiness().getMusicSchoolChoiceHome().getNumberOfApplications(school, season, department, singing, typeIDs, statuses);
-						totalNR = getMusicSchoolBusiness().getMusicSchoolChoiceHome().getNumberOfApplications(school, season, department, null, typeIDs, statuses);
+						if (getPlacements) {
+							singingNR = getSchoolBusiness().getSchoolClassMemberHome().getNumberOfPlacingsAtSchool(school, season, department, singing, typeIDs, commune);
+							totalNR = getSchoolBusiness().getSchoolClassMemberHome().getNumberOfPlacingsAtSchool(school, season, department, null, typeIDs, commune);
+						}
+						else {
+							singingNR = getMusicSchoolBusiness().getMusicSchoolChoiceHome().getApplicationCount(school, season, department, singing, typeIDs, statuses, 1, commune);
+							totalNR = getMusicSchoolBusiness().getMusicSchoolChoiceHome().getApplicationCount(school, season, department, null, typeIDs, statuses, 1, commune);
+						}
 						otherNR = totalNR - singingNR;
 					}
 					catch (IDOException ie) {
@@ -156,6 +217,15 @@ public class MusicSchoolReportBean extends IBOSessionBean implements MusicSchool
 	private MusicSchoolBusiness getMusicSchoolBusiness() {
 		try {
 			return (MusicSchoolBusiness) IBOLookup.getServiceInstance(getIWApplicationContext(), MusicSchoolBusiness.class);
+		}
+		catch (IBOLookupException ile) {
+			throw new IBORuntimeException(ile);
+		}
+	}
+
+	private CommuneUserBusiness getUserBusiness() {
+		try {
+			return (CommuneUserBusiness) IBOLookup.getServiceInstance(getIWApplicationContext(), CommuneUserBusiness.class);
 		}
 		catch (IBOLookupException ile) {
 			throw new IBORuntimeException(ile);
