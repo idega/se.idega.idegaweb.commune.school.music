@@ -13,6 +13,7 @@ import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
 
 import com.idega.block.school.data.SchoolClassMember;
+import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolYear;
 import com.idega.business.IBORuntimeException;
@@ -116,6 +117,9 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 				CheckBox box;
 				boolean isPlaced = true;
 				boolean hasInstrumentPlacement = false;
+				boolean olderStudent = false;
+				boolean showOlderStudentMessage = false;
+				SchoolSeason previousSeason = getSchoolBusiness().findPreviousSchoolSeason(((Integer) getSession().getSeason().getPrimaryKey()).intValue());
 				
 				Iterator iter = choices.iterator();
 				while (iter.hasNext()) {
@@ -143,6 +147,17 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					}
 					else {
 						hasInstrumentPlacement = false;
+					}
+					if (previousSeason != null) {
+						olderStudent = getBusiness().isPlacedInSchool(user, getSession().getProvider(), previousSeason, null);
+					}
+					else {
+						olderStudent = false;
+					}
+					
+					if (olderStudent) {
+						showOlderStudentMessage = true;
+						choicesTable.add(getSmallErrorText("* "), iColumn, iRow);
 					}
 					
 					userLink = getSmallLink(user.getName());
@@ -200,6 +215,13 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					else {
 						choicesTable.setRowStyleClass(iRow++, getDarkRowClass());
 					}
+				}
+				
+				if (showOlderStudentMessage) {
+					table.setHeight(row++, 6);
+					table.setCellpaddingLeft(1, row, 12);
+					table.add(getSmallErrorText("* "), 1, row);
+					table.add(getSmallText(localize("student_previously_placed", "Student is previously placed at school")), 1, row++);
 				}
 				
 				if (getSession().getGroup() != null) {
