@@ -1,6 +1,6 @@
 /*
- * $Id: MusicSchoolBusiness.java,v 1.13 2005/03/19 16:37:28 laddi Exp $
- * Created on 19.3.2005
+ * $Id: MusicSchoolBusiness.java,v 1.14 2005/03/20 12:47:09 laddi Exp $
+ * Created on 20.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -21,6 +21,7 @@ import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.data.Case;
 import com.idega.block.school.data.School;
 import com.idega.block.school.data.SchoolClass;
+import com.idega.block.school.data.SchoolClassMember;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolYear;
@@ -33,10 +34,10 @@ import com.idega.user.data.User;
  * <p>
  * TODO laddi Describe Type MusicSchoolBusiness
  * </p>
- *  Last modified: $Date: 2005/03/19 16:37:28 $ by $Author: laddi $
+ *  Last modified: $Date: 2005/03/20 12:47:09 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 
@@ -145,6 +146,12 @@ public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 			String elementarySchool) throws FinderException, java.rmi.RemoteException;
 
 	/**
+	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#updateStudent
+	 */
+	public SchoolClassMember updateStudent(SchoolClassMember student, Object departmentPK, Object lessonTypePK,
+			Collection instrumentsPKs) throws java.rmi.RemoteException;
+
+	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#getDefaultGroup
 	 */
 	public SchoolClass getDefaultGroup(School school, SchoolSeason season) throws java.rmi.RemoteException;
@@ -227,8 +234,8 @@ public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#transferToNextSchoolSeason
 	 */
-	public void transferToNextSchoolSeason(Object[] studentPKs, School school, SchoolSeason currentSeason, User performer)
-			throws FinderException, java.rmi.RemoteException;
+	public void transferToNextSchoolSeason(Object[] studentPKs, Object[] departmentPKs, School school,
+			SchoolSeason currentSeason, User performer) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#getBundleIdentifier

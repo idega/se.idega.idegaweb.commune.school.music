@@ -42,6 +42,7 @@ import com.idega.presentation.text.Text;
 import com.idega.presentation.ui.BackButton;
 import com.idega.presentation.ui.DropdownMenu;
 import com.idega.presentation.ui.Form;
+import com.idega.presentation.ui.RadioButton;
 import com.idega.presentation.ui.SubmitButton;
 import com.idega.presentation.ui.TextArea;
 import com.idega.presentation.ui.TextInput;
@@ -291,8 +292,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		Table choiceTable = new Table();
 		choiceTable.setCellpadding(0);
 		choiceTable.setCellspacing(0);
-		choiceTable.setColumns(5);
-		choiceTable.setWidth(3, 12);
+		choiceTable.setColumns(2);
 		choiceTable.setWidth(Table.HUNDRED_PERCENT);
 		int iRow = 1;
 		
@@ -412,8 +412,11 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		
 		SelectorUtility util = new SelectorUtility();
 		DropdownMenu instrumentsDrop1 = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(getParameterName(PARAMETER_INSTRUMENTS + "_1", extraApplications)), instruments, "getLocalizedKey", getResourceBundle());
+		instrumentsDrop1.addMenuElementFirst("", localize("select_instrument", "Select instrument"));
 		DropdownMenu instrumentsDrop2 = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(getParameterName(PARAMETER_INSTRUMENTS + "_2", extraApplications)), instruments, "getLocalizedKey", getResourceBundle());
+		instrumentsDrop2.addMenuElementFirst("", localize("select_instrument", "Select instrument"));
 		DropdownMenu instrumentsDrop3 = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(getParameterName(PARAMETER_INSTRUMENTS + "_3", extraApplications)), instruments, "getLocalizedKey", getResourceBundle());
+		instrumentsDrop3.addMenuElementFirst("", localize("select_instrument", "Select instrument"));
 		if (chosenInstruments != null) {
 			int index = 1;
 			Iterator iter = chosenInstruments.iterator();
@@ -461,55 +464,55 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("first_school", "First choice")), 1, iRow);
-		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
-		choiceTable.add(school1, 2, iRow);
+		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_INPUT_CELL));
+		choiceTable.add(school1, 1, iRow);
 
-		choiceTable.setStyleClass(4, iRow, getStyleName(STYLENAME_TEXT_CELL));
-		choiceTable.add(getText(localize("first_instrument", "First instrument")), 4, iRow);
-		choiceTable.setStyleClass(5, iRow, getStyleName(STYLENAME_INPUT_CELL));
-		choiceTable.add(instrumentsDrop1, 5, iRow++);
+		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
+		choiceTable.add(getText(localize("first_instrument", "First instrument")), 2, iRow);
+		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
+		choiceTable.add(instrumentsDrop1, 2, iRow++);
 
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("second_school", "Second choice")), 1, iRow);
-		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
-		choiceTable.add(school2, 2, iRow);
+		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_INPUT_CELL));
+		choiceTable.add(school2, 1, iRow);
 
-		choiceTable.setStyleClass(4, iRow, getStyleName(STYLENAME_TEXT_CELL));
-		choiceTable.add(getText(localize("first_instrument", "First instrument")), 4, iRow);
-		choiceTable.setStyleClass(5, iRow, getStyleName(STYLENAME_INPUT_CELL));
-		choiceTable.add(instrumentsDrop1, 5, iRow++);
+		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
+		choiceTable.add(getText(localize("first_instrument", "First instrument")), 2, iRow);
+		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
+		choiceTable.add(instrumentsDrop1, 2, iRow++);
 
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("third_school", "Third school")), 1, iRow);
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
 		choiceTable.add(school3, 2, iRow);
 
-		choiceTable.setStyleClass(4, iRow, getStyleName(STYLENAME_TEXT_CELL));
-		choiceTable.add(getText(localize("first_instrument", "First instrument")), 4, iRow);
-		choiceTable.setStyleClass(5, iRow, getStyleName(STYLENAME_INPUT_CELL));
-		choiceTable.add(instrumentsDrop1, 5, iRow++);
+		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
+		choiceTable.add(getText(localize("first_instrument", "First instrument")), 2, iRow);
+		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
+		choiceTable.add(instrumentsDrop1, 2, iRow++);
 
-		choiceTable.setStyleClass(4, iRow, getStyleName(STYLENAME_TEXT_CELL));
-		choiceTable.add(getText(localize("teacher_request", "Teacher request")), 4, iRow);
-		choiceTable.setStyleClass(5, iRow, getStyleName(STYLENAME_INPUT_CELL));
-		choiceTable.add(getTextInput(PARAMETER_OTHER_INSTRUMENT, otherInstrument), 5, iRow++);
+		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
+		choiceTable.add(getText(localize("other_instrument", "Other instrument")), 2, iRow);
+		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
+		choiceTable.add(getTextInput(PARAMETER_OTHER_INSTRUMENT, otherInstrument), 2, iRow++);
 		
 		choiceTable.setHeight(iRow++, 18);
 		
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("department", "Department")), 1, iRow);
-		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
-		choiceTable.add(departmentDrop, 2, iRow++);
+		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_INPUT_CELL));
+		choiceTable.add(departmentDrop, 1, iRow++);
 
-		choiceTable.setStyleClass(4, iRow, getStyleName(STYLENAME_TEXT_CELL));
-		choiceTable.add(getText(localize("lesson_type", "Lesson type")), 4, iRow);
-		choiceTable.setStyleClass(5, iRow, getStyleName(STYLENAME_INPUT_CELL));
-		choiceTable.add(lessonTypeDrop, 5, iRow++);
+		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
+		choiceTable.add(getText(localize("lesson_type", "Lesson type")), 2, iRow);
+		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
+		choiceTable.add(lessonTypeDrop, 2, iRow++);
 
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("teacher_request", "Teacher request")), 1, iRow);
-		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
-		choiceTable.add(getTextInput(getParameterName(PARAMETER_TEACHER_REQUEST, extraApplications), chosenTeacher), 2, iRow++);
+		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_INPUT_CELL));
+		choiceTable.add(getTextInput(getParameterName(PARAMETER_TEACHER_REQUEST, extraApplications), chosenTeacher), 1, iRow++);
 		
 		return choiceTable;
 	}
@@ -543,6 +546,15 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		int row = 1;
 
 		table.add(getPersonInfoTable(iwc, getSession().getChild()), 1, row++);
+		table.setHeight(row++, 18);
+		
+		RadioButton yes = this.getRadioButton(PARAMETER_HAS_EXTRA_APPLICATIONS, Boolean.TRUE.toString());
+		RadioButton no = this.getRadioButton(PARAMETER_HAS_EXTRA_APPLICATIONS, Boolean.FALSE.toString());
+		no.setSelected(true);
+		
+		table.add(yes, 1, row);
+		table.add(no, 1, row++);
+		
 		table.setHeight(row++, 18);
 		
 		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));

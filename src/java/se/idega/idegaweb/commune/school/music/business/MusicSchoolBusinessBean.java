@@ -423,6 +423,48 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		return choice;
 	}
 	
+	public SchoolClassMember updateStudent(SchoolClassMember student, Object departmentPK, Object lessonTypePK, Collection instrumentsPKs) {
+		try {
+			student.removeAllStudyPaths();
+		}
+		catch (IDORelationshipException ire) {
+			log(ire);
+		}
+		student.setSchoolYear(Integer.parseInt(departmentPK.toString()));
+		student.setSchoolTypeId(Integer.parseInt(lessonTypePK.toString()));
+		
+		Collection instrumentsCollection = new ArrayList();
+		try {
+			Iterator iter = instrumentsPKs.iterator();
+			while (iter.hasNext()) {
+				Object element = iter.next();
+				try {
+					instrumentsCollection.add(getSchoolBusiness().getSchoolStudyPathHome().findByPrimaryKey(new Integer(element.toString())));
+				}
+				catch (FinderException fe) {
+					log(fe);
+				}
+			}
+		}
+		catch (RemoteException re) {
+			log(re);
+		}
+		
+		student.store();
+		Iterator iter = instrumentsCollection.iterator();
+		while (iter.hasNext()) {
+			SchoolStudyPath instrument = (SchoolStudyPath) iter.next();
+			try {
+				student.addStudyPath(instrument);
+			}
+			catch (IDOAddRelationshipException iare) {
+				iare.printStackTrace();
+			}
+		}
+
+		return student;
+	}
+	
 	public SchoolClass getDefaultGroup(School school, SchoolSeason season) {
 		try {
 			try {
@@ -796,7 +838,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		}
 	}
 	
-	public void transferToNextSchoolSeason(Object[] studentPKs, School school, SchoolSeason currentSeason, User performer) throws FinderException {
+	public void transferToNextSchoolSeason(Object[] studentPKs, Object[] departmentPKs, School school, SchoolSeason currentSeason, User performer) throws FinderException {
 		try {
 			SchoolSeason nextSeason = getSchoolBusiness().getSchoolSeasonHome().findNextSeason(currentSeason);
 			SchoolClass group = getDefaultGroup(school, nextSeason);
@@ -805,6 +847,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 			for (int i = 0; i < studentPKs.length; i++) {
 				try {
 					SchoolClassMember member = getSchoolBusiness().getSchoolClassMemberHome().findByPrimaryKey(studentPKs[i]);
+					SchoolYear department = getSchoolBusiness().getSchoolYearHome().findByPrimaryKey(departmentPKs[i]);
 					Collection instruments = null;
 					try {
 						instruments = member.getStudyPaths();
@@ -812,7 +855,10 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 					catch (IDORelationshipException ire) {
 						instruments = new ArrayList();
 					}
-					addStudentToGroup(member.getStudent(), group, member.getSchoolYear(), member.getSchoolType(), null, instruments, member.getNotes(), stamp, performer);
+					addStudentToGroup(member.getStudent(), group, department, member.getSchoolType(), null, instruments, member.getNotes(), stamp, performer);
+					
+					member.setNeedsSpecialAttention(true);
+					member.store();
 				}
 				catch (FinderException fe) {
 					log(fe);

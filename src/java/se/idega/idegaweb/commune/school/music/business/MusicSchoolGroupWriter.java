@@ -24,10 +24,14 @@ import se.idega.idegaweb.commune.school.music.presentation.MusicSchoolBlock;
 import se.idega.util.SchoolClassMemberComparatorForSweden;
 import com.idega.block.school.business.SchoolBusiness;
 import com.idega.block.school.data.SchoolClassMember;
+import com.idega.block.school.data.SchoolStudyPath;
+import com.idega.block.school.data.SchoolYear;
 import com.idega.business.IBOLookup;
+import com.idega.core.contact.data.Email;
 import com.idega.core.contact.data.Phone;
 import com.idega.core.location.data.Address;
 import com.idega.core.location.data.PostalCode;
+import com.idega.data.IDORelationshipException;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.idegaweb.IWUserContext;
@@ -36,6 +40,8 @@ import com.idega.io.MemoryFileBuffer;
 import com.idega.io.MemoryInputStream;
 import com.idega.io.MemoryOutputStream;
 import com.idega.presentation.IWContext;
+import com.idega.user.business.NoEmailFoundException;
+import com.idega.user.business.NoPhoneFoundException;
 import com.idega.user.data.User;
 import com.idega.util.PersonalIDFormatter;
 
@@ -99,7 +105,7 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 			System.err.println("buffer is null");
 	}
 	
-	public MemoryFileBuffer writeXLS(Collection students) throws Exception {
+	public MemoryFileBuffer writeXLS(Collection students) throws RemoteException {
 		MemoryFileBuffer buffer = new MemoryFileBuffer();
 		MemoryOutputStream mos = new MemoryOutputStream(buffer);
 		if (!students.isEmpty()) {
@@ -117,6 +123,7 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 	    style.setFont(font);
 
 			int cellRow = 0;
+			int cellColumn = 0;
 			HSSFRow row = sheet.createRow(cellRow++);
 			HSSFCell cell = row.createCell((short)0);
 			cell.setCellValue(schoolName);
@@ -126,49 +133,159 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 			row = sheet.createRow(cellRow++);
 			
 	    row = sheet.createRow(cellRow++);
-	    cell = row.createCell((short)0);
+	    cell = row.createCell((short) cellColumn++);
 	    cell.setCellValue(iwrb.getLocalizedString("name","Name"));
 	    cell.setCellStyle(style);
-	    cell = row.createCell((short)1);
+	    cell = row.createCell((short) cellColumn++);
 	    cell.setCellValue(iwrb.getLocalizedString("personal_id","Personal ID"));
 	    cell.setCellStyle(style);
-	    cell = row.createCell((short)2);
+	    cell = row.createCell((short) cellColumn++);
 	    cell.setCellValue(iwrb.getLocalizedString("address","Address"));
 	    cell.setCellStyle(style);
-			cell = row.createCell((short)3);
+			cell = row.createCell((short) cellColumn++);
 			cell.setCellValue(iwrb.getLocalizedString("zip_code","Postal code"));
 			cell.setCellStyle(style);
-	    cell = row.createCell((short)4);
-	    cell.setCellValue(iwrb.getLocalizedString("home_phone","Phone"));
+			cell = row.createCell((short) cellColumn++);
+			cell.setCellValue(iwrb.getLocalizedString("zip_area","Area"));
+			cell.setCellStyle(style);
+	    cell = row.createCell((short) cellColumn++);
+	    cell.setCellValue(iwrb.getLocalizedString("home_phone","Home phone"));
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) cellColumn++);
+	    cell.setCellValue(iwrb.getLocalizedString("work_phone","Work phone"));
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) cellColumn++);
+	    cell.setCellValue(iwrb.getLocalizedString("mobile_phone","Mobile phone"));
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) cellColumn++);
+	    cell.setCellValue(iwrb.getLocalizedString("email","E-mail"));
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) cellColumn++);
+	    cell.setCellValue(iwrb.getLocalizedString("custodian_email","Custodian e-mail"));
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) cellColumn++);
+	    cell.setCellValue(iwrb.getLocalizedString("department","Department"));
+	    cell.setCellStyle(style);
+	    cell = row.createCell((short) cellColumn++);
+	    cell.setCellValue(iwrb.getLocalizedString("instruments","Instruments"));
 	    cell.setCellStyle(style);
 
 			User student;
 			Address address;
 			PostalCode postalCode = null;
-			Phone phone;
+			Phone homePhone;
+			Phone workPhone;
+			Phone mobilePhone;
+			Email email;
+			Email custodianEmail;
 			SchoolClassMember studentMember;
+			SchoolYear department;
+			Collection instruments;
 			
 			Iterator iter = students.iterator();
 			while (iter.hasNext()) {
+				cellColumn = 0;
 				row = sheet.createRow(cellRow++);
 				studentMember = (SchoolClassMember) iter.next();
 				student = studentMember.getStudent();
 				address = userBusiness.getUsersMainAddress(student);
 				if (address != null)
 					postalCode = address.getPostalCode();
-				phone = userBusiness.getChildHomePhone(student);
+				homePhone = userBusiness.getChildHomePhone(student);
+				try {
+					workPhone = userBusiness.getUsersWorkPhone(student);
+				}
+				catch (NoPhoneFoundException npfe) {
+					workPhone = null;
+				}
+				try {
+					mobilePhone = userBusiness.getUsersMobilePhone(student);
+				}
+				catch (NoPhoneFoundException npfe) {
+					mobilePhone = null;
+				}
+				try {
+					email = userBusiness.getUsersMainEmail(student);
+				}
+				catch (NoEmailFoundException nefe) {
+					email = null;
+				}
 
-		    row.createCell((short)0).setCellValue(student.getName());
-		    row.createCell((short)1).setCellValue(PersonalIDFormatter.format(student.getPersonalID(), locale));
+				User custodian = userBusiness.getCustodianForChild(student);
+				if (custodian != null) {
+					try {
+						custodianEmail = userBusiness.getUsersMainEmail(custodian);
+					}
+					catch (NoEmailFoundException nefe) {
+						custodianEmail = null;
+					}
+				}
+				else {
+					custodianEmail = null;
+				}
+
+				try {
+					instruments = studentMember.getStudyPaths();
+				}
+				catch (IDORelationshipException ire) {
+					instruments = new ArrayList();
+				}
+				department = studentMember.getSchoolYear();
+				
+				row.createCell((short)cellColumn++).setCellValue(student.getName());
+		    row.createCell((short)cellColumn++).setCellValue(PersonalIDFormatter.format(student.getPersonalID(), locale));
 		    if (address != null) {
-			    row.createCell((short)2).setCellValue(address.getStreetAddress());
-			    if (postalCode != null)
-						row.createCell((short)3).setCellValue(postalCode.getPostalAddress());
+			    row.createCell((short)cellColumn++).setCellValue(address.getStreetAddress());
+			    if (postalCode != null) {
+						row.createCell((short)cellColumn++).setCellValue(postalCode.getPostalCode());
+						row.createCell((short)cellColumn++).setCellValue(postalCode.getName());
+			    }
+			    else {
+						cellColumn += 2;
+			    }
 		    }
-			  if (phone != null)
-			    row.createCell((short)4).setCellValue(phone.getNumber());
+		    else {
+					cellColumn += 3;
+		    }
+			  if (homePhone != null) {
+			    row.createCell((short)cellColumn).setCellValue(homePhone.getNumber());
+			  }
+			  cellColumn++;
+			  if (workPhone != null) {
+			    row.createCell((short)cellColumn).setCellValue(workPhone.getNumber());
+			  }
+			  cellColumn++;
+			  if (mobilePhone != null) {
+			    row.createCell((short)cellColumn).setCellValue(mobilePhone.getNumber());
+			  }
+			  cellColumn++;
+			  if (email != null) {
+			    row.createCell((short)cellColumn).setCellValue(email.getEmailAddress());
+			  }
+			  cellColumn++;
+			  if (custodianEmail != null) {
+			    row.createCell((short)cellColumn).setCellValue(custodianEmail.getEmailAddress());
+			  }
+			  cellColumn++;
+
+				Iterator iterator = instruments.iterator();
+				StringBuffer instrumentText = new StringBuffer();
+				while (iterator.hasNext()) {
+					SchoolStudyPath instrument = (SchoolStudyPath) iterator.next();
+					instrumentText.append(iwrb.getLocalizedString(instrument.getLocalizedKey(), instrument.getDescription()));
+					if (iterator.hasNext()) {
+						instrumentText.append(", ");
+					}
+				}
+		    row.createCell((short)cellColumn++).setCellValue(instrumentText.toString());
+		    row.createCell((short)cellColumn++).setCellValue(iwrb.getLocalizedString(department.getLocalizedKey(), department.getSchoolYearName()));
 			}
-			wb.write(mos);
+			try {
+				wb.write(mos);
+			}
+			catch (IOException ie) {
+				ie.printStackTrace();
+			}
 		}
 		buffer.setMimeType("application/x-msexcel");
 		return buffer;

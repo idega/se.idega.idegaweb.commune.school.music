@@ -13,6 +13,7 @@ import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import com.idega.block.school.business.SchoolBusiness;
 import com.idega.block.school.data.School;
 import com.idega.block.school.data.SchoolClass;
+import com.idega.block.school.data.SchoolClassMember;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolYear;
@@ -49,6 +50,9 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 	protected SchoolClass iGroup;
 	protected Object iGroupPK;
 	
+	protected SchoolClassMember iStudent;
+	protected Object iStudentPK;
+	
 	protected MusicSchoolChoice iApplication;
 	protected Object iApplicationPK;
 	
@@ -58,6 +62,7 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 	protected static final String PARAMETER_DEPARTMENT_ID = "ms_department_id";
 	protected static final String PARAMETER_SEASON_ID = "ms_season_id";
 	protected static final String PARAMETER_GROUP_ID = "ms_group_id";
+	protected static final String PARAMETER_STUDENT_ID = "ms_student_id";
 	protected static final String PARAMETER_APPLICATION_ID = "ms_application_id";
 	
 	public User getChild() {
@@ -79,6 +84,27 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 	
 	public Object getChildPK() {
 		return iChildPK;
+	}
+	
+	public SchoolClassMember getStudent() {
+		if (iStudent == null && getStudentPK() != null) {
+			try {
+				iStudent = getSchoolBusiness().getSchoolClassMemberHome().findByPrimaryKey(Integer.valueOf(getStudentPK().toString()));
+			}
+			catch (FinderException fe) {
+				log(fe);
+				iStudent = null;
+			}
+			catch (RemoteException re) {
+				log(re);
+				iStudent = null;
+			}
+		}
+		return iStudent;
+	}
+	
+	public Object getStudentPK() {
+		return iStudentPK;
 	}
 	
 	/**
@@ -230,6 +256,10 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 		return PARAMETER_PROVIDER_ID;
 	}
 	
+	public String getParameterNameStudentID() {
+		return PARAMETER_STUDENT_ID;
+	}
+	
 	public String getParameterNameDepartmentID() {
 		return PARAMETER_DEPARTMENT_ID;
 	}
@@ -254,6 +284,11 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 	public void setChild(Object childPK) {
 		iChildPK = childPK;
 		iChild = null;
+	}
+	
+	public void setStudent(Object studentPK) {
+		iStudentPK = studentPK;
+		iStudent = null;
 	}
 	
 	public void setProvider(Object providerPK) {

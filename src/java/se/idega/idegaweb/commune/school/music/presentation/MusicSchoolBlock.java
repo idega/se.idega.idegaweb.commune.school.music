@@ -182,7 +182,6 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 	public DropdownMenu getDepartmentsDropdown() {
 		try {
 			DropdownMenu departments = (DropdownMenu) getStyledInterface(new DropdownMenu(getSession().getParameterNameDepartmentID()));
-			departments.setToSubmit(true);
 			
 			departments.addMenuElementFirst("", localize("department", "- Department -"));
 			try {
@@ -211,7 +210,6 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 	public DropdownMenu getInstrumentsDropdown() {
 		try {
 			DropdownMenu instruments = (DropdownMenu) getStyledInterface(new DropdownMenu(getSession().getParameterNameInstrumentID()));
-			instruments.setToSubmit(true);
 			
 			instruments.addMenuElementFirst("", localize("instrument", "- Instrument -"));
 			try {
@@ -240,7 +238,6 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 	public DropdownMenu getSeasonsDropdown() {
 		try {
 			DropdownMenu seasons = (DropdownMenu) getStyledInterface(new DropdownMenu(getSession().getParameterNameSeasonID()));
-			seasons.setToSubmit(true);
 			
 			seasons.addMenuElementFirst("", localize("season", "- Season -"));
 			try {
@@ -265,41 +262,6 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 			throw new IBORuntimeException(re);
 		}
 	}
-	
-	/*public DropdownMenu getGroupsDropdown() {
-		try {
-			DropdownMenu groups = (DropdownMenu) getStyledInterface(new DropdownMenu(getSession().getParameterNameGroupID()));
-			groups.setToSubmit(true);
-			
-			groups.addMenuElementFirst("", localize("group", "- Group -"));
-			if (getSession().getProvider() != null && getSession().getSeason() != null && getSession().getDepartment() != null && getSession().getInstrument() != null) {
-				try {
-					Collection coll = getBusiness().findGroupsInSchool(getSession().getProvider(), getSession().getSeason(), getSession().getDepartment(), getSession().getInstrument());
-					Iterator iter = coll.iterator();
-					while (iter.hasNext()) {
-						SchoolClass group = (SchoolClass) iter.next();
-						groups.addMenuElement(group.getPrimaryKey().toString(), group.getSchoolClassName());
-					}
-					if (getSession().getGroup() != null) {
-						if (coll.contains(getSession().getGroup())) {
-							groups.setSelectedElement(getSession().getGroupPK().toString());
-						}
-						else {
-							getSession().setGroup(null);
-						}
-					}
-				}
-				catch (FinderException fe) {
-					log(fe);
-				}
-			}
-			
-			return groups;
-		}
-		catch (RemoteException re) {
-			throw new IBORuntimeException(re);
-		}
-	}*/
 	
 	protected Table getNavigationTable() {
 		Table table = new Table(4, 1);
@@ -441,16 +403,13 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 				}
 
 				table.setHeight(row++, 12);
-				table.mergeCells(1, row, table.getColumns(), row);
-				table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
-				table.add(getHeader(localize("custodian", "Custodian")), 1, row++);
 
 				table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
-				table.add(getSmallHeader(localize("personal_id", "Personal ID")), 1, row);
-				table.add(getText(PersonalIDFormatter.format(custodian.getPersonalID(), iwc.getCurrentLocale())), 2, row);
-				
-				table.add(getSmallHeader(localize("name", "Name")), 4, row);
-				table.add(getText(custodian.getName()), 5, row++);
+				table.add(getSmallHeader(localize("custodian", "Custodian")), 1, row);
+				table.add(getText(custodian.getName()), 2, row++);
+
+				table.add(getSmallHeader(localize("personal_id", "Personal ID")), 4, row);
+				table.add(getText(PersonalIDFormatter.format(custodian.getPersonalID(), iwc.getCurrentLocale())), 5, row);
 				
 				table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));
 				table.add(getSmallHeader(localize("home_phone", "Home phone")), 1, row);

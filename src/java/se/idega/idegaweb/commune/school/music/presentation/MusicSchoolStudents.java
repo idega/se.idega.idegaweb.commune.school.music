@@ -5,6 +5,7 @@ package se.idega.idegaweb.commune.school.music.presentation;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -14,9 +15,11 @@ import se.idega.idegaweb.commune.school.music.business.MusicSchoolGroupWriter;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
 import se.idega.util.SchoolClassMemberComparatorForSweden;
 import com.idega.block.school.data.SchoolClassMember;
-import com.idega.core.contact.data.Phone;
+import com.idega.block.school.data.SchoolStudyPath;
+import com.idega.block.school.data.SchoolYear;
 import com.idega.core.location.data.Address;
 import com.idega.core.location.data.PostalCode;
+import com.idega.data.IDORelationshipException;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.io.MediaWritable;
 import com.idega.presentation.IWContext;
@@ -28,10 +31,9 @@ import com.idega.presentation.ui.DropdownMenu;
 import com.idega.presentation.ui.Form;
 import com.idega.presentation.ui.HiddenInput;
 import com.idega.presentation.ui.Window;
-import com.idega.user.business.NoPhoneFoundException;
 import com.idega.user.data.User;
+import com.idega.util.Age;
 import com.idega.util.IWTimestamp;
-import com.idega.util.PersonalIDFormatter;
 import com.idega.util.text.Name;
 
 /**
@@ -82,12 +84,13 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		form.setEventListener(MusicSchoolEventListener.class);
 		form.add(new HiddenInput(PARAMETER_ACTION, String.valueOf(action)));
 
-		Table table = new Table(1, 5);
+		Table table = new Table(1, 7);
 		table.setCellpadding(0);
 		table.setCellspacing(0);
 		table.setWidth(getWidth());
 		table.setHeight(2, 12);
 		table.setHeight(3, 12);
+		table.setHeight(6, 12);
 
 		form.add(table);
 
@@ -110,6 +113,10 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 			table.add(getStudentTable(iwc), 1, 5);
 		}
 		
+		table.setCellpaddingRight(1, 7, 12);
+		table.setAlignment(1, 7, Table.HORIZONTAL_ALIGN_RIGHT);
+		table.add(getHelpButton("help_music_school_student_list"), 1, 7);
+
 		add(form);
 	}
 
@@ -135,26 +142,32 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		table.setCellpadding(getCellpadding());
 		table.setCellspacing(getCellspacing());
 		table.setColumns(5);
-		int row = 1;
+		int iRow = 1;
+		int iColumn = 1;
 
-		table.add(getSmallHeader(localize("name", "Name")), 1, row);
-		table.add(getSmallHeader(localize("personal_id", "Personal ID")), 2, row);
-		table.add(getSmallHeader(localize("address", "Address")), 3, row);
-		table.add(getSmallHeader(localize("zip_code", "Zip code")), 4, row);
-		table.add(getSmallHeader(localize("home_phone", "Phone")), 5, row);
-		table.setCellpaddingLeft(1, row, 12);
-		table.setRowStyleClass(row++, getHeaderRowClass());
+		table.add(getSmallHeader(localize("nr", "Nr.")), iColumn++, iRow);
+		table.add(getSmallHeader(localize("name", "Name")), iColumn++, iRow);
+		table.add(getSmallHeader(localize("date_of_birth", "Date of birth")), iColumn++, iRow);
+		table.add(getSmallHeader(localize("age", "Age")), iColumn++, iRow);
+		table.add(getSmallHeader(localize("postal_code", "Postal code")), iColumn++, iRow);
+		table.add(getSmallHeader(localize("instruments.plural_or_singular", "Instrument/s")), iColumn++, iRow);
+		table.add(getSmallHeader(localize("department", "Department")), iColumn++, iRow);
+		table.setCellpaddingLeft(1, iRow, 12);
+		table.setRowStyleClass(iRow++, getHeaderRowClass());
 
 		User student;
 		Address address;
 		PostalCode postal;
-		Phone phone;
 		SchoolClassMember studentMember;
+		SchoolYear department;
+		Collection instruments;
+		Link userLink;
 		int numberOfStudents = 0;
 		boolean notStarted = false;
 		boolean hasTerminationDate = false;
 		boolean showNotStarted = false;
 		boolean showHasTermination = false;
+		int count = 1;
 
 		IWTimestamp stamp = new IWTimestamp();
 		IWTimestamp startDate;
@@ -173,6 +186,7 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 			Collections.sort(students, SchoolClassMemberComparatorForSweden.getComparatorSortBy(sortStudentsBy, iwc.getCurrentLocale(), getUserBusiness(), studentMap));
 			Iterator iter = students.iterator();
 			while (iter.hasNext()) {
+				iColumn = 1;
 				studentMember = (SchoolClassMember) iter.next();
 				student = (User) studentMap.get(new Integer(studentMember.getClassMemberId()));
 				address = getUserBusiness().getUsersMainAddress(student);
@@ -182,12 +196,17 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 				else {
 					postal = null;
 				}
+				Age age = new Age(student.getDateOfBirth());
+				IWTimestamp dateOfBirth = new IWTimestamp(student.getDateOfBirth());
 				try {
-					phone = getUserBusiness().getUsersHomePhone(student);
+					instruments = studentMember.getStudyPaths();
 				}
-				catch (NoPhoneFoundException npfe) {
-					phone = null;
+				catch (IDORelationshipException ire) {
+					log(ire);
+					instruments = null;
 				}
+				department = studentMember.getSchoolYear();
+
 				notStarted = false;
 				hasTerminationDate = false;
 
@@ -204,58 +223,93 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 				Name studentName = new Name(student.getFirstName(), student.getMiddleName(), student.getLastName());
 				String name = studentName.getName(iwc.getApplicationSettings().getDefaultLocale(), true);
 
-				if (row % 2 == 0)
-					table.setRowStyleClass(row, getDarkRowClass());
+				userLink = getSmallLink(name);
+				userLink.setEventListener(MusicSchoolEventListener.class);
+				userLink.addParameter(getSession().getParameterNameChildID(), student.getPrimaryKey().toString());
+				userLink.addParameter(getSession().getParameterNameStudentID(), studentMember.getPrimaryKey().toString());
+				if (getResponsePage() != null) {
+					userLink.setPage(getResponsePage());
+				}
+
+				if (iRow % 2 == 0)
+					table.setRowStyleClass(iRow, getDarkRowClass());
 				else
-					table.setRowStyleClass(row, getLightRowClass());
+					table.setRowStyleClass(iRow, getLightRowClass());
 
 				if (notStarted) {
 					showNotStarted = true;
-					table.add(getSmallErrorText("+"), 1, row);
+					table.add(getSmallErrorText("+"), 1, iRow);
 				}
 				if (hasTerminationDate) {
 					showHasTermination = true;
-					table.add(getSmallErrorText("&Delta;"), 1, row);
+					table.add(getSmallErrorText("&Delta;"), 1, iRow);
 				}
 				if (notStarted || hasTerminationDate) {
-					table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
+					table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, iRow);
 				}
 
-				table.setCellpaddingLeft(1, row, 12);
-				table.add(getSmallText(name), 1, row);
-				table.add(getSmallText(PersonalIDFormatter.format(student.getPersonalID(), iwc.getCurrentLocale())), 2, row);
+				table.setCellpaddingLeft(1, iRow, 12);
+				table.add(getSmallText(String.valueOf(count)), iColumn++, iRow);
+				if (getResponsePage() != null) {
+					table.add(userLink, iColumn++, iRow);
+				}
+				else {
+					table.add(getSmallText(name), iColumn++, iRow);
+				}
+				table.add(getSmallText(dateOfBirth.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), iColumn++, iRow);
+				table.add(getSmallText(String.valueOf(age.getYears())), iColumn++, iRow);
 
-				if (address != null && address.getStreetAddress() != null)
-					table.add(getSmallText(address.getStreetAddress()), 3, row);
-				if (postal != null)
-					table.add(getSmallText(postal.getPostalAddress()), 4, row);
-				if (phone != null)
-					table.add(getSmallText(phone.getNumber()), 5, row);
-				row++;
+				if (postal != null) {
+					table.add(getSmallText(postal.getPostalAddress()), iColumn++, iRow);
+				}
+				else {
+					table.add(getSmallText("-"), iColumn++, iRow);
+				}
+				
+				Iterator iterator = instruments.iterator();
+				Text instrumentText = null;
+				while (iterator.hasNext()) {
+					SchoolStudyPath instrument = (SchoolStudyPath) iterator.next();
+					if (instrumentText == null) {
+						instrumentText = getSmallText(localize(instrument.getLocalizedKey(), instrument.getDescription()));
+					}
+					else {
+						instrumentText.addToText(localize(instrument.getLocalizedKey(), instrument.getDescription()));
+					}
+					
+					if (iterator.hasNext()) {
+						instrumentText.addToText(", ");
+					}
+				}
+				table.add(instrumentText, iColumn++, iRow);
+				table.add(getSmallText(localize(department.getLocalizedKey(), department.getSchoolYearName())), iColumn++, iRow);
+				
+				iRow++;
+				count++;
 			}
 
 			if (showNotStarted || showHasTermination) {
-				table.setHeight(row++, 2);
+				table.setHeight(iRow++, 2);
 				if (showNotStarted) {
-					table.mergeCells(1, row, table.getColumns(), row);
-					table.setCellpaddingLeft(1, row, 12);
-					table.add(getSmallErrorText("+ "), 1, row);
-					table.add(getSmallText(localize("school.placement_has_not_started", "Placment has not started yet")), 1, row++);
+					table.mergeCells(1, iRow, table.getColumns(), iRow);
+					table.setCellpaddingLeft(1, iRow, 12);
+					table.add(getSmallErrorText("+ "), 1, iRow);
+					table.add(getSmallText(localize("school.placement_has_not_started", "Placment has not started yet")), 1, iRow++);
 				}
 				if (showHasTermination) {
-					table.mergeCells(1, row, table.getColumns(), row);
-					table.setCellpaddingLeft(1, row, 12);
-					table.add(getSmallErrorText("&Delta; "), 1, row);
-					table.add(getSmallText(localize("school.placement_has_termination_date", "Placment has termination date")), 1, row++);
+					table.mergeCells(1, iRow, table.getColumns(), iRow);
+					table.setCellpaddingLeft(1, iRow, 12);
+					table.add(getSmallErrorText("&Delta; "), 1, iRow);
+					table.add(getSmallText(localize("school.placement_has_termination_date", "Placment has termination date")), 1, iRow++);
 				}
 			}
 		}
 
 		if (numberOfStudents > 0) {
-			table.setHeight(row++, 6);
-			table.mergeCells(1, row, table.getColumns(), row);
-			table.setCellpaddingLeft(1, row, 12);
-			table.add(getSmallHeader(localize("school.number_of_students", "Number of students") + ": " + String.valueOf(numberOfStudents)), 1, row++);
+			table.setHeight(iRow++, 6);
+			table.mergeCells(1, iRow, table.getColumns(), iRow);
+			table.setCellpaddingLeft(1, iRow, 12);
+			table.add(getSmallHeader(localize("school.number_of_students", "Number of students") + ": " + String.valueOf(numberOfStudents)), 1, iRow++);
 		}
 
 		return table;

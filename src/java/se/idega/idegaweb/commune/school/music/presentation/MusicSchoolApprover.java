@@ -28,6 +28,7 @@ import com.idega.presentation.IWContext;
 import com.idega.presentation.Table;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
+import com.idega.presentation.ui.BackButton;
 import com.idega.presentation.ui.CheckBox;
 import com.idega.presentation.ui.DropdownMenu;
 import com.idega.presentation.ui.Form;
@@ -139,7 +140,6 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 				Iterator iter = choices.iterator();
 				while (iter.hasNext()) {
 					iColumn = 1;
-					applicationCount++;
 					
 					choice = (MusicSchoolChoice) iter.next();
 					user = choice.getChild();
@@ -156,6 +156,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					if (hasInstrumentPlacement || (getSession().getInstrument() == null && isPlaced)) {
 						continue;
 					}
+					applicationCount++;
 
 					address = getUserBusiness().getUsersMainAddress(user);
 					if (address != null) {
@@ -284,18 +285,17 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 	}
 	
 	private Form getEditForm(IWContext iwc) throws FinderException, RemoteException {
-		Object choicePK = iwc.getParameter(PARAMETER_APPLICATION);
-		MusicSchoolChoice choice = null;
-		try {
-			choice = getBusiness().findMusicSchoolChoice(choicePK);
+		Form form = new Form();
+
+		MusicSchoolChoice choice = getSession().getApplication();
+		if (choice == null) {
+			form.add(getErrorText(localize("no_application_found", "No application found...")));
+			return form; 
 		}
-		catch (RemoteException re) {
-			throw new IBORuntimeException(re);
-		}
+		
 		User user = choice.getChild();
 		Age age = new Age(user.getDateOfBirth());
 		
-		Form form = new Form();
 		form.addParameter(PARAMETER_APPLICATION, choice.getPrimaryKey().toString());
 		
 		Table table = new Table();
@@ -311,10 +311,10 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		
 		table.setHeight(row++, 18);
 		
-		Table editTable = new Table(5, 4);
+		Table editTable = new Table();
 		editTable.setCellpadding(0);
 		editTable.setCellspacing(0);
-		editTable.setWidth(3, 12);
+		editTable.setColumns(2);
 		editTable.setWidth(Table.HUNDRED_PERCENT);
 		table.add(editTable, 1, row++);
 		int editRow = 1;
@@ -395,41 +395,43 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		TextInput teacherRequest = getTextInput(PARAMETER_TEACHER_REQUEST, choice.getTeacherRequest());
 		TextInput otherInstrument = getTextInput(PARAMETER_OTHER_INSTRUMENT, choice.getOtherInstrument());
 
-		table.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("instrument_1", "Instrument 1")), 1, editRow);
+		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		editTable.add(getText(localize("instrument_1", "Instrument 1")), 1, editRow);
 		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
-		editTable.add(instrumentsDrop1, 2, editRow);
+		editTable.add(instrumentsDrop1, 2, editRow++);
 
-		table.setStyleClass(4, editRow, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("department", "Department")), 4, editRow);
-		editTable.setStyleClass(5, editRow, getStyleName(STYLENAME_INPUT_CELL));
-		editTable.add(departmentDrop, 5, editRow++);
-
-		table.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("instrument_2", "Instrument 2")), 1, editRow);
+		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		editTable.add(getText(localize("instrument_2", "Instrument 2")), 1, editRow);
 		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
-		editTable.add(instrumentsDrop2, 2, editRow);
+		editTable.add(instrumentsDrop2, 2, editRow++);
 
-		table.setStyleClass(4, editRow, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("lesson_type", "Lesson type")), 4, editRow);
-		table.setStyleClass(5, editRow, getStyleName(STYLENAME_INPUT_CELL));
-		table.add(lessonTypeDrop, 5, editRow++);
-
-		table.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("instrument_3", "Instrument 3")), 1, editRow);
+		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		editTable.add(getText(localize("instrument_3", "Instrument 3")), 1, editRow);
 		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
-		editTable.add(instrumentsDrop3, 2, editRow);
+		editTable.add(instrumentsDrop3, 2, editRow++);
 
-		table.setStyleClass(4, editRow, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("teacher_request", "Teacher request")), 4, editRow);
-		table.setStyleClass(5, editRow, getStyleName(STYLENAME_INPUT_CELL));
-		table.add(teacherRequest, 5, editRow++);
+		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		editTable.add(getText(localize("other_instrument", "Other instrument")), 1, editRow);
+		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
+		editTable.add(otherInstrument, 2, editRow++);
 		
-		table.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("other_instrument", "Other instrument")), 1, editRow);
-		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
-		editTable.add(otherInstrument, 2, editRow);
+		editTable.setHeight(editRow++, 12);
 
+		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		editTable.add(getText(localize("department", "Department")), 1, editRow);
+		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
+		editTable.add(departmentDrop, 2, editRow++);
+
+		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		editTable.add(getText(localize("lesson_type", "Lesson type")), 1, editRow);
+		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
+		editTable.add(lessonTypeDrop, 2, editRow++);
+
+		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
+		editTable.add(getText(localize("teacher_request", "Teacher request")), 1, editRow);
+		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
+		editTable.add(teacherRequest, 2, editRow++);
+		
 		table.setHeight(row++, 18);
 		
 		if (age.getYears() < 16) {
@@ -458,7 +460,11 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		
 		table.setHeight(row++, 18);
 
+		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));
 		SubmitButton submit = (SubmitButton) getButton(new SubmitButton(localize("change", "Change"), PARAMETER_ACTION, String.valueOf(ACTION_SAVE)));
+
+		table.add(previous, 1, row);
+		table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
 		table.add(submit, 1, row);
 		table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
 		table.add(getHelpButton("help_music_school_edit_application"), 1, row);
@@ -543,6 +549,9 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 			case ACTION_ACCEPT:
 				try {
 					getBusiness().addStudentsToGroup(students, getBusiness().getDefaultGroup(getSession().getProvider(), getSession().getSeason()), getSession().getDepartment(), getSession().getInstrument(), iwc.getCurrentUser());
+					if (getParentPage() != null) {
+						getParentPage().setAlertOnLoad(localize("selected_applications_accepted", "The selected applications have been accepted."));
+					}
 				}
 				catch (RemoteException re) {
 					throw new IBORuntimeException(re);
@@ -552,6 +561,9 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 			case ACTION_REJECT:
 				try {
 					getBusiness().rejectApplications(students, iwc.getCurrentUser());
+					if (getParentPage() != null) {
+						getParentPage().setAlertOnLoad(localize("selected_applications_rejected", "The selected applications have been rejected."));
+					}
 				}
 				catch (RemoteException re) {
 					throw new IBORuntimeException(re);
@@ -576,6 +588,9 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 				
 				try {
 					getBusiness().updateChoice(application, department, lessonType, instrumentPKs, teacherRequest, message, otherInstrument, previousStudies, elementarySchool);
+					if (getParentPage() != null) {
+						getParentPage().setAlertOnLoad(localize("selected_application_updated", "The selected application has been updated."));
+					}
 				}
 				catch (RemoteException re) {
 					throw new IBORuntimeException(re);
