@@ -301,8 +301,8 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(getText(localize("home_phone", "Home phone")), 1, row);
 		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("mobile_phone", "Mobile phone")), 2, row++);
-		TextInput homePhone = getTextInput(PARAMETER_HOME_PHONE, null, true);
-		TextInput mobilePhone = getTextInput(PARAMETER_MOBILE_PHONE, null, true);
+		TextInput homePhone = getTextInput(PARAMETER_HOME_PHONE, null, false);
+		TextInput mobilePhone = getTextInput(PARAMETER_MOBILE_PHONE, null, false);
 		if (phone != null) {
 			homePhone.setContent(phone.getNumber());
 		}
@@ -316,7 +316,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("email", "E-mail")), 1, row++);
-		TextInput mail = getTextInput(PARAMETER_EMAIL, null, true);
+		TextInput mail = getTextInput(PARAMETER_EMAIL, null, false);
 		if (email != null) {
 			mail.setContent(email.getEmailAddress());
 		}
