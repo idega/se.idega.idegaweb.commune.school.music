@@ -10,9 +10,8 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
-
 import javax.ejb.FinderException;
-
+import se.idega.idegaweb.commune.school.music.business.MusicConstants;
 import com.idega.block.process.data.AbstractCaseBMPBean;
 import com.idega.block.process.data.Case;
 import com.idega.block.school.data.School;
@@ -41,7 +40,6 @@ import com.idega.user.data.User;
 public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements MusicSchoolChoice {
 
 	public static final String ENTITY_NAME = "comm_music_choice";
-	public static final String CASECODE = "MUSICCH";
 
 	private final static String SCHOOL_SEASON = "school_season_id";
 	private final static String SCHOOL_TYPE = "school_type_id";
@@ -65,7 +63,7 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	 * @see com.idega.block.process.data.AbstractCaseBMPBean#getCaseCodeKey()
 	 */
 	public String getCaseCodeKey() {
-		return CASECODE;
+		return MusicConstants.MUSIC_SCHOOL_CASE_CODE_KEY;
 	}
 
 	/* (non-Javadoc)

@@ -61,7 +61,6 @@ import com.idega.util.PersonalIDFormatter;
 public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSchoolBusiness {
 	
 	private final static String IW_BUNDLE_IDENTIFIER = "se.idega.idegaweb.commune.school.music";
-	private final static String CASE_CODE_KEY = "MUSICCH";
 
 	public MusicSchoolChoiceHome getMusicSchoolChoiceHome() {
 		try {
@@ -672,7 +671,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		String caseCode = "unreachable";
 		try {
 			caseCode = theCase.getCode();
-			if (CASE_CODE_KEY.equals(caseCode)) {
+			if (MusicConstants.MUSIC_SCHOOL_CASE_CODE_KEY.equals(caseCode)) {
 				int caseID = ((Integer) theCase.getPrimaryKey()).intValue();
 				return findMusicSchoolChoice(new Integer(caseID));
 			}
