@@ -55,6 +55,7 @@ public class MusicSchoolViewer extends MusicSchoolBlock {
 					list.add(text);
 				}
 			}
+			add(list);
 		}
 		catch (FinderException fe) {
 			add(getErrorText(localize("no_music_schools_found", "No music school were found...")));
