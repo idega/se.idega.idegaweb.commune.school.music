@@ -327,7 +327,7 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		DropdownMenu menu = (DropdownMenu) getStyledInterface(new DropdownMenu(PARAMETER_SORT));
 		menu.addMenuElement(SchoolClassMemberComparatorForSweden.NAME_SORT, localize("school.sort_by", "- Sort by -"));
 		menu.addMenuElement(SchoolClassMemberComparatorForSweden.NAME_SORT, localize("school.sort_name", "Name"));
-		menu.addMenuElement(SchoolClassMemberComparatorForSweden.PERSONAL_ID_SORT, localize("school.sort_personal_id", "Personal ID"));
+		menu.addMenuElement(SchoolClassMemberComparatorForSweden.AGE_SORT, localize("school.sort_age", "Age"));
 		menu.addMenuElement(SchoolClassMemberComparatorForSweden.GENDER_SORT, localize("school.sort_gender", "Gender"));
 		menu.setSelectedElement(sortStudentsBy);
 		table.add(menu, 2, 3);
