@@ -145,10 +145,8 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 				
 		SubmitButton submit = (SubmitButton) getButton(new SubmitButton(localize("save", "Save"), PARAMETER_ACTION, String.valueOf(ACTION_SAVE)));
 		++iRow;
-		connectionTable.setHeight(iRow, 40);
-		connectionTable.setVerticalAlignment(2, iRow, Table.VERTICAL_ALIGN_BOTTOM);
-		connectionTable.setAlignment(2, iRow, Table.HORIZONTAL_ALIGN_RIGHT);
-		connectionTable.add(submit, 4, iRow++);
+		connectionTable.setHeight(iRow++, 18);
+		connectionTable.add(submit, 1, iRow++);
 		return connectionTable;
 	}
 	
