@@ -59,6 +59,7 @@ import com.idega.util.PersonalIDFormatter;
  */
 public class MusicSchoolApplication extends MusicSchoolBlock {
 	
+	private static final int ACTION_OVERVIEW = 0;
 	private static final int ACTION_PHASE_1 = 1;
 	private static final int ACTION_PHASE_2 = 2;
 	private static final int ACTION_PHASE_3 = 3;
@@ -99,6 +100,9 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 	public void init(IWContext iwc) throws Exception {
 		if (getSession().getChild() != null) {
 			switch (parseAction(iwc)) {
+				case ACTION_OVERVIEW:
+					showOverview(iwc);
+					break;
 				case ACTION_PHASE_1:
 					showPhaseOne(iwc);
 					break;
@@ -125,6 +129,32 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		}
 		else {
 			add(getErrorText(localize("application.no_user_found", "No user found...")));
+		}
+	}
+	
+	private void showOverview(IWContext iwc) throws RemoteException {
+		SchoolSeason season = null;
+		try {
+			season = getCareBusiness(iwc).getCurrentSeason();
+		}
+		catch (FinderException fe) {
+			log(fe);
+			add(getErrorText(localize("no_season_found", "No season found...")));
+			return;
+		}
+		
+		if (getBusiness().hasGrantedApplication(getSession().getChild(), season)) {
+			add(getErrorText(localize("student_already_has_placement", "Student already has a granted placement for the school season")));
+			add(new Break(2));
+			add(new UserHomeLink());
+			return;
+		}
+		
+		if (getBusiness().hasApplication(getSession().getChild(), season)) {
+			viewApplication(iwc);
+		}
+		else {
+			showPhaseOne(iwc);
 		}
 	}
 	
@@ -1198,6 +1228,341 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		add(form);
 	}
 	
+	private void viewApplication(IWContext iwc) throws RemoteException {
+		Form form = new Form();
+
+		SchoolSeason season = null;
+		try {
+			season = getCareBusiness(iwc).getCurrentSeason();
+		}
+		catch (FinderException fe) {
+			log(fe);
+			add(getErrorText(localize("no_season_found", "No season found...")));
+			return;
+		}
+
+		Collection chosenInstruments = null;
+		School chosenSchool1 = null;
+		School chosenSchool2 = null;
+		School chosenSchool3 = null;
+		SchoolStudyPath instrument1 = null;
+		SchoolStudyPath instrument2 = null;
+		SchoolStudyPath instrument3 = null;
+		School extraChosenSchool1 = null;
+		School extraChosenSchool2 = null;
+		School extraChosenSchool3 = null;
+		SchoolStudyPath extraInstrument1 = null;
+		SchoolStudyPath extraInstrument2 = null;
+		SchoolStudyPath extraInstrument3 = null;
+		SchoolYear chosenDepartment = null;
+		SchoolType chosenLessonType = null;
+		String chosenTeacher = null;
+		String otherInstrument = null;
+		SchoolYear extraChosenDepartment = null;
+		SchoolType extraChosenLessonType = null;
+		String extraChosenTeacher = null;
+		String extraOtherInstrument = null;
+		String elementarySchool = null;
+		String previousStudies = null;
+		String message = null;
+		
+		
+		Collection choices = null;
+		try {
+			choices = getBusiness().findChoicesByChildAndSeason(getSession().getChild(), season, false);
+			Iterator iter = choices.iterator();
+			boolean initialValuesSet = false;
+			int choiceNumber = 1;
+			while (iter.hasNext()) {
+				MusicSchoolChoice choice = (MusicSchoolChoice) iter.next();
+				choiceNumber = choice.getChoiceNumber();
+				if (!initialValuesSet) {
+					try {
+						chosenInstruments = choice.getStudyPaths();
+					}
+					catch (IDORelationshipException ire) {
+						log(ire);
+						break;
+					}
+					chosenDepartment = choice.getSchoolYear();
+					chosenLessonType = choice.getSchoolType();
+					chosenTeacher = choice.getTeacherRequest();
+					otherInstrument = choice.getOtherInstrument();
+					elementarySchool = choice.getElementarySchool();
+					previousStudies = choice.getPreviousStudies();
+					message = choice.getMessage();
+					initialValuesSet = true;
+				}
+				if (choiceNumber == 1) {
+					chosenSchool1 = choice.getSchool();
+				}
+				else if (choiceNumber == 2) {
+					chosenSchool2 = choice.getSchool();
+				}
+				else if (choiceNumber == 3) {
+					chosenSchool3 = choice.getSchool();
+				}
+				choiceNumber++;
+			}
+		}
+		catch (FinderException fe) {
+			//Nothing found...
+		}
+		
+		if (chosenInstruments != null) {
+			int index = 1;
+			Iterator iter = chosenInstruments.iterator();
+			while (iter.hasNext()) {
+				SchoolStudyPath instrument = (SchoolStudyPath) iter.next();
+				if (index == 1) {
+					instrument1 = instrument;
+				}
+				else if (index == 2) {
+					instrument2 = instrument;
+				}
+				else if (index == 3) {
+					instrument3 = instrument;
+				}
+				index++;
+			}
+		}
+
+		try {
+			choices = getBusiness().findChoicesByChildAndSeason(getSession().getChild(), season, false);
+			Iterator iter = choices.iterator();
+			boolean initialValuesSet = false;
+			int choiceNumber = 1;
+			while (iter.hasNext()) {
+				MusicSchoolChoice choice = (MusicSchoolChoice) iter.next();
+				if (!initialValuesSet) {
+					try {
+						chosenInstruments = choice.getStudyPaths();
+					}
+					catch (IDORelationshipException ire) {
+						log(ire);
+						break;
+					}
+					extraChosenDepartment = choice.getSchoolYear();
+					extraChosenLessonType = choice.getSchoolType();
+					extraChosenTeacher = choice.getTeacherRequest();
+					extraOtherInstrument = choice.getOtherInstrument();
+					initialValuesSet = true;
+				}
+				choiceNumber = choice.getChoiceNumber();
+				if (choiceNumber == 1) {
+					extraChosenSchool1 = choice.getSchool();
+				}
+				else if (choiceNumber == 2) {
+					extraChosenSchool2 = choice.getSchool();
+				}
+				else if (choiceNumber == 3) {
+					extraChosenSchool3 = choice.getSchool();
+				}
+				choiceNumber++;
+			}
+		}
+		catch (FinderException fe) {
+			//Nothing found...
+		}
+
+		if (chosenInstruments != null) {
+			int index = 1;
+			Iterator iter = chosenInstruments.iterator();
+			while (iter.hasNext()) {
+				SchoolStudyPath instrument = (SchoolStudyPath) iter.next();
+				if (index == 1) {
+					extraInstrument1 = instrument;
+				}
+				else if (index == 2) {
+					extraInstrument2 = instrument;
+				}
+				else if (index == 3) {
+					extraInstrument3 = instrument;
+				}
+				index++;
+			}
+		}
+
+		Table table = new Table();
+		table.setCellpadding(0);
+		table.setCellspacing(0);
+		table.setWidth(Table.HUNDRED_PERCENT);
+		form.add(table);
+		int row = 1;
+
+		table.add(getPersonInfoTable(iwc, getSession().getChild()), 1, row++);
+		table.setHeight(row++, 6);
+		
+		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
+		table.add(getHeader(localize("application.view_application", "View application")), 1, row++);
+		
+		Table verifyTable = new Table();
+		verifyTable.setCellpadding(getCellpadding());
+		verifyTable.setCellspacing(getCellspacing());
+		verifyTable.setColumns(2);
+		table.add(verifyTable, 1, row++);
+		int iRow = 1;
+				
+		verifyTable.mergeCells(1, iRow, 2, iRow);
+		verifyTable.add(getHeader(localize("primary_application", "Primary application")), 1, iRow++);
+		verifyTable.setHeight(iRow++, 6);
+		
+		if (chosenSchool1 != null) {
+			verifyTable.add(getSmallHeader(localize("first_school", "First school")), 1, iRow);
+			verifyTable.add(getText(chosenSchool1.getSchoolName()), 2, iRow++);
+		}
+		
+		if (chosenSchool2 != null) {
+			verifyTable.add(getSmallHeader(localize("second_school", "Second school")), 1, iRow);
+			verifyTable.add(getText(chosenSchool2.getSchoolName()), 2, iRow++);
+		}
+		
+		if (chosenSchool3 != null) {
+			verifyTable.add(getSmallHeader(localize("third_school", "Third school")), 1, iRow);
+			verifyTable.add(getText(chosenSchool3.getSchoolName()), 2, iRow++);
+		}
+		
+		verifyTable.setHeight(iRow++, 6);
+		
+		if (instrument1 != null) {
+			verifyTable.add(getSmallHeader(localize("first_instrument", "First instrument")), 1, iRow);
+			verifyTable.add(getText(localize(instrument1.getLocalizedKey(), instrument1.getDescription())), 2, iRow++);
+		}
+		
+		if (instrument2 != null) {
+			verifyTable.add(getSmallHeader(localize("second_instrument", "Second instrument")), 1, iRow);
+			verifyTable.add(getText(localize(instrument2.getLocalizedKey(), instrument2.getDescription())), 2, iRow++);
+		}
+		
+		if (instrument3 != null) {
+			verifyTable.add(getSmallHeader(localize("third_instrument", "Third instrument")), 1, iRow);
+			verifyTable.add(getText(localize(instrument3.getLocalizedKey(), instrument3.getDescription())), 2, iRow++);
+		}
+		
+		if (otherInstrument != null && otherInstrument.length() > 0) {
+			verifyTable.add(getSmallHeader(localize("other_instrument", "Other instrument")), 1, iRow);
+			verifyTable.add(getText(otherInstrument), 2, iRow++);
+		}
+		
+		verifyTable.setHeight(iRow++, 6);
+		
+		if (chosenDepartment != null) {
+			verifyTable.add(getSmallHeader(localize("department", "Department")), 1, iRow);
+			verifyTable.add(getText(localize(chosenDepartment.getLocalizedKey(), chosenDepartment.getSchoolYearName())), 2, iRow++);
+		}
+		
+		if (chosenLessonType != null) {
+			verifyTable.add(getSmallHeader(localize("lesson_type", "Lesson type")), 1, iRow);
+			verifyTable.add(getText(localize(chosenLessonType.getLocalizationKey(), chosenLessonType.getSchoolTypeName())), 2, iRow++);
+		}
+		
+		if (chosenTeacher != null && chosenTeacher.length() > 0) {
+			verifyTable.add(getSmallHeader(localize("teacher_request", "Teacher request")), 1, iRow);
+			verifyTable.add(getText(chosenTeacher), 2, iRow++);
+		}
+		
+		verifyTable.setHeight(iRow++, 12);
+		
+		if (extraChosenSchool1 != null) {
+			verifyTable.mergeCells(1, iRow, 2, iRow);
+			verifyTable.add(getHeader(localize("secondary_application", "Secondary application")), 1, iRow++);
+			verifyTable.setHeight(iRow++, 6);
+			
+			if (extraChosenSchool1 != null) {
+				verifyTable.add(getSmallHeader(localize("first_school", "First school")), 1, iRow);
+				verifyTable.add(getText(extraChosenSchool1.getSchoolName()), 2, iRow++);
+			}
+			
+			if (extraChosenSchool2 != null) {
+				verifyTable.add(getSmallHeader(localize("second_school", "Second school")), 1, iRow);
+				verifyTable.add(getText(extraChosenSchool2.getSchoolName()), 2, iRow++);
+			}
+			
+			if (extraChosenSchool3 != null) {
+				verifyTable.add(getSmallHeader(localize("third_school", "Third school")), 1, iRow);
+				verifyTable.add(getText(extraChosenSchool3.getSchoolName()), 2, iRow++);
+			}
+			
+			verifyTable.setHeight(iRow++, 6);
+			
+			if (extraInstrument1 != null) {
+				verifyTable.add(getSmallHeader(localize("first_instrument", "First instrument")), 1, iRow);
+				verifyTable.add(getText(localize(extraInstrument1.getLocalizedKey(), extraInstrument1.getDescription())), 2, iRow++);
+			}
+			
+			if (extraInstrument2 != null) {
+				verifyTable.add(getSmallHeader(localize("second_instrument", "Second instrument")), 1, iRow);
+				verifyTable.add(getText(localize(extraInstrument2.getLocalizedKey(), extraInstrument2.getDescription())), 2, iRow++);
+			}
+			
+			if (extraInstrument3 != null) {
+				verifyTable.add(getSmallHeader(localize("third_instrument", "Third instrument")), 1, iRow);
+				verifyTable.add(getText(localize(extraInstrument3.getLocalizedKey(), extraInstrument3.getDescription())), 2, iRow++);
+			}
+			
+			if (extraOtherInstrument != null && extraOtherInstrument.length() > 0) {
+				verifyTable.add(getSmallHeader(localize("other_instrument", "Other instrument")), 1, iRow);
+				verifyTable.add(getText(extraOtherInstrument), 2, iRow++);
+			}
+			
+			verifyTable.setHeight(iRow++, 6);
+			
+			if (extraChosenDepartment != null) {
+				verifyTable.add(getSmallHeader(localize("department", "Department")), 1, iRow);
+				verifyTable.add(getText(localize(extraChosenDepartment.getLocalizedKey(), extraChosenDepartment.getSchoolYearName())), 2, iRow++);
+			}
+			
+			if (extraChosenLessonType != null) {
+				verifyTable.add(getSmallHeader(localize("lesson_type", "Lesson type")), 1, iRow);
+				verifyTable.add(getText(localize(extraChosenLessonType.getLocalizationKey(), extraChosenLessonType.getSchoolTypeName())), 2, iRow++);
+			}
+			
+			if (extraChosenTeacher != null && extraChosenTeacher.length() > 0) {
+				verifyTable.add(getSmallHeader(localize("teacher_request", "Teacher request")), 1, iRow);
+				verifyTable.add(getText(extraChosenTeacher), 2, iRow++);
+			}
+			
+		}
+		
+		table.setHeight(row++, 12);
+		table.add(getHeader(localize("other_info", "Other information")), 1, row++);
+		table.setHeight(row++, 6);
+		
+		if (elementarySchool != null && elementarySchool.length() > 0) {
+			table.add(getSmallHeader(localize("elementary_school", "Elementary school")), 1, row++);
+			table.add(getText(elementarySchool), 1, row++);
+			table.setHeight(row++, 3);
+		}
+		
+		if (previousStudies != null && previousStudies.length() > 0) {
+			table.add(getSmallHeader(localize("previous_studies", "Previous studies")), 1, row++);
+			table.add(getText(previousStudies), 1, row++);
+			table.setHeight(row++, 3);
+		}
+		
+		if (message != null && message.length() > 0) {
+			table.add(getSmallHeader(localize("message", "Message")), 1, row++);
+			table.add(getText(message), 1, row++);
+			table.setHeight(row++, 3);
+		}
+		
+		table.setHeight(row++, 18);
+
+		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));
+		SubmitButton next = (SubmitButton) getButton(new SubmitButton(localize("edit", "Edit"), PARAMETER_ACTION, String.valueOf(ACTION_PHASE_1)));
+		
+		table.add(previous, 1, row);
+		table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
+		table.add(next, 1, row);
+		table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
+		table.add(getHelpButton("help_music_school_application_verify"), 1, row);
+		table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
+		table.setCellpaddingRight(1, row, 12);
+		form.setToDisableOnSubmit(next, true);
+
+		add(form);
+	}
+	
 	private String getSubmitConfirmScript(String prefix) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("function checkApplication() {").append("\n\t");
@@ -1410,7 +1775,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 	}
 	
 	private int parseAction(IWContext iwc) {
-		int action = ACTION_PHASE_1;
+		int action = ACTION_OVERVIEW;
 		if (iwc.isParameterSet(PARAMETER_ACTION)) {
 			action = Integer.parseInt(iwc.getParameter(PARAMETER_ACTION));
 		}
