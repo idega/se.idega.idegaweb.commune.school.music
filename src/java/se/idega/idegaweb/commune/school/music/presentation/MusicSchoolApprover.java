@@ -297,7 +297,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 				SubmitButton reject = (SubmitButton) getButton(new SubmitButton(localize("reject", "Reject"), PARAMETER_ACTION, String.valueOf(ACTION_REJECT)));
 				reject.setSubmitConfirm(localize("confirm_reject", "Are you sure you want to reject the selected applications?"));
 				SubmitButton accept = (SubmitButton) getButton(new SubmitButton(localize("accept_applications", "Accept applications"), PARAMETER_ACTION, String.valueOf(ACTION_ACCEPT)));
-				reject.setSubmitConfirm(localize("confirm_accep_applications", "Are you sure you want to accept the selected applications?"));
+				accept.setSubmitConfirm(localize("confirm_accep_applications", "Are you sure you want to accept the selected applications?"));
 				
 				table.add(accept, 1, row);
 				table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
