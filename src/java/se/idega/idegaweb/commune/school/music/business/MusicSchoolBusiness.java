@@ -1,6 +1,6 @@
 /*
- * $Id: MusicSchoolBusiness.java,v 1.15 2005/03/21 08:06:23 laddi Exp $
- * Created on 21.3.2005
+ * $Id: MusicSchoolBusiness.java,v 1.16 2005/03/29 06:26:37 laddi Exp $
+ * Created on 28.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -19,25 +19,28 @@ import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceHome;
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.data.Case;
+import com.idega.block.school.business.SchoolBusiness;
 import com.idega.block.school.data.School;
 import com.idega.block.school.data.SchoolClass;
 import com.idega.block.school.data.SchoolClassMember;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
+import com.idega.block.school.data.SchoolType;
 import com.idega.block.school.data.SchoolYear;
 import com.idega.business.IBOService;
 import com.idega.data.IDOCreateException;
 import com.idega.user.data.User;
+import com.idega.util.IWTimestamp;
 
 
 /**
  * <p>
  * TODO laddi Describe Type MusicSchoolBusiness
  * </p>
- *  Last modified: $Date: 2005/03/21 08:06:23 $ by $Author: laddi $
+ *  Last modified: $Date: 2005/03/29 06:26:37 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 
@@ -45,6 +48,11 @@ public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#getMusicSchoolChoiceHome
 	 */
 	public MusicSchoolChoiceHome getMusicSchoolChoiceHome() throws java.rmi.RemoteException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#getSchoolBusiness
+	 */
+	public SchoolBusiness getSchoolBusiness() throws java.rmi.RemoteException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#getMessageBusiness
@@ -161,6 +169,13 @@ public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 	 */
 	public boolean addStudentsToGroup(String[] choiceIDs, SchoolClass group, SchoolYear department,
 			SchoolStudyPath instrument, User performer) throws java.rmi.RemoteException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#addStudentToGroup
+	 */
+	public boolean addStudentToGroup(User user, SchoolClass group, SchoolYear department, SchoolType type,
+			SchoolStudyPath instrument, Collection instruments, String message, IWTimestamp stamp, User performer)
+			throws java.rmi.RemoteException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#removeChoiceFromGroup

@@ -67,7 +67,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		}
 	}
 	
-	private SchoolBusiness getSchoolBusiness() {
+	public SchoolBusiness getSchoolBusiness() {
 		try {
 			return (SchoolBusiness) IBOLookup.getServiceInstance(getIWApplicationContext(), SchoolBusiness.class);
 		}
@@ -523,7 +523,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		return true;
 	}
 	
-	private boolean addStudentToGroup(User user, SchoolClass group, SchoolYear department, SchoolType type, SchoolStudyPath instrument, Collection instruments, String message, IWTimestamp stamp, User performer) {
+	public boolean addStudentToGroup(User user, SchoolClass group, SchoolYear department, SchoolType type, SchoolStudyPath instrument, Collection instruments, String message, IWTimestamp stamp, User performer) {
 		try {
 			SchoolClassMember student = null;
 			try {
