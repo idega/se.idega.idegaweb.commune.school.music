@@ -200,7 +200,7 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 				Iterator iter = coll.iterator();
 				while (iter.hasNext()) {
 					SchoolStudyPath instrument = (SchoolStudyPath) iter.next();
-					instruments.addMenuElement(instrument.getPrimaryKey().toString(), localize(instrument.getCode(), instrument.getDescription()));
+					instruments.addMenuElement(instrument.getPrimaryKey().toString(), localize(instrument.getLocalizedKey(), instrument.getDescription()));
 				}
 			}
 			catch (FinderException fe) {

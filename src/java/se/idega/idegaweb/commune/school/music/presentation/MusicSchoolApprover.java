@@ -174,10 +174,10 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					while (iterator.hasNext()) {
 						SchoolStudyPath instrument = (SchoolStudyPath) iterator.next();
 						if (instrumentText == null) {
-							instrumentText = getSmallText(localize(instrument.getCode(), instrument.getDescription()));
+							instrumentText = getSmallText(localize(instrument.getLocalizedKey(), instrument.getDescription()));
 						}
 						else {
-							instrumentText.addToText(localize(instrument.getCode(), instrument.getDescription()));
+							instrumentText.addToText(localize(instrument.getLocalizedKey(), instrument.getDescription()));
 						}
 						
 						if (iterator.hasNext()) {

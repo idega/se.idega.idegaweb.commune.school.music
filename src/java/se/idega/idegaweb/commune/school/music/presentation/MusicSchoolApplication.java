@@ -166,7 +166,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		Object chosenCurrentInstrument = null;
 		String chosenMessage = null;
 		String chosenElementarySchool = null;
-		int chosenPaymentMethod = -1;
+		//int chosenPaymentMethod = -1;
 		
 		Collection choices = null;
 		try {
@@ -193,7 +193,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 					chosenCurrentInstrument = choice.getPreviousStudyPathPK();
 					chosenMessage = choice.getMessage();
 					chosenElementarySchool = choice.getElementarySchool();
-					chosenPaymentMethod = choice.getPaymentMethod();
+					//chosenPaymentMethod = choice.getPaymentMethod();
 					getParentPage().setOnLoad("filter(findObj('" + PARAMETER_INSTRUMENTS + "'), findObj('" + PARAMETER_SCHOOLS + "_1'), '"+chosenSchool1+"');");
 					initialValuesSet = true;
 				}
@@ -367,7 +367,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 				instrumentTable.setWidth(iColumn, iRow, "25%");
 				instrumentTable.add(box, iColumn, iRow);
 				instrumentTable.add(getSmallText(Text.NON_BREAKING_SPACE), iColumn, iRow);
-				instrumentTable.add(getSmallText(localize(instrument.getCode(), instrument.getDescription())), iColumn++, iRow);
+				instrumentTable.add(getSmallText(localize(instrument.getLocalizedKey(), instrument.getDescription())), iColumn++, iRow);
 			}
 		}
 		
@@ -488,29 +488,29 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		
 		//Done with current situation
 
-		table.setHeight(row++, 18);
+		table.setHeight(row++, 12);
 		
 		//Showing payment method selection
-		table.mergeCells(1, row, 2, row);
+		/*table.mergeCells(1, row, 2, row);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
 		table.add(getHeader(localize("application.payment_method", "Payment method")), 1, row++);
 
 		table.mergeCells(1, row, 2, row);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("payment_method_header", "Payment method for music schools")), 1, row++);
+		table.add(getText(localize("payment_method_header", "Payment method for music schools")), 1, row++);*/
 
 		table.mergeCells(1, row, 2, row);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_INFORMATION_CELL));
 		table.add(getSmallText(TextSoap.formatText(localize("payment_method_information", "Information about payment..."))), 1, row++);
 		
-		table.setHeight(row++, 12);
+		/*table.setHeight(row++, 12);
 		
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("payment_method", "How do you want to pay?")), 1, row++);
 		DropdownMenu paymentMethods = getPaymentMethods(PARAMETER_PAYMENT_METHOD, chosenPaymentMethod);
 		paymentMethods.addMenuElementFirst("-1", localize("select_paymentType", "Select payment method"));
 		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
-		table.add(paymentMethods, 1, row++);
+		table.add(paymentMethods, 1, row++);*/
 
 		//Done with payment method situation
 
@@ -737,7 +737,10 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		if (iwc.isParameterSet(PARAMETER_CURRENT_INSTRUMENT)) {
 			currentInstrument = iwc.getParameter(PARAMETER_CURRENT_INSTRUMENT);
 		}
-		int paymentMethod = Integer.parseInt(iwc.getParameter(PARAMETER_PAYMENT_METHOD));
+		int paymentMethod = -1;
+		if (iwc.isParameterSet(PARAMETER_PAYMENT_METHOD)) {
+			paymentMethod = Integer.parseInt(iwc.getParameter(PARAMETER_PAYMENT_METHOD));
+		}
 		
 		try {
 			boolean success = getBusiness().saveChoices(iwc.getCurrentUser(), getSession().getChild(), schools, season, department, lessonType, instruments, teacherRequest, message, currentYear, currentInstrument, previousStudies, elementarySchool, paymentMethod);

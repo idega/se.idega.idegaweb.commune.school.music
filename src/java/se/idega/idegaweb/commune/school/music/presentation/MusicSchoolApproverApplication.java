@@ -138,7 +138,7 @@ public class MusicSchoolApproverApplication extends MusicSchoolBlock {
 			while (iter.hasNext()) {
 				SchoolStudyPath instrument = (SchoolStudyPath) iter.next();
 				table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
-				table.add(getText(localize(instrument.getCode(), instrument.getDescription())), 2, row++);
+				table.add(getText(localize(instrument.getLocalizedKey(), instrument.getDescription())), 2, row++);
 			}
 			
 			table.setRowStyleClass(row, getStyleName(STYLENAME_TEXT_CELL));

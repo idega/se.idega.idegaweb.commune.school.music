@@ -139,7 +139,7 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 				connectionTable.add(box, iColumn, iRow);
 				connectionTable.add(getSmallText(Text.NON_BREAKING_SPACE), iColumn, iRow);
 				connectionTable.setWidth(iColumn, iRow, "25%");
-				connectionTable.add(getSmallText(localize(instrument.getCode(), instrument.getDescription())), iColumn++, iRow);
+				connectionTable.add(getSmallText(localize(instrument.getLocalizedKey(), instrument.getDescription())), iColumn++, iRow);
 			}
 		}
 				
