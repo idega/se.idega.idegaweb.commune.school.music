@@ -461,7 +461,7 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		}
 	}
 	
-	public int ejbHomeGetMusicChoiceStatistics(String status, boolean firstChoiceOnly) throws IDOException {
+	public int ejbHomeGetMusicChoiceStatistics(String status, SchoolSeason season, boolean firstChoiceOnly) throws IDOException {
 		Table choice = new Table(this, "c");
 		Table process = new Table(Case.class, "p");
 		
@@ -476,6 +476,9 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		query.addCriteria(new MatchCriteria(process, "CASE_STATUS", MatchCriteria.NOTEQUALS, status));
 		if (firstChoiceOnly) {
 			query.addCriteria(new MatchCriteria(new Column(process, "PARENT_CASE_ID"), false));
+		}
+		if (season != null) {
+			query.addCriteria(new MatchCriteria(choice, SCHOOL_SEASON, MatchCriteria.EQUALS, season));
 		}
 
 		return idoGetNumberOfRecords(query.toString());

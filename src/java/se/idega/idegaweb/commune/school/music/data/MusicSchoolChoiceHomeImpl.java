@@ -1,6 +1,6 @@
 /*
- * $Id: MusicSchoolChoiceHomeImpl.java,v 1.6 2005/03/31 08:22:32 laddi Exp $
- * Created on 31.3.2005
+ * $Id: MusicSchoolChoiceHomeImpl.java,v 1.7 2005/04/04 11:53:40 laddi Exp $
+ * Created on 4.4.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -24,10 +24,10 @@ import com.idega.user.data.User;
  * <p>
  * TODO laddi Describe Type MusicSchoolChoiceHomeImpl
  * </p>
- *  Last modified: $Date: 2005/03/31 08:22:32 $ by $Author: laddi $
+ *  Last modified: $Date: 2005/04/04 11:53:40 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MusicSchoolChoiceHomeImpl extends IDOFactory implements MusicSchoolChoiceHome {
 
@@ -193,9 +193,9 @@ public class MusicSchoolChoiceHomeImpl extends IDOFactory implements MusicSchool
 		return theReturn;
 	}
 
-	public int getMusicChoiceStatistics(String status, boolean firstChoiceOnly) throws IDOException {
+	public int getMusicChoiceStatistics(String status, SchoolSeason season, boolean firstChoiceOnly) throws IDOException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		int theReturn = ((MusicSchoolChoiceBMPBean) entity).ejbHomeGetMusicChoiceStatistics(status, firstChoiceOnly);
+		int theReturn = ((MusicSchoolChoiceBMPBean) entity).ejbHomeGetMusicChoiceStatistics(status, season, firstChoiceOnly);
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}

@@ -19,6 +19,7 @@ import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 import javax.transaction.UserTransaction;
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
+import se.idega.idegaweb.commune.care.business.CareBusiness;
 import se.idega.idegaweb.commune.message.business.MessageBusiness;
 import se.idega.idegaweb.commune.message.data.Message;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
@@ -88,6 +89,15 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 	private CommuneUserBusiness getUserBusiness() {
 		try {
 			return (CommuneUserBusiness) this.getServiceInstance(CommuneUserBusiness.class);
+		}
+		catch (RemoteException e) {
+			throw new IBORuntimeException(e.getMessage());
+		}
+	}
+
+	private CareBusiness getCareBusiness() {
+		try {
+			return (CareBusiness) this.getServiceInstance(CareBusiness.class);
 		}
 		catch (RemoteException e) {
 			throw new IBORuntimeException(e.getMessage());
@@ -722,8 +732,19 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 	
 	public int getMusicSchoolStatistics(boolean showFirstChoiceOnly) {
 		try {
+			SchoolSeason season;
+			try {
+				season = getCareBusiness().getCurrentSeason();
+			}
+			catch (RemoteException re) {
+				throw new IBORuntimeException(re);
+			}
+			catch (FinderException fe) {
+				log(fe);
+				return 0;
+			}
 			String status = getCaseStatusDeleted().getStatus();
-			return getMusicSchoolChoiceHome().getMusicChoiceStatistics(status, showFirstChoiceOnly);
+			return getMusicSchoolChoiceHome().getMusicChoiceStatistics(status, season, showFirstChoiceOnly);
 		}
 		catch (IDOException ie) {
 			return 0;
