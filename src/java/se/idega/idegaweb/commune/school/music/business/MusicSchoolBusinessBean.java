@@ -38,6 +38,7 @@ import com.idega.block.school.data.SchoolClass;
 import com.idega.block.school.data.SchoolClassMember;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
+import com.idega.block.school.data.SchoolType;
 import com.idega.block.school.data.SchoolYear;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
@@ -548,6 +549,56 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 				instrument.setIsValid(true);
 				instrument.setSchoolCategory(getSchoolBusiness().getCategoryMusicSchool().getPrimaryKey());
 				instrument.store();
+			}
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+
+	public void saveDepartment(Object departmentPK, String name, String description, String localizedKey, int order, boolean isSelectable) throws FinderException, CreateException {
+		try {
+			SchoolYear department;
+			if (departmentPK != null) {
+				department = getSchoolBusiness().getSchoolYear(new Integer(departmentPK.toString()));
+			}
+			else {
+				department = getSchoolBusiness().getSchoolYearHome().create();
+			}
+			
+			if (department != null) {
+				department.setSchoolYearName(name);
+				department.setSchoolYearInfo(description);
+				department.setLocalizedKey(localizedKey);
+				department.setIsSelectable(isSelectable);
+				department.setSchoolYearAge(order);
+				department.setSchoolCategory(getSchoolBusiness().getCategoryMusicSchool().getPrimaryKey());
+				department.store();
+			}
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+
+	public void saveLessonType(Object lessonTypePK, String name, String description, String localizedKey, int order, boolean isSelectable) throws CreateException {
+		try {
+			SchoolType lessonType;
+			if (lessonTypePK != null) {
+				lessonType = getSchoolBusiness().getSchoolType(new Integer(lessonTypePK.toString()));
+			}
+			else {
+				lessonType = getSchoolBusiness().getSchoolTypeHome().create();
+			}
+			
+			if (lessonType != null) {
+				lessonType.setSchoolTypeName(name);
+				lessonType.setSchoolTypeInfo(description);
+				lessonType.setLocalizationKey(localizedKey);
+				lessonType.setSelectable(isSelectable);
+				lessonType.setOrder(order);
+				lessonType.setCategory(getSchoolBusiness().getCategoryMusicSchool());
+				lessonType.store();
 			}
 		}
 		catch (RemoteException re) {

@@ -30,4 +30,6 @@ public interface MusicSchoolBusiness extends com.idega.block.process.business.Ca
  public boolean removeChoiceFromGroup(java.lang.Object p0,com.idega.user.data.User p1) throws java.rmi.RemoteException;
  public boolean saveChoices(com.idega.user.data.User p0,com.idega.user.data.User p1,java.lang.Object[] p2,java.lang.Object p3,java.lang.Object p4,java.lang.Object p5,java.lang.Object[] p6,java.lang.String p7,java.lang.String p8,java.lang.Object p9,java.lang.Object p10,java.lang.String p11,java.lang.String p12,int p13)throws com.idega.data.IDOCreateException, java.rmi.RemoteException;
  public void saveInstrument(Object instrumentPK, String code, String description, String localizedKey) throws FinderException, CreateException, java.rmi.RemoteException;
+ public void saveDepartment(Object instrumentPK, String name, String description, String localizedKey, int order, boolean isSelectable) throws FinderException, CreateException, java.rmi.RemoteException;
+ public void saveLessonType(Object lessonTypePK, String name, String description, String localizedKey, int order, boolean isSelectable) throws CreateException, java.rmi.RemoteException;
 }
