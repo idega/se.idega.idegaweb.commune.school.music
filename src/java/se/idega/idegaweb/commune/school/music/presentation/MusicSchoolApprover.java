@@ -263,7 +263,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 						code = null;
 					}
 					remove = new Link(getDeleteIcon(localize("remove_from_group", "Remove student from group")));
-					remove.addParameter(PARAMETER_REMOVE, user.getPrimaryKey().toString());
+					remove.addParameter(PARAMETER_REMOVE, student.getPrimaryKey().toString());
 					remove.addParameter(PARAMETER_ACTION, String.valueOf(ACTION_SAVE));
 
 					groupTable.add(getSmallText(user.getName()), iColumn++, iRow);
