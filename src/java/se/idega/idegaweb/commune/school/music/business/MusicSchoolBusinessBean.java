@@ -424,6 +424,28 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		}
 	}
 	
+	public boolean rejectApplication(Object applicationPK, User performer) {
+		try {
+			MusicSchoolChoice application = findMusicSchoolChoice(applicationPK);
+			Iterator iter = application.getChildren();
+			while (iter.hasNext()) {
+				Case theCase = (Case) iter.next();
+				if (theCase.getCaseCode().equals(application.getCaseCode())) {
+					String subject = this.getLocalizedString("music_school.choice_received_subject", "Music school choice received");
+					String body = this.getLocalizedString("music_school.choice_received_body", "{1} has received the application for a music school placing for {0}, {2}.  The application will be handled as soon as possible.");
+					sendMessageToParents((MusicSchoolChoice)theCase, subject, body);
+					changeCaseStatus(theCase, getCaseStatusPreliminary().getStatus(), performer);
+				}
+			}
+			changeCaseStatus(application, getCaseStatusDenied().getStatus(), performer);
+			return true;
+		}
+		catch (FinderException fe) {
+			log(fe);
+			return false;
+		}
+	}
+	
 	public boolean isPlacedInSchool(User student, School school, SchoolSeason season, SchoolStudyPath instrument) {
 		try {
 			return getSchoolBusiness().getSchoolClassMemberHome().countByUserAndSchoolAndSeasonAndStudyPath(student, school, season, instrument) > 0;

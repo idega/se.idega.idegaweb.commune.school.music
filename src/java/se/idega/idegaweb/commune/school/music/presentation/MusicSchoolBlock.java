@@ -40,6 +40,12 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 
 	public final static String IW_BUNDLE_IDENTIFIER = "se.idega.idegaweb.commune.school.music";
 	
+	protected static final String STYLENAME_HEADER_CELL = "HeaderCell";
+	protected static final String STYLENAME_HEADING_CELL = "HeadingCell";
+	protected static final String STYLENAME_TEXT_CELL = "TextCell";
+	protected static final String STYLENAME_INPUT_CELL = "InputCell";
+	protected static final String STYLENAME_INFORMATION_CELL = "InformationCell";
+	
 	private final static int PAYMENT_METHOD_VISA = 1;
 	private final static int PAYMENT_METHOD_EUROCARD = 2;
 	private final static int PAYMENT_METHOD_GIRO = 3;

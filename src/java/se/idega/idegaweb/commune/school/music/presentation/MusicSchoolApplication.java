@@ -61,12 +61,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 	private static final int ACTION_VERIFY = 2;
 	private static final int ACTION_SAVE = 3;
 	
-	private static final String STYLENAME_HEADER_CELL = "HeaderCell";
-	private static final String STYLENAME_HEADING_CELL = "HeadingCell";
-	private static final String STYLENAME_TEXT_CELL = "TextCell";
-	private static final String STYLENAME_INPUT_CELL = "InputCell";
-	private static final String STYLENAME_INFORMATION_CELL = "InformationCell";
-	
 	private static final String PARAMETER_ACTION = "prm_action";
 
 	private static final String PARAMETER_SCHOOLS = "prm_school";
