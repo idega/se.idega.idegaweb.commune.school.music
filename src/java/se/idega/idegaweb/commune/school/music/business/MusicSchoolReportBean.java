@@ -35,7 +35,7 @@ import com.idega.idegaweb.IWResourceBundle;
  */
 public class MusicSchoolReportBean extends IBOSessionBean implements MusicSchoolReport {
 
-	private final static String IW_BUNDLE_IDENTIFIER = "se.idega.idegaweb.commune";
+	private final static String IW_BUNDLE_IDENTIFIER = "se.idega.idegaweb.commune.school.music";
 	
 	private final static String FIELD_SCHOOL = "school";
 	
@@ -92,18 +92,18 @@ public class MusicSchoolReportBean extends IBOSessionBean implements MusicSchool
 			while (iter.hasNext()) {
 				SchoolYear department = (SchoolYear) iter.next();
 				
-				ReportableField allDepartments = new ReportableField(department.getSchoolYearName() + "_all", String.class);
-				allDepartments.setLocalizedName(getLocalizedString(department.getSchoolYearName() + "_all", department.getSchoolYearName() + " all"), currentLocale);
+				ReportableField allDepartments = new ReportableField(department.getLocalizedKey() + "_all", String.class);
+				allDepartments.setLocalizedName(getLocalizedString(department.getLocalizedKey() + "_all", department.getSchoolYearName() + " all"), currentLocale);
 				reportCollection.addField(allDepartments);
 				map.put(department.getSchoolYearName() + "_all", allDepartments);
 				
-				ReportableField singingDepartment = new ReportableField(department.getSchoolYearName() + "_singing", String.class);
-				singingDepartment.setLocalizedName(getLocalizedString(department.getSchoolYearName() + "_singing", department.getSchoolYearName() + " singing"), currentLocale);
+				ReportableField singingDepartment = new ReportableField(department.getLocalizedKey() + "_singing", String.class);
+				singingDepartment.setLocalizedName(getLocalizedString(department.getLocalizedKey() + "_singing", department.getSchoolYearName() + " singing"), currentLocale);
 				reportCollection.addField(singingDepartment);
 				map.put(department.getSchoolYearName() + "_singing", singingDepartment);
 				
-				ReportableField otherDepartments = new ReportableField(department.getSchoolYearName() + "_other", String.class);
-				otherDepartments.setLocalizedName(getLocalizedString(department.getSchoolYearName() + "_other", department.getSchoolYearName() + " other"), currentLocale);
+				ReportableField otherDepartments = new ReportableField(department.getLocalizedKey() + "_other", String.class);
+				otherDepartments.setLocalizedName(getLocalizedString(department.getLocalizedKey() + "_other", department.getSchoolYearName() + " other"), currentLocale);
 				reportCollection.addField(otherDepartments);
 				map.put(department.getSchoolYearName() + "_other", otherDepartments);
 				
@@ -131,9 +131,9 @@ public class MusicSchoolReportBean extends IBOSessionBean implements MusicSchool
 					catch (IDOException ie) {
 						log(ie);
 					}
-					data.addData((ReportableField) map.get(department.getSchoolYearName() + "_other"), new Integer(otherNR));
-					data.addData((ReportableField) map.get(department.getSchoolYearName() + "_singing"), new Integer(singingNR));
-					data.addData((ReportableField) map.get(department.getSchoolYearName() + "_all"), new Integer(totalNR));
+					data.addData((ReportableField) map.get(department.getLocalizedKey() + "_other"), new Integer(otherNR));
+					data.addData((ReportableField) map.get(department.getLocalizedKey() + "_singing"), new Integer(singingNR));
+					data.addData((ReportableField) map.get(department.getLocalizedKey() + "_all"), new Integer(totalNR));
 				}
 				reportCollection.add(data);
 			}
