@@ -386,7 +386,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 			choice.removeStudyPaths();
 		}
 		catch (IDORemoveRelationshipException irre) {
-			irre.printStackTrace();;
+			irre.printStackTrace();
 		}
 		choice.setSchoolType(lessonTypePK);
 		choice.setSchoolYear(departmentPK);
