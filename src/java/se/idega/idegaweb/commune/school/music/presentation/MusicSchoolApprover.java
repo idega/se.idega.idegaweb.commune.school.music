@@ -408,21 +408,21 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		
 		if (elementarySchool != null) {
 			table.add(getSmallHeader(localize("elementary_school", "Elementary school")), 1, row++);
-			viewTable.add(getText(elementarySchool), 1, row++);
+			table.add(getText(elementarySchool), 1, row++);
 			table.setHeight(row++, 6);
 			
 		}
 		
 		if (previousStudies != null) {
 			table.add(getSmallHeader(localize("previous_studies", "Previous studies")), 1, row++);
-			viewTable.add(getText(previousStudies), 1, row++);
+			table.add(getText(previousStudies), 1, row++);
 			table.setHeight(row++, 6);
 			
 		}
 		
 		if (message != null) {
 			table.add(getSmallHeader(localize("message", "Message")), 1, row++);
-			viewTable.add(getText(message), 1, row++);
+			table.add(getText(message), 1, row++);
 		}
 		
 		table.setHeight(row++, 18);
