@@ -309,7 +309,7 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 	protected Table getPersonInfoTable(IWContext iwc, User user) throws RemoteException {
 		Table table = new Table();
 		table.setCellpadding(getCellpadding());
-		table.setCellspacing(getCellspacing());
+		table.setCellspacing(0);
 		table.setColumns(5);
 		table.setWidth(3, 12);
 		int row = 1;
@@ -372,6 +372,13 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		if (email != null && email.getEmailAddress() != null) {
 			table.add(getText(email.getEmailAddress()), 2, row);
 		}
+		row++;
+		
+		table.setHeight(row, 6);
+		table.mergeCells(1, row, table.getColumns(), row);
+		table.setBottomCellBorder(1, row++, 1, "#D7D7D7", "solid");
+		table.setHeight(row++, 6);
+		
 		
 		if (age.getYears() < 18) {
 			User custodian = getUserBusiness().getCustodianForChild(user);
@@ -398,8 +405,6 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 					email = null;
 				}
 
-				table.setHeight(row++, 12);
-
 				table.add(getSmallHeader(localize("custodian", "Custodian")), 1, row);
 				table.add(getText(custodian.getName()), 2, row);
 
@@ -420,6 +425,11 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 				if (email != null) {
 					table.add(getText(email.getEmailAddress()), 2, row);
 				}
+				row++;
+				
+				table.setHeight(row, 6);
+				table.mergeCells(1, row, table.getColumns(), row);
+				table.setBottomCellBorder(1, row++, 1, "#D7D7D7", "solid");
 			}
 		}
 		

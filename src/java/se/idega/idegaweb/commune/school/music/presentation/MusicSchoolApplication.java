@@ -147,6 +147,31 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		
 		Form form = new Form();
 		form.setEventListener(MusicSchoolEventListener.class);
+		form.maintainParameter(PARAMETER_SCHOOLS + "_1");
+		form.maintainParameter(PARAMETER_SCHOOLS + "_2");
+		form.maintainParameter(PARAMETER_SCHOOLS + "_3");
+		form.maintainParameter(PARAMETER_INSTRUMENTS + "_1");
+		form.maintainParameter(PARAMETER_INSTRUMENTS + "_2");
+		form.maintainParameter(PARAMETER_INSTRUMENTS + "_3");
+		form.maintainParameter(PARAMETER_SEASON);
+		form.maintainParameter(PARAMETER_DEPARTMENT);
+		form.maintainParameter(PARAMETER_LESSON_TYPE);
+		form.maintainParameter(PARAMETER_TEACHER_REQUEST);
+		form.maintainParameter(PARAMETER_OTHER_INSTRUMENT);
+		form.maintainParameter(PARAMETER_HAS_EXTRA_APPLICATIONS);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_1");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_2");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_3");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_1");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_2");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_3");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_DEPARTMENT);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_LESSON_TYPE);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_TEACHER_REQUEST);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_OTHER_INSTRUMENT);
+		form.maintainParameter(PARAMETER_MESSAGE);
+		form.maintainParameter(PARAMETER_PREVIOUS_STUDIES);
+		form.maintainParameter(PARAMETER_ELEMENTARY_SCHOOL);
 		
 		Table table = new Table();
 		table.setColumns(2);
@@ -217,7 +242,9 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("mobile_phone", "Mobile phone")), 2, row++);
 		TextInput homePhone = getTextInput(PARAMETER_HOME_PHONE, null, false);
+		homePhone.keepStatusOnAction(true);
 		TextInput mobilePhone = getTextInput(PARAMETER_MOBILE_PHONE, null, false);
+		mobilePhone.keepStatusOnAction(true);
 		if (phone != null) {
 			homePhone.setContent(phone.getNumber());
 		}
@@ -232,6 +259,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("email", "E-mail")), 1, row++);
 		TextInput mail = getTextInput(PARAMETER_EMAIL, null, false);
+		mail.keepStatusOnAction(true);
 		if (email != null) {
 			mail.setContent(email.getEmailAddress());
 		}
@@ -251,7 +279,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(getHelpButton("help_music_school_application_phase_1"), 1, row);
 		table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
 		table.setCellpaddingRight(1, row, 12);
-		next.setOnSubmitFunction("checkApplication", getSubmitConfirmScript());
 		form.setToDisableOnSubmit(next, true);
 
 		add(form);
@@ -260,6 +287,31 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 	private void showPhaseTwo(IWContext iwc) throws RemoteException {
 		Form form = new Form();
 		form.setEventListener(MusicSchoolEventListener.class);
+		form.maintainParameter(PARAMETER_SCHOOLS + "_1");
+		form.maintainParameter(PARAMETER_SCHOOLS + "_2");
+		form.maintainParameter(PARAMETER_SCHOOLS + "_3");
+		form.maintainParameter(PARAMETER_INSTRUMENTS + "_1");
+		form.maintainParameter(PARAMETER_INSTRUMENTS + "_2");
+		form.maintainParameter(PARAMETER_INSTRUMENTS + "_3");
+		form.maintainParameter(PARAMETER_SEASON);
+		form.maintainParameter(PARAMETER_DEPARTMENT);
+		form.maintainParameter(PARAMETER_LESSON_TYPE);
+		form.maintainParameter(PARAMETER_TEACHER_REQUEST);
+		form.maintainParameter(PARAMETER_OTHER_INSTRUMENT);
+		form.maintainParameter(PARAMETER_HAS_EXTRA_APPLICATIONS);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_1");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_2");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_3");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_1");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_2");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_3");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_DEPARTMENT);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_LESSON_TYPE);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_TEACHER_REQUEST);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_OTHER_INSTRUMENT);
+		form.maintainParameter(PARAMETER_MESSAGE);
+		form.maintainParameter(PARAMETER_PREVIOUS_STUDIES);
+		form.maintainParameter(PARAMETER_ELEMENTARY_SCHOOL);
 		
 		Table table = new Table();
 		table.setCellpadding(0);
@@ -414,11 +466,14 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		
 		SelectorUtility util = new SelectorUtility();
 		DropdownMenu instrumentsDrop1 = (DropdownMenu) getStyledInterface(util.getSelectorFromIDOEntities(new DropdownMenu(getParameterName(PARAMETER_INSTRUMENTS + "_1", extraApplications)), instruments, "getLocalizedKey", getResourceBundle()));
-		instrumentsDrop1.addMenuElementFirst("", localize("select_instrument", "Select instrument"));
+		instrumentsDrop1.addMenuElementFirst("-1", localize("select_instrument", "Select instrument"));
+		instrumentsDrop1.keepStatusOnAction(true);
 		DropdownMenu instrumentsDrop2 = (DropdownMenu) getStyledInterface(util.getSelectorFromIDOEntities(new DropdownMenu(getParameterName(PARAMETER_INSTRUMENTS + "_2", extraApplications)), instruments, "getLocalizedKey", getResourceBundle()));
-		instrumentsDrop2.addMenuElementFirst("", localize("select_instrument", "Select instrument"));
+		instrumentsDrop2.addMenuElementFirst("-1", localize("select_instrument", "Select instrument"));
+		instrumentsDrop2.keepStatusOnAction(true);
 		DropdownMenu instrumentsDrop3 = (DropdownMenu) getStyledInterface(util.getSelectorFromIDOEntities(new DropdownMenu(getParameterName(PARAMETER_INSTRUMENTS + "_3", extraApplications)), instruments, "getLocalizedKey", getResourceBundle()));
-		instrumentsDrop3.addMenuElementFirst("", localize("select_instrument", "Select instrument"));
+		instrumentsDrop3.addMenuElementFirst("-1", localize("select_instrument", "Select instrument"));
+		instrumentsDrop3.keepStatusOnAction(true);
 		if (chosenInstruments != null) {
 			int index = 1;
 			Iterator iter = chosenInstruments.iterator();
@@ -438,16 +493,20 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		}
 		
 		DropdownMenu school1 = (DropdownMenu) util.getSelectorFromIDOEntities(getDropdown(getParameterName(PARAMETER_SCHOOLS + "_1", extraApplications), chosenSchool1), schools, "getSchoolName");
-		school1.addMenuElementFirst("", localize("select_school", "Select school"));
-
+		school1.addMenuElementFirst("-1", localize("select_school", "Select school"));
+		school1.keepStatusOnAction(true);
+		
 		DropdownMenu school2 = (DropdownMenu) util.getSelectorFromIDOEntities(getDropdown(getParameterName(PARAMETER_SCHOOLS + "_2", extraApplications), chosenSchool2), schools, "getSchoolName");
-		school2.addMenuElementFirst("", localize("select_school", "Select school"));
-
+		school2.addMenuElementFirst("-1", localize("select_school", "Select school"));
+		school2.keepStatusOnAction(true);
+		
 		DropdownMenu school3 = (DropdownMenu) util.getSelectorFromIDOEntities(getDropdown(getParameterName(PARAMETER_SCHOOLS + "_3", extraApplications), chosenSchool3), schools, "getSchoolName");
-		school3.addMenuElementFirst("", localize("select_school", "Select school"));
+		school3.addMenuElementFirst("-1", localize("select_school", "Select school"));
+		school3.keepStatusOnAction(true);
 		
 		DropdownMenu departmentDrop = getDropdown(getParameterName(PARAMETER_DEPARTMENT, extraApplications), chosenDepartment);
 		departmentDrop.addMenuElementFirst("-1", localize("select_department", "Select department"));
+		departmentDrop.keepStatusOnAction(true);
 		Iterator iter = departments.iterator();
 		while (iter.hasNext()) {
 			SchoolYear year = (SchoolYear) iter.next();
@@ -458,11 +517,18 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		DropdownMenu lessonTypeDrop = getDropdown(getParameterName(PARAMETER_LESSON_TYPE, extraApplications), chosenLessonType);
 		lessonTypeDrop.addMenuElementFirst("-1", localize("select_lesson_type", "Select lesson type"));
+		lessonTypeDrop.keepStatusOnAction(true);
 		iter = lessonTypes.iterator();
 		while (iter.hasNext()) {
 			SchoolType type = (SchoolType) iter.next();
 			lessonTypeDrop.addMenuElement(type.getPrimaryKey().toString(), localize(type.getLocalizationKey(), type.getSchoolTypeName()));
 		}
+		
+		TextInput otherInstrumentInput = getTextInput(PARAMETER_OTHER_INSTRUMENT, otherInstrument);
+		otherInstrumentInput.keepStatusOnAction(true);
+		
+		TextInput teacherRequestInput = getTextInput(getParameterName(PARAMETER_TEACHER_REQUEST, extraApplications), chosenTeacher);
+		teacherRequestInput.keepStatusOnAction(true);
 
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("first_school", "First choice")), 1, iRow);
@@ -497,7 +563,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("other_instrument", "Other instrument")), 2, iRow);
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
-		choiceTable.add(getTextInput(PARAMETER_OTHER_INSTRUMENT, otherInstrument), 2, iRow++);
+		choiceTable.add(otherInstrumentInput, 2, iRow++);
 		
 		choiceTable.setHeight(iRow++, 18);
 		
@@ -514,7 +580,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("teacher_request", "Teacher request")), 1, iRow);
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_INPUT_CELL));
-		choiceTable.add(getTextInput(getParameterName(PARAMETER_TEACHER_REQUEST, extraApplications), chosenTeacher), 1, iRow++);
+		choiceTable.add(teacherRequestInput, 1, iRow++);
 		
 		return choiceTable;
 	}
@@ -535,10 +601,25 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.maintainParameter(PARAMETER_INSTRUMENTS + "_1");
 		form.maintainParameter(PARAMETER_INSTRUMENTS + "_2");
 		form.maintainParameter(PARAMETER_INSTRUMENTS + "_3");
+		form.maintainParameter(PARAMETER_SEASON);
 		form.maintainParameter(PARAMETER_DEPARTMENT);
 		form.maintainParameter(PARAMETER_LESSON_TYPE);
 		form.maintainParameter(PARAMETER_TEACHER_REQUEST);
 		form.maintainParameter(PARAMETER_OTHER_INSTRUMENT);
+		form.maintainParameter(PARAMETER_HAS_EXTRA_APPLICATIONS);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_1");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_2");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_3");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_1");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_2");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_3");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_DEPARTMENT);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_LESSON_TYPE);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_TEACHER_REQUEST);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_OTHER_INSTRUMENT);
+		form.maintainParameter(PARAMETER_MESSAGE);
+		form.maintainParameter(PARAMETER_PREVIOUS_STUDIES);
+		form.maintainParameter(PARAMETER_ELEMENTARY_SCHOOL);
 		
 		Table table = new Table();
 		table.setCellpadding(0);
@@ -560,6 +641,8 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		RadioButton yes = this.getRadioButton(PARAMETER_HAS_EXTRA_APPLICATIONS, Boolean.TRUE.toString());
 		RadioButton no = this.getRadioButton(PARAMETER_HAS_EXTRA_APPLICATIONS, Boolean.FALSE.toString());
 		no.setSelected(true);
+		yes.keepStatusOnAction(true);
+		no.keepStatusOnAction(true);
 		
 		choiceTable.add(getSmallHeader(localize("apply_for_extra_school", "Apply for another school") + ":"), 1, 2);
 		choiceTable.add(getSmallHeader(localize("yes", "Yes")), 2, 1);
@@ -594,10 +677,25 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.maintainParameter(PARAMETER_INSTRUMENTS + "_1");
 		form.maintainParameter(PARAMETER_INSTRUMENTS + "_2");
 		form.maintainParameter(PARAMETER_INSTRUMENTS + "_3");
+		form.maintainParameter(PARAMETER_SEASON);
 		form.maintainParameter(PARAMETER_DEPARTMENT);
 		form.maintainParameter(PARAMETER_LESSON_TYPE);
 		form.maintainParameter(PARAMETER_TEACHER_REQUEST);
 		form.maintainParameter(PARAMETER_OTHER_INSTRUMENT);
+		form.maintainParameter(PARAMETER_HAS_EXTRA_APPLICATIONS);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_1");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_2");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_3");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_1");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_2");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_3");
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_DEPARTMENT);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_LESSON_TYPE);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_TEACHER_REQUEST);
+		form.maintainParameter(EXTRA_PREFIX + PARAMETER_OTHER_INSTRUMENT);
+		form.maintainParameter(PARAMETER_MESSAGE);
+		form.maintainParameter(PARAMETER_PREVIOUS_STUDIES);
+		form.maintainParameter(PARAMETER_ELEMENTARY_SCHOOL);
 		form.addParameter(PARAMETER_HAS_EXTRA_APPLICATIONS, "true");
 		
 		Table table = new Table();
@@ -638,6 +736,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.maintainParameter(PARAMETER_INSTRUMENTS + "_1");
 		form.maintainParameter(PARAMETER_INSTRUMENTS + "_2");
 		form.maintainParameter(PARAMETER_INSTRUMENTS + "_3");
+		form.maintainParameter(PARAMETER_SEASON);
 		form.maintainParameter(PARAMETER_DEPARTMENT);
 		form.maintainParameter(PARAMETER_LESSON_TYPE);
 		form.maintainParameter(PARAMETER_TEACHER_REQUEST);
@@ -649,11 +748,13 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_1");
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_2");
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_3");
-		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SEASON);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_DEPARTMENT);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_LESSON_TYPE);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_TEACHER_REQUEST);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_OTHER_INSTRUMENT);
+		form.maintainParameter(PARAMETER_MESSAGE);
+		form.maintainParameter(PARAMETER_PREVIOUS_STUDIES);
+		form.maintainParameter(PARAMETER_ELEMENTARY_SCHOOL);
 		
 		SchoolSeason season = null;
 		try {
@@ -680,15 +781,18 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setHeight(row++, 18);
 		
 		if (age.getYears() < 16) {
+			TextInput elementarySchool = getTextInput(PARAMETER_ELEMENTARY_SCHOOL, null);
+			elementarySchool.keepStatusOnAction(true);
 			table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
 			table.add(getText(localize("elementary_school", "Elementary school")), 1, row++);
 			table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
-			table.add(getTextInput(PARAMETER_ELEMENTARY_SCHOOL, null), 1, row++);
+			table.add(elementarySchool, 1, row++);
 			table.setHeight(row++, 3);
 		}
 		
 		TextArea previousStudies = getTextArea(PARAMETER_PREVIOUS_STUDIES, null);
 		previousStudies.setHeight("50");
+		previousStudies.keepStatusOnAction(true);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("previous_studies", "Previous studies")), 1, row++);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
@@ -698,6 +802,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		TextArea message = getTextArea(PARAMETER_MESSAGE, null);
 		message.setHeight("50");
+		message.keepStatusOnAction(true);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("message", "message")), 1, row++);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
@@ -1129,13 +1234,19 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		Collection schoolPKs = new ArrayList();
 		for (int i = 0; i < 3; i++) {
 			if (iwc.isParameterSet(PARAMETER_SCHOOLS + "_" + (i+1))) {
-				schoolPKs.add(iwc.getParameter(PARAMETER_SCHOOLS + "_" + (i+1)));
+				String schoolPK = iwc.getParameter(PARAMETER_SCHOOLS + "_" + (i+1));
+				if (!schoolPK.equals("-1")) {
+					schoolPKs.add(schoolPK);
+				}
 			}
 		}
 		Collection instrumentPKs = new ArrayList();
 		for (int i = 0; i < 3; i++) {
 			if (iwc.isParameterSet(PARAMETER_INSTRUMENTS + "_" + (i+1))) {
-				instrumentPKs.add(iwc.getParameter(PARAMETER_INSTRUMENTS + "_" + (i+1)));
+				String instrumentPK = iwc.getParameter(PARAMETER_INSTRUMENTS + "_" + (i+1));
+				if (!instrumentPK.equals("-1")) {
+					instrumentPKs.add(instrumentPK);
+				}
 			}
 		}
 		
