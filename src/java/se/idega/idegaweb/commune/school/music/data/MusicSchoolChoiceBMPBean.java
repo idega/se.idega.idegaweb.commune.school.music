@@ -469,6 +469,7 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		if (types != null) {
 			query.addCriteria(new InCriteria(choice, SCHOOL_TYPE, types));
 		}
+		query.addOrder(choice, CHOICE_DATE, true);
 		
 		return query;
 	}
