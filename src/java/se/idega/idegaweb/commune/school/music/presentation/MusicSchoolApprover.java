@@ -257,6 +257,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 				}
 				
 				table.setHeight(row++, 12);
+				table.setCellpaddingLeft(1, row, 12);
 				table.add(getLegendTable(), 1, row++);
 				
 				if (getSession().getGroup() != null) {
