@@ -191,11 +191,13 @@ public class MusicSchoolApproverApplication extends MusicSchoolBlock {
 				table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
 			}
 			
-			GenericButton button = getButton(new GenericButton("reject", localize("reject", "Reject")));
-			button.setPageToOpen(iwc.getCurrentIBPageID());
-			button.addParameterToPage(PARAMETER_REJECT, application.getPrimaryKey().toString());
-			table.add(button, 1, row);
-
+			if (application.getCaseStatus().equals(getBusiness().getCaseStatusPreliminary())) {
+				GenericButton button = getButton(new GenericButton("reject", localize("reject", "Reject")));
+				button.setPageToOpen(iwc.getCurrentIBPageID());
+				button.addParameterToPage(PARAMETER_REJECT, application.getPrimaryKey().toString());
+				table.add(button, 1, row);
+			}
+			
 			add(table);
 		}
 		else {

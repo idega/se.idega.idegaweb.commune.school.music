@@ -28,6 +28,7 @@ import com.idega.presentation.ui.CheckBox;
 import com.idega.presentation.ui.Form;
 import com.idega.presentation.ui.SubmitButton;
 import com.idega.user.data.User;
+import com.idega.util.IWTimestamp;
 import com.idega.util.PersonalIDFormatter;
 
 
@@ -83,10 +84,10 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 	private void getChoicesTable(IWContext iwc, Table table, int row) throws RemoteException {
 		Table choicesTable = new Table();
 		if (getSession().getGroupPK() != null) {
-			choicesTable.setColumns(7);
+			choicesTable.setColumns(9);
 		}
 		else {
-			choicesTable.setColumns(6);
+			choicesTable.setColumns(8);
 		}
 		choicesTable.setWidth(Table.HUNDRED_PERCENT);
 		choicesTable.setCellpadding(0);
@@ -95,10 +96,12 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		int iColumn = 1;
 		int iRow = 1;
 		
+		choicesTable.add(getSmallHeader(localize("number", "Nr.")), iColumn++, iRow);
 		choicesTable.add(getSmallHeader(localize("name", "Name")), iColumn++, iRow);
 		choicesTable.add(getSmallHeader(localize("personal_id", "Personal ID")), iColumn++, iRow);
 		choicesTable.add(getSmallHeader(localize("address", "Address")), iColumn++, iRow);
 		choicesTable.add(getSmallHeader(localize("postal_code", "Postal code")), iColumn++, iRow);
+		choicesTable.add(getSmallHeader(localize("choice_date", "Choice date")), iColumn++, iRow);
 		choicesTable.add(getSmallHeader(localize("department", "Department")), iColumn++, iRow);
 		choicesTable.add(getSmallHeader(localize("instruments.plural_or_singular", "Instrument/s")), iColumn++, iRow);
 		choicesTable.setCellpaddingLeft(1, iRow, 12);
@@ -114,16 +117,20 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 				Collection instruments;
 				SchoolYear department;
 				Link userLink;
+				IWTimestamp choiceDate;
 				CheckBox box;
 				boolean isPlaced = true;
 				boolean hasInstrumentPlacement = false;
 				boolean olderStudent = false;
 				boolean showOlderStudentMessage = false;
 				SchoolSeason previousSeason = getSchoolBusiness().findPreviousSchoolSeason(((Integer) getSession().getSeason().getPrimaryKey()).intValue());
+				int applicationCount = 0;
 				
 				Iterator iter = choices.iterator();
 				while (iter.hasNext()) {
 					iColumn = 1;
+					applicationCount++;
+					
 					choice = (MusicSchoolChoice) iter.next();
 					user = choice.getChild();
 					address = getUserBusiness().getUsersMainAddress(user);
@@ -132,6 +139,12 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					}
 					else {
 						code = null;
+					}
+					if (choice.getChoiceDate() != null) {
+						choiceDate = new IWTimestamp(choice.getChoiceDate());
+					}
+					else {
+						choiceDate = null;
 					}
 					try {
 						instruments = choice.getStudyPaths();
@@ -168,6 +181,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 						userLink.setPage(getResponsePage());
 					}
 					
+					choicesTable.add(getSmallText(String.valueOf(applicationCount)), iColumn++, iRow);
 					choicesTable.add(userLink, iColumn++, iRow);
 					choicesTable.add(getSmallText(PersonalIDFormatter.format(user.getPersonalID(), iwc.getCurrentLocale())), iColumn++, iRow);
 					if (address != null) {
@@ -183,6 +197,14 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 						choicesTable.add(getSmallText("-"), iColumn++, iRow);
 						choicesTable.add(getSmallText("-"), iColumn++, iRow);
 					}
+					
+					if (choiceDate != null) {
+						choicesTable.add(getSmallText(choiceDate.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), iColumn++, iRow);
+					}
+					else {
+						choicesTable.add(getSmallText("-"), iColumn++, iRow);
+					}
+					
 					choicesTable.add(getSmallText(localize(department.getLocalizedKey(), department.getSchoolYearName())), iColumn++, iRow);
 					Iterator iterator = instruments.iterator();
 					Text instrumentText = null;
@@ -210,12 +232,22 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					
 					choicesTable.setCellpaddingLeft(1, iRow, 12);
 					if (iRow % 2 == 0) {
-						choicesTable.setRowStyleClass(iRow++, getLightRowClass());
+						choicesTable.setRowStyleClass(iRow, getLightRowClass());
 					}
 					else {
-						choicesTable.setRowStyleClass(iRow++, getDarkRowClass());
+						choicesTable.setRowStyleClass(iRow, getDarkRowClass());
 					}
+					
+					if (hasInstrumentPlacement) {
+						choicesTable.setRowColor(iRow, PLACED_FOR_INSTRUMENT_COLOR);
+					}
+					else if (isPlaced) {
+						choicesTable.setRowColor(iRow, PLACED_COLOR);
+					}
+					
+					iRow++;
 				}
+				choicesTable.setColumnAlignment(1, Table.HORIZONTAL_ALIGN_CENTER);
 				
 				if (showOlderStudentMessage) {
 					table.setHeight(row++, 6);
@@ -223,6 +255,9 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					table.add(getSmallErrorText("* "), 1, row);
 					table.add(getSmallText(localize("student_previously_placed", "Student is previously placed at school")), 1, row++);
 				}
+				
+				table.setHeight(row++, 12);
+				table.add(getLegendTable(), 1, row++);
 				
 				if (getSession().getGroup() != null) {
 					table.setHeight(row++, 12);

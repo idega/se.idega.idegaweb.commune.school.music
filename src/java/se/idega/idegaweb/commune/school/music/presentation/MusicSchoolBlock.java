@@ -39,6 +39,9 @@ import com.idega.presentation.ui.DropdownMenu;
  * @author laddi
  */
 public abstract class MusicSchoolBlock extends CommuneBlock {
+	
+	protected static String PLACED_COLOR;
+	protected static String PLACED_FOR_INSTRUMENT_COLOR;
 
 	public final static String IW_BUNDLE_IDENTIFIER = "se.idega.idegaweb.commune.school.music";
 	
@@ -305,6 +308,27 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		return table;
 	}
 	
+	protected Table getLegendTable() {
+		Table table = new Table();
+		table.setHeight(1, 12);
+		table.setWidth(1, "12");
+		table.setWidth(3, "12");
+		table.setWidth(4, "12");
+		
+		setColorToCell(table, 1, 1, PLACED_COLOR);
+		setColorToCell(table, 4, 1, PLACED_FOR_INSTRUMENT_COLOR);
+		
+		table.add(getSmallHeader(localize("music_choice.placed_application","Application placed for other instrument/s")), 2, 1);
+		table.add(getSmallHeader(localize("music_choice.placed_application_for_instrument","Application placed for instrument")), 5, 1);
+		
+		return table;
+	}
+	
+	protected void setColorToCell(Table table, int column, int row, String color) {
+		table.setColor(column, row, color);
+		table.setCellBorder(column, row, 1, "#000000", "solid");
+	}
+	
 	public String getBundleIdentifier() {
 		return IW_BUNDLE_IDENTIFIER;
 	}
@@ -316,6 +340,9 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		session = getMusicSchoolSession(iwc);
 		sBusiness = getSchoolBusiness(iwc);
 		uBusiness = getUserBusiness(iwc);
+		
+		PLACED_COLOR = getBundle().getProperty("placed_color", "#FFE0E0");
+		PLACED_FOR_INSTRUMENT_COLOR = getBundle().getProperty("placed_for_instrument_color", "#E0FFE0");
 	}
 
 	private SchoolBusiness getSchoolBusiness(IWApplicationContext iwac) {
