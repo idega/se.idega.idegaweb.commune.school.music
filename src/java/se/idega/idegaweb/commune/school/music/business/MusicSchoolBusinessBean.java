@@ -514,6 +514,46 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 			throw new IBORuntimeException(re);
 		}
 	}
+	
+	public void deleteInstrument(Object instrumentPK) {
+		try {
+			SchoolStudyPath instrument = getSchoolBusiness().getSchoolStudyPathHome().findByPrimaryKey(new Integer(instrumentPK.toString()));
+			instrument.remove();
+		}
+		catch (FinderException fe) {
+			log(fe);
+		}
+		catch (RemoveException re) {
+			log(re);
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
+	public void saveInstrument(Object instrumentPK, String code, String description, String localizedKey) throws FinderException, CreateException {
+		try {
+			SchoolStudyPath instrument;
+			if (instrumentPK != null) {
+				instrument = getSchoolBusiness().getSchoolStudyPathHome().findByPrimaryKey(new Integer(instrumentPK.toString()));
+			}
+			else {
+				instrument = getSchoolBusiness().getSchoolStudyPathHome().create();
+			}
+			
+			if (instrument != null) {
+				instrument.setCode(code);
+				instrument.setDescription(description);
+				instrument.setLocalizedKey(localizedKey);
+				instrument.setIsValid(true);
+				instrument.setSchoolCategory(getSchoolBusiness().getCategoryMusicSchool().getPrimaryKey());
+				instrument.store();
+			}
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
 
 	public String getBundleIdentifier() {
 		return IW_BUNDLE_IDENTIFIER;
