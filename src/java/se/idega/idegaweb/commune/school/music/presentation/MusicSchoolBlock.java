@@ -22,6 +22,7 @@ import se.idega.idegaweb.commune.school.music.business.NoLessonTypeFoundExceptio
 
 import com.idega.block.school.business.SchoolBusiness;
 import com.idega.block.school.business.SchoolYearComparator;
+import com.idega.block.school.data.SchoolClass;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolYear;
@@ -31,6 +32,7 @@ import com.idega.business.IBORuntimeException;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWUserContext;
 import com.idega.presentation.IWContext;
+import com.idega.presentation.Table;
 import com.idega.presentation.ui.DropdownMenu;
 
 /**
@@ -240,6 +242,64 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		catch (RemoteException re) {
 			throw new IBORuntimeException(re);
 		}
+	}
+	
+	public DropdownMenu getGroupsDropdown() {
+		try {
+			DropdownMenu groups = (DropdownMenu) getStyledInterface(new DropdownMenu(getSession().getParameterNameGroupID()));
+			groups.setToSubmit(true);
+			
+			groups.addMenuElementFirst("", localize("group", "- Group -"));
+			if (getSession().getProvider() != null && getSession().getSeason() != null && getSession().getDepartment() != null && getSession().getInstrument() != null) {
+				try {
+					Collection coll = getBusiness().findGroupsInSchool(getSession().getProvider(), getSession().getSeason(), getSession().getDepartment(), getSession().getInstrument());
+					Iterator iter = coll.iterator();
+					while (iter.hasNext()) {
+						SchoolClass group = (SchoolClass) iter.next();
+						groups.addMenuElement(group.getPrimaryKey().toString(), group.getSchoolClassName());
+					}
+					if (getSession().getGroup() != null) {
+						if (coll.contains(getSession().getGroup())) {
+							groups.setSelectedElement(getSession().getGroupPK().toString());
+						}
+						else {
+							getSession().setGroup(null);
+						}
+					}
+				}
+				catch (FinderException fe) {
+					log(fe);
+				}
+			}
+			
+			return groups;
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+	
+	protected Table getNavigationTable() {
+		Table table = new Table(4, 1);
+		table.setCellpadding(0);
+		table.setCellspacing(0);
+		int column = 1;
+		
+		table.add(getSeasonsDropdown(), column, 1);
+		table.setCellpaddingRight(column++, 1, 3);
+		
+		table.add(getDepartmentsDropdown(), column, 1);
+		table.setCellpaddingRight(column, 1, 3);
+		table.setCellpaddingLeft(column++, 1, 3);
+		
+		table.add(getInstrumentsDropdown(), column, 1);
+		table.setCellpaddingRight(column, 1, 3);
+		table.setCellpaddingLeft(column++, 1, 3);
+		
+		table.add(getGroupsDropdown(), column, 1);
+		table.setCellpaddingLeft(column++, 1, 3);
+		
+		return table;
 	}
 	
 	public String getBundleIdentifier() {

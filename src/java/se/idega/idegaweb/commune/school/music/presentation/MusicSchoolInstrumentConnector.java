@@ -43,10 +43,8 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 	private static final int ACTION_FORM = 1;
 	private static final int ACTION_VERIFY = 2;
 	private static final int ACTION_SAVE = 3;
-	private static final int ACTION_DRP_CHANGE = 4; 
 	
 	private Form form;
-	private Table mainTable;
 	
 	private static final String PARAMETER_INSTRUMENTS = "prm_instruments";
 	private static final String PARAMETER_PROVIDER = "prm_provider";
@@ -60,8 +58,6 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 	private static final String STYLENAME_INFORMATION_CELL = "InformationCell";
 	
 	//localized keys and strings
-	private static final String INTSTRUMENT_CONNECTOR_KEY = "ms_instrument_connector";
-	private static final String INTSTRUMENT_CONNECTOR_DEFAULT = "Intstrument connector";
 	private static final String INSTRUMENT_KEY = "ms_instrument";
 	private static final String INSTRUMENT_DEFAULT = "Intstrument";
 	private static final String SCHOOL_KEY = "ms_school";
@@ -217,20 +213,18 @@ public class MusicSchoolInstrumentConnector extends MusicSchoolBlock{
 	
 	private void saveSchoolInstruments(IWContext iwc, School selectedSchool) {
 		Iterator iter = getInstrumentColl().iterator();
-		Collection schoolInstrumentColl = null;
 		while(iter.hasNext()) {
 			SchoolStudyPath ssPath = (SchoolStudyPath) iter.next();
 			String sspId = ssPath.getPrimaryKey().toString();			
 			if (iwc.isParameterSet(PARAMETER_INSTRUMENTS + sspId)) {		
-			try {
-				selectedSchool.addStudyPath(ssPath);
-			}
-			catch (IDOAddRelationshipException aRe) {
-				log(aRe);
-			}
+				try {
+					selectedSchool.addStudyPath(ssPath);
+				}
+				catch (IDOAddRelationshipException aRe) {
+					log(aRe);
+				}
 			}
 		}
-		
 	}
 	
 	

@@ -12,7 +12,6 @@ import javax.ejb.FinderException;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
 
-import com.idega.block.school.data.SchoolClass;
 import com.idega.block.school.data.SchoolClassMember;
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolYear;
@@ -25,7 +24,6 @@ import com.idega.presentation.Table;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
 import com.idega.presentation.ui.CheckBox;
-import com.idega.presentation.ui.DropdownMenu;
 import com.idega.presentation.ui.Form;
 import com.idega.presentation.ui.SubmitButton;
 import com.idega.user.data.User;
@@ -304,64 +302,6 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		}
 		else {
 			table.add(getErrorText(localize("must_select", "You must select year, department, season and group...")), 1, row);
-		}
-	}
-	
-	private Table getNavigationTable() {
-		Table table = new Table(4, 1);
-		table.setCellpadding(0);
-		table.setCellspacing(0);
-		int column = 1;
-		
-		table.add(getSeasonsDropdown(), column, 1);
-		table.setCellpaddingRight(column++, 1, 3);
-		
-		table.add(getDepartmentsDropdown(), column, 1);
-		table.setCellpaddingRight(column, 1, 3);
-		table.setCellpaddingLeft(column++, 1, 3);
-		
-		table.add(getInstrumentsDropdown(), column, 1);
-		table.setCellpaddingRight(column, 1, 3);
-		table.setCellpaddingLeft(column++, 1, 3);
-		
-		table.add(getGroupsDropdown(), column, 1);
-		table.setCellpaddingLeft(column++, 1, 3);
-		
-		return table;
-	}
-	
-	private DropdownMenu getGroupsDropdown() {
-		try {
-			DropdownMenu groups = (DropdownMenu) getStyledInterface(new DropdownMenu(getSession().getParameterNameGroupID()));
-			groups.setToSubmit(true);
-			
-			groups.addMenuElementFirst("", localize("group", "- Group -"));
-			if (getSession().getProvider() != null && getSession().getSeason() != null && getSession().getDepartment() != null && getSession().getInstrument() != null) {
-				try {
-					Collection coll = getBusiness().findGroupsInSchool(getSession().getProvider(), getSession().getSeason(), getSession().getDepartment(), getSession().getInstrument());
-					Iterator iter = coll.iterator();
-					while (iter.hasNext()) {
-						SchoolClass group = (SchoolClass) iter.next();
-						groups.addMenuElement(group.getPrimaryKey().toString(), group.getSchoolClassName());
-					}
-					if (getSession().getGroup() != null) {
-						if (coll.contains(getSession().getGroup())) {
-							groups.setSelectedElement(getSession().getGroupPK().toString());
-						}
-						else {
-							getSession().setGroup(null);
-						}
-					}
-				}
-				catch (FinderException fe) {
-					log(fe);
-				}
-			}
-			
-			return groups;
-		}
-		catch (RemoteException re) {
-			throw new IBORuntimeException(re);
 		}
 	}
 	
