@@ -65,12 +65,7 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 	
 	private Table getChoicesTable(IWContext iwc) throws RemoteException {
 		Table choicesTable = new Table();
-		if (getSession().getGroupPK() != null) {
-			choicesTable.setColumns(7);
-		}
-		else {
-			choicesTable.setColumns(6);
-		}
+		choicesTable.setColumns(7);
 		choicesTable.setWidth(Table.HUNDRED_PERCENT);
 		choicesTable.setCellpadding(0);
 		choicesTable.setCellspacing(0);

@@ -273,8 +273,6 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 			table.add(getSmallHeader(localize("school.number_of_students", "Number of students") + ": " + String.valueOf(numberOfStudents)), 1, row++);
 		}
 
-		table.setRowColor(row, "#FFFFFF");
-
 		return table;
 	}
 
