@@ -31,6 +31,7 @@ import com.idega.core.contact.data.Email;
 import com.idega.core.contact.data.Phone;
 import com.idega.core.location.data.Address;
 import com.idega.core.location.data.PostalCode;
+import com.idega.data.IDOEntity;
 import com.idega.data.IDORelationshipException;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWResourceBundle;
@@ -55,13 +56,13 @@ import com.idega.util.PersonalIDFormatter;
  */
 public class MusicSchoolGroupWriter implements MediaWritable {
 
-	private MemoryFileBuffer buffer = null;
+	protected MemoryFileBuffer buffer = null;
 	private CareBusiness careBusiness;
 	private CommuneUserBusiness userBusiness;
-	private Locale locale;
-	private IWResourceBundle iwrb;
+	protected Locale locale;
+	protected IWResourceBundle iwrb;
 	
-	private String schoolName;
+	protected String schoolName;
 
 	public MusicSchoolGroupWriter() {
 		// empty
@@ -103,6 +104,23 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 		}
 		else
 			System.err.println("buffer is null");
+	}
+	
+	protected User getUser(IDOEntity entity) {
+		return ((SchoolClassMember) entity).getStudent();
+	}
+	
+	protected SchoolYear getDepartment(IDOEntity entity) {
+		return ((SchoolClassMember) entity).getSchoolYear();
+	}
+	
+	protected Collection getInstruments(IDOEntity entity) {
+		try {
+			return ((SchoolClassMember) entity).getStudyPaths();
+		}
+		catch (IDORelationshipException ire) {
+			return new ArrayList();
+		}
 	}
 	
 	public MemoryFileBuffer writeXLS(Collection students) throws RemoteException {
@@ -178,7 +196,7 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 			Phone mobilePhone;
 			Email email;
 			Email custodianEmail;
-			SchoolClassMember studentMember;
+			IDOEntity entity;
 			SchoolYear department;
 			Collection instruments;
 			
@@ -186,8 +204,8 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 			while (iter.hasNext()) {
 				cellColumn = 0;
 				row = sheet.createRow(cellRow++);
-				studentMember = (SchoolClassMember) iter.next();
-				student = studentMember.getStudent();
+				entity = (IDOEntity) iter.next();
+				student = getUser(entity);
 				address = userBusiness.getUsersMainAddress(student);
 				if (address != null)
 					postalCode = address.getPostalCode();
@@ -224,13 +242,8 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 					custodianEmail = null;
 				}
 
-				try {
-					instruments = studentMember.getStudyPaths();
-				}
-				catch (IDORelationshipException ire) {
-					instruments = new ArrayList();
-				}
-				department = studentMember.getSchoolYear();
+				instruments = getInstruments(entity);
+				department = getDepartment(entity);
 				
 				row.createCell((short)cellColumn++).setCellValue(student.getName());
 		    row.createCell((short)cellColumn++).setCellValue(PersonalIDFormatter.format(student.getPersonalID(), locale));
@@ -291,6 +304,10 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 		return buffer;
 	}
 	
+	protected MusicSchoolBusiness getBusiness(IWUserContext iwc) throws RemoteException {
+		return (MusicSchoolBusiness) IBOLookup.getSessionInstance(iwc, MusicSchoolBusiness.class);	
+	}
+
 	protected MusicSchoolSession getSession(IWUserContext iwc) throws RemoteException {
 		return (MusicSchoolSession) IBOLookup.getSessionInstance(iwc, MusicSchoolSession.class);	
 	}
