@@ -124,7 +124,10 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 	}
 	
 	protected boolean showEntry(IWContext iwc, IDOEntity entity, User student) {
-		return true;
+		if (iwc != null && entity != null && student != null) {
+			return true;
+		}
+		return false;
 	}
 	
 	public MemoryFileBuffer writeXLS(Collection students, IWContext iwc) throws RemoteException {
@@ -312,8 +315,8 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 		return buffer;
 	}
 	
-	protected MusicSchoolBusiness getBusiness(IWUserContext iwc) throws RemoteException {
-		return (MusicSchoolBusiness) IBOLookup.getSessionInstance(iwc, MusicSchoolBusiness.class);	
+	protected MusicSchoolBusiness getBusiness(IWApplicationContext iwc) throws RemoteException {
+		return (MusicSchoolBusiness) IBOLookup.getServiceInstance(iwc, MusicSchoolBusiness.class);	
 	}
 
 	protected MusicSchoolSession getSession(IWUserContext iwc) throws RemoteException {
