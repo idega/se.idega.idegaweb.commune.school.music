@@ -204,7 +204,7 @@ public class MusicSchoolInstrumentEditor extends MusicSchoolBlock {
 	
 	private int parseAction(IWContext iwc) {
 		if (iwc.isParameterSet(PARAMETER_INSTRUMENT)) {
-			iInstrumentPK = iwc.getParameter(PARAMETER_ACTION);
+			iInstrumentPK = iwc.getParameter(PARAMETER_INSTRUMENT);
 		}
 
 		if (iwc.isParameterSet(PARAMETER_ACTION)) {
