@@ -395,10 +395,15 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		try {
 			SchoolClassMember student = getSchoolBusiness().getSchoolClassMemberHome().findByPrimaryKey(new Integer(studentPK.toString()));
 			SchoolClass group = student.getSchoolClass();
+			User user = student.getStudent();
+			School school = group.getSchool();
+			SchoolSeason season = group.getSchoolSeason();
 			
-			String[] statuses = { getCaseStatusPlaced().getStatus() };
-			MusicSchoolChoice choice = getMusicSchoolChoiceHome().findAllByStatuses(student.getStudent(), group.getSchool(), group.getSchoolSeason(), statuses);
-			changeCaseStatus(choice, getCaseStatusPreliminary().getStatus(), performer);
+			if (!isPlacedInSchool(user, school, season, null)) {
+				String[] statuses = { getCaseStatusPlaced().getStatus() };
+				MusicSchoolChoice choice = getMusicSchoolChoiceHome().findAllByStatuses(user, school, season, statuses);
+				changeCaseStatus(choice, getCaseStatusPreliminary().getStatus(), performer);
+			}
 			
 			try {
 				student.remove();
