@@ -601,9 +601,24 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 			query.addCriteria(new MatchCriteria(choice, CHOICE_ORDER, MatchCriteria.EQUALS, choiceNumber));
 		}
 		if (commune != null) {
-			query.addJoin(choice, user);
-			query.addJoin(user, address);
-			query.addJoin(address, postal);
+			try {
+				query.addJoin(choice, user);
+			}
+			catch (IDORelationshipException ile) {
+				throw new IDOException("Tables " + choice.getName() + " and " + user.getName() + " don't have a relation.");
+			}
+			try {
+				query.addJoin(user, address);
+			}
+			catch (IDORelationshipException ile) {
+				throw new IDOException("Tables " + user.getName() + " and " + address.getName() + " don't have a relation.");
+			}
+			try {
+				query.addJoin(address, postal);
+			}
+			catch (IDORelationshipException ile) {
+				throw new IDOException("Tables " + address.getName() + " and " + postal.getName() + " don't have a relation.");
+			}
 			query.addCriteria(new MatchCriteria(address, AddressBMPBean.getColumnNameAddressTypeId(), MatchCriteria.EQUALS, AddressTypeBMPBean.ADDRESS_1));
 			query.addCriteria(new MatchCriteria(postal, "ic_commune_id", MatchCriteria.EQUALS, commune));
 		}
