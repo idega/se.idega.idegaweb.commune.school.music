@@ -146,7 +146,7 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 	
 	public DropdownMenu getDepartmentsDropdown() {
 		try {
-			DropdownMenu departments = new DropdownMenu(getSession().getParameterNameDepartmentID());
+			DropdownMenu departments = (DropdownMenu) getStyledInterface(new DropdownMenu(getSession().getParameterNameDepartmentID()));
 			departments.setToSubmit(true);
 			
 			departments.addMenuElementFirst("", localize("department", "- Department -"));
@@ -175,7 +175,7 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 	
 	public DropdownMenu getInstrumentsDropdown() {
 		try {
-			DropdownMenu instruments = new DropdownMenu(getSession().getParameterNameInstrumentID());
+			DropdownMenu instruments = (DropdownMenu) getStyledInterface(new DropdownMenu(getSession().getParameterNameInstrumentID()));
 			instruments.setToSubmit(true);
 			
 			instruments.addMenuElementFirst("", localize("instrument", "- Instrument -"));
@@ -204,7 +204,7 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 	
 	public DropdownMenu getSeasonsDropdown() {
 		try {
-			DropdownMenu seasons = new DropdownMenu(getSession().getParameterNameInstrumentID());
+			DropdownMenu seasons = (DropdownMenu) getStyledInterface(new DropdownMenu(getSession().getParameterNameSeasonID()));
 			seasons.setToSubmit(true);
 			
 			seasons.addMenuElementFirst("", localize("season", "- Season -"));

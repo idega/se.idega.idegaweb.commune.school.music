@@ -33,8 +33,8 @@ public interface MusicSchoolChoice extends com.idega.block.process.data.Case
  public java.lang.String getTeacherRequest();
  public void removeStudyPath(com.idega.block.school.data.SchoolStudyPath p0)throws com.idega.data.IDORemoveRelationshipException;
  public void removeStudyPaths()throws com.idega.data.IDORemoveRelationshipException;
- public void setChild(com.idega.user.data.User p0);
  public void setChild(java.lang.Object p0);
+ public void setChild(com.idega.user.data.User p0);
  public void setChoiceDate(java.sql.Timestamp p0);
  public void setChoiceNumber(int p0);
  public void setElementarySchool(java.lang.String p0);
@@ -46,13 +46,13 @@ public interface MusicSchoolChoice extends com.idega.block.process.data.Case
  public void setPreviousStudyPath(java.lang.Object p0);
  public void setPreviousYear(com.idega.block.school.data.SchoolYear p0);
  public void setPreviousYear(java.lang.Object p0);
- public void setSchool(com.idega.block.school.data.School p0);
  public void setSchool(java.lang.Object p0);
- public void setSchoolSeason(java.lang.Object p0);
+ public void setSchool(com.idega.block.school.data.School p0);
  public void setSchoolSeason(com.idega.block.school.data.SchoolSeason p0);
+ public void setSchoolSeason(java.lang.Object p0);
  public void setSchoolType(java.lang.Object p0);
  public void setSchoolType(com.idega.block.school.data.SchoolType p0);
- public void setSchoolYear(com.idega.block.school.data.SchoolYear p0);
  public void setSchoolYear(java.lang.Object p0);
+ public void setSchoolYear(com.idega.block.school.data.SchoolYear p0);
  public void setTeacherRequest(java.lang.String p0);
 }

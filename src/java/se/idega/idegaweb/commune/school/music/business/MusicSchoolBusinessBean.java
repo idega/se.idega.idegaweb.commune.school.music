@@ -18,6 +18,7 @@ import java.util.Map;
 
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
+import javax.ejb.RemoveException;
 import javax.transaction.UserTransaction;
 
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
@@ -32,6 +33,8 @@ import com.idega.block.process.data.CaseStatus;
 import com.idega.block.school.business.SchoolBusiness;
 import com.idega.block.school.business.SchoolComparator;
 import com.idega.block.school.data.School;
+import com.idega.block.school.data.SchoolClass;
+import com.idega.block.school.data.SchoolClassMember;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolYear;
@@ -100,6 +103,15 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 	public Collection findChoicesByChildAndSeason(User child, SchoolSeason season) throws FinderException {
 		String[] statuses = { getCaseStatusPreliminary().getStatus(), getCaseStatusInactive().getStatus() };
 		return getMusicSchoolChoiceHome().findAllByStatuses(child, season, statuses);
+	}
+	
+	public Collection findAllMusicSchools() throws FinderException {
+		try {
+			return getSchoolBusiness().getSchoolHome().findAllByCategory(getSchoolBusiness().getCategoryMusicSchool());
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
 	}
 	
 	public Collection findAllInstruments() throws FinderException {
@@ -342,6 +354,68 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		}
 
 		return choice;
+	}
+	
+	public boolean addStudentsToGroup(String[] choiceIDs, SchoolClass group, SchoolYear department, SchoolStudyPath instrument, User performer) {
+		IWTimestamp stamp = new IWTimestamp();
+		for (int i = 0; i < choiceIDs.length; i++) {
+			try {
+				MusicSchoolChoice choice = findMusicSchoolChoice(choiceIDs[i]);
+				changeCaseStatus(choice, getCaseStatusPlaced().getStatus(), performer);
+				
+				try {
+					SchoolClassMember student = getSchoolBusiness().getSchoolClassMemberHome().create();
+					student.setStudent(choice.getChild());
+					student.setSchoolType(choice.getSchoolType());
+					student.setSchoolClass(group);
+					student.setSchoolYear(department);
+					student.setStudyPath(instrument);
+					student.setNotes(choice.getMessage());
+					student.setRegisterDate(stamp.getTimestamp());
+					student.store();
+				}
+				catch (CreateException ce) {
+					log(ce);
+					return false;
+				}
+			}
+			catch (FinderException fe) {
+				log(fe);
+				return false;
+			}
+			catch (RemoteException re) {
+				throw new IBORuntimeException(re);
+			}
+		}
+		return true;
+	}
+	
+	public boolean removeChoiceFromGroup(Object studentPK, User performer) {
+		try {
+			SchoolClassMember student = getSchoolBusiness().getSchoolClassMemberHome().findByPrimaryKey(new Integer(studentPK.toString()));
+			SchoolClass group = student.getSchoolClass();
+			
+			String[] statuses = { getCaseStatusPlaced().getStatus() };
+			MusicSchoolChoice choice = getMusicSchoolChoiceHome().findAllByStatuses(student.getStudent(), group.getSchool(), group.getSchoolSeason(), statuses);
+			changeCaseStatus(choice, getCaseStatusPreliminary().getStatus(), performer);
+			
+			try {
+				student.remove();
+			}
+			catch (RemoveException re) {
+				log(re);
+				return false;
+			}
+			
+			return true;
+		}
+		catch (FinderException fe) {
+			log(fe);
+			return false;
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
 	}
 	
 	private void sendMessageToParents(MusicSchoolChoice choice, String subject, String body) {

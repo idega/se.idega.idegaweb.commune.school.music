@@ -353,6 +353,16 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		return ejbFindAllByStatuses(null, school, null, year, null, statuses);
 	}
 
+	public Collection ejbFindAllByStatuses(User child, School school, String[] statuses) throws FinderException {
+		return ejbFindAllByStatuses(child, school, null, null, null, statuses);
+	}
+
+	public Integer ejbFindAllByStatuses(User child, School school, SchoolSeason season, String[] statuses) throws FinderException {
+		SelectQuery query = getDefaultQuery(child, school, season, null, null, statuses);
+		
+		return (Integer) idoFindOnePKBySQL(query.toString());
+	}
+
 	public Collection ejbFindAllByStatuses(User child, School school, SchoolSeason season, SchoolYear year, SchoolStudyPath instrument, String[] statuses) throws FinderException {
 		SelectQuery query = getDefaultQuery(child, school, season, year, instrument, statuses);
 		
@@ -372,7 +382,7 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 	}
 
 	public Collection ejbFindAllByStatuses(User child, String[] statuses) throws FinderException {
-		return ejbFindAllByStatuses(child, null, statuses);
+		return ejbFindAllByStatuses(child, null, null, null, null, statuses);
 	}
 	
 	public Collection ejbFindAllByStatuses(User child, SchoolSeason season, String[] statuses) throws FinderException {

@@ -27,6 +27,9 @@ import com.idega.user.data.User;
  */
 public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoolSession {
 
+	protected User iUser;
+	protected Object iUserID;
+	
 	protected User iChild;
 	protected Object iChildPK;
 	
@@ -73,18 +76,54 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 		return iChildPK;
 	}
 	
-	public School getProvider() {
-		if (iProvider == null && iProviderPK != null) {
-			try {
-				iProvider = getSchoolBusiness().getSchool(Integer.valueOf(getProviderPK().toString()));
+	/**
+	 * Returns the schoolID.
+	 * @return int
+	 */
+	public School getProvider() throws RemoteException {
+		if (getUserContext().isLoggedOn()) {
+			User user = getUserContext().getCurrentUser();
+			Object userID = user.getPrimaryKey();
+			
+			if (iUserID != null && iUserID.equals(userID)) {
+				if (iProvider != null) {
+					return iProvider;
+				}
+				else {
+					return getSchoolIDFromUser(user);
+				}
 			}
-			catch (RemoteException re) {
-				iProvider = null;
+			else {
+				iUserID = userID;
+				setSeason(null);
+				setDepartment(null);
+				setGroup(null);
+				setInstrument(null);
+				return getSchoolIDFromUser(user);
+			}
+		}
+		else {
+			return null;	
+		}
+	}
+	
+	private School getSchoolIDFromUser(User user) throws RemoteException {
+		iProviderPK = null;
+		if (user != null) {
+			try {
+				School school = getUserBusiness().getFirstManagingMusicSchoolForUser(user);
+				if (school != null) {
+					iProvider = school;
+					iProviderPK = school.getPrimaryKey();
+				}
+			}
+			catch (FinderException fe) {
+				setProvider(null);
 			}
 		}
 		return iProvider;
 	}
-	
+
 	public Object getProviderPK() {
 		return iProviderPK;
 	}
