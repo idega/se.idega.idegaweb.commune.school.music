@@ -257,7 +257,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 						status = other;
 					}
 					
-					choice = saveChoice(user, child, schools[i], seasonPK, departmentPK, lessonTypePK, instrumentsCollection, teacherRequest, message, currentYear, currentInstrument, previousStudy, elementarySchool, paymentMethod, status, choice, choiceNumber, timeNow);
+					choice = saveChoice(user, child, schools[i], seasonPK, departmentPK, lessonTypePK, instrumentsCollection, teacherRequest, message, currentYear, currentInstrument, previousStudy, elementarySchool, paymentMethod, status, choice, choiceNumber++, timeNow);
 				}
 			}
 			trans.commit();
