@@ -21,7 +21,6 @@ import com.idega.block.school.data.SchoolTypeHome;
 import com.idega.block.school.data.SchoolYear;
 import com.idega.business.IBORuntimeException;
 import com.idega.business.IBOServiceBean;
-import com.idega.data.IDOAddRelationshipException;
 import com.idega.user.business.UserBusiness;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
@@ -41,7 +40,6 @@ public class MusicSchoolStudentImportFileHandlerBean extends IBOServiceBean impl
 	private MusicSchoolBusiness schoolBiz;
 	private SchoolHome sHome;
 	private SchoolType fullStudy;
-	private SchoolType halfStudy;
 	private SchoolSeason schoolSeason;
 	private ImportFile file;
 	private ArrayList failedRecords = new ArrayList();
@@ -55,7 +53,6 @@ public class MusicSchoolStudentImportFileHandlerBean extends IBOServiceBean impl
 			schoolBiz = (MusicSchoolBusiness) this.getServiceInstance(MusicSchoolBusiness.class);
 			sHome = schoolBiz.getSchoolBusiness().getSchoolHome();
 			fullStudy = getFullTimeStudySchoolType(schoolBiz.getSchoolBusiness());
-			halfStudy = getHalfTimeStudySchoolType(schoolBiz.getSchoolBusiness());
 			SchoolSeasonHome schoolSeasonHome = schoolBiz.getSchoolBusiness().getSchoolSeasonHome();
 			schoolSeason = schoolSeasonHome.findSeasonByDate(new IWTimestamp().getDate());
 			transaction.begin();
@@ -113,18 +110,8 @@ public class MusicSchoolStudentImportFileHandlerBean extends IBOServiceBean impl
 			musicSchool = sHome.findBySchoolName(musicSchoolName);
 		}
 		catch (FinderException e) {
-			try {
-				musicSchool = sHome.create();
-				musicSchool.setSchoolName(musicSchoolName);
-				musicSchool.store();
-				musicSchool.addSchoolType(fullStudy);
-				musicSchool.addSchoolType(halfStudy);
-			}
-			catch (CreateException ce) {
-				musicSchool = null;
-			}
-			catch (IDOAddRelationshipException idoe) {
-			}
+			System.out.println("School not found: " + musicSchoolName);
+			return false;
 		}
 		mainClass = schoolBiz.getDefaultGroup(musicSchool, schoolSeason);
 		processStudent(studentSSN, studentName, schoolSeason, mainClass, level, instrument);
@@ -148,7 +135,7 @@ public class MusicSchoolStudentImportFileHandlerBean extends IBOServiceBean impl
 			instrument = schoolBiz.getSchoolBusiness().getSchoolStudyPathHome().findByCode(instrumentCode);
 		}
 		catch (FinderException fEx) {
-			fEx.printStackTrace();
+			System.out.println("Instrument not found: " + instrumentCode);
 			return;
 		}
 		SchoolYear schoolYear = null;
@@ -157,7 +144,7 @@ public class MusicSchoolStudentImportFileHandlerBean extends IBOServiceBean impl
 					schoolBiz.getSchoolBusiness().getCategoryMusicSchool(), level);
 		}
 		catch (FinderException fe) {
-			fe.printStackTrace();
+			System.out.println("Level not found: " + level);
 			return;
 		}
 		try {
@@ -175,11 +162,6 @@ public class MusicSchoolStudentImportFileHandlerBean extends IBOServiceBean impl
 			schoolBiz.addStudentToGroup(studentUser, mainClass, schoolYear, fullStudy, instrument, null, null,
 					new IWTimestamp(schoolSeason.getSchoolSeasonStart()), null);
 		}
-	}
-
-	private SchoolType getHalfTimeStudySchoolType(SchoolBusiness schoolBiz) {
-		String schoolTypeKey = "sch_type.music_school_half_time_study";
-		return getSchoolType(schoolBiz, schoolTypeKey, "MusicSchHalf");
 	}
 
 	private SchoolType getFullTimeStudySchoolType(SchoolBusiness schoolBiz) {
