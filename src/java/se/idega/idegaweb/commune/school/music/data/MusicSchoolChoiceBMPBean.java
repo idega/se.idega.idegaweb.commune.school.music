@@ -425,14 +425,14 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		SelectQuery query = new SelectQuery(choice);
 		query.addColumn(new Column(choice, this.getIDColumnName()));
 		try {
-			query.addManyToManyJoin(choice, process);
+			query.addJoin(choice, process);
 		}
 		catch (IDORelationshipException ile) {
 			throw new FinderException(ile.getMessage());
 		}
 		if (instrument != null) {
 			try {
-				query.addJoin(choice, instruments);
+				query.addManyToManyJoin(choice, instruments);
 			}
 			catch (IDORelationshipException ile) {
 				throw new FinderException(ile.getMessage());
