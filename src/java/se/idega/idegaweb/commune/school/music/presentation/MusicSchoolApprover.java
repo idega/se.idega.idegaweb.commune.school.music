@@ -155,7 +155,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					}
 					department = choice.getSchoolYear();
 					isPlaced = choice.getCaseStatus().equals(getBusiness().getCaseStatusPlaced());
-					if (isPlaced) {
+					if (isPlaced && getSession().getInstrument() != null) {
 						hasInstrumentPlacement = getBusiness().isPlacedInSchool(user, getSession().getProvider(), getSession().getSeason(), getSession().getInstrument());
 					}
 					else {
