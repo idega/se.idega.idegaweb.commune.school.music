@@ -10,10 +10,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.FinderException;
+
 import se.idega.idegaweb.commune.school.business.SchoolChoiceComparator;
 import se.idega.idegaweb.commune.school.business.SchoolClassMemberComparator;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
-import se.idega.util.PIDChecker;
 
 import com.idega.block.school.data.SchoolClass;
 import com.idega.block.school.data.SchoolClassMember;
@@ -114,14 +115,13 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		table.setWidth(getWidth());
 		table.setCellpadding(getCellpadding());
 		table.setCellspacing(getCellspacing());
-		table.setColumns(5);
+		table.setColumns(4);
 		int row = 1;
 
 		table.add(getSmallHeader(localize("name", "Name")), 1, row);
 		table.add(getSmallHeader(localize("personal_id", "Personal ID")), 2, row);
-		table.add(getSmallHeader(localize("gender", "Gender")), 3, row);
-		table.add(getSmallHeader(localize("address", "Address")), 4, row);
-		table.add(getSmallHeader(localize("zip_code", "Zip code")), 5, row);
+		table.add(getSmallHeader(localize("address", "Address")), 3, row);
+		table.add(getSmallHeader(localize("zip_code", "Zip code")), 4, row);
 		table.setCellpaddingLeft(1, row, 12);
 		table.setRowStyleClass(row++, getHeaderRowClass());
 
@@ -140,7 +140,12 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 
 		List students = null;
 		if (!_group.getIsSubGroup()) {
-			students = new ArrayList(getSchoolBusiness().findStudentsInClassAndYear(new Integer(getSession().getGroupPK().toString()).intValue(), new Integer(getSession().getDepartmentPK().toString()).intValue()));
+			try {
+				students = new ArrayList(getSchoolBusiness().getSchoolClassMemberHome().findBySchoolClassAndYearAndStudyPath(getSession().getGroup(), getSession().getDepartment(), getSession().getInstrument()));
+			}
+			catch (FinderException fe) {
+				students = new ArrayList();
+			}
 		}
 		else {
 			students = new ArrayList(getSchoolBusiness().findSubGroupPlacements(_group));
@@ -199,15 +204,10 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 				table.add(getSmallText(name), 1, row);
 				table.add(getSmallText(PersonalIDFormatter.format(student.getPersonalID(), iwc.getCurrentLocale())), 2, row);
 
-				if (PIDChecker.getInstance().isFemale(student.getPersonalID()))
-					table.add(getSmallText(localize("school.girl", "Girl")), 3, row);
-				else
-					table.add(getSmallText(localize("school.boy", "Boy")), 3, row);
-
 				if (address != null && address.getStreetAddress() != null)
-					table.add(getSmallText(address.getStreetAddress()), 4, row);
+					table.add(getSmallText(address.getStreetAddress()), 3, row);
 				if (postal != null)
-					table.add(getSmallText(postal.getPostalAddress()), 5, row);
+					table.add(getSmallText(postal.getPostalAddress()), 4, row);
 				row++;
 			}
 
@@ -227,7 +227,9 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		}
 
 		if (numberOfStudents > 0) {
+			table.setHeight(row++, 6);
 			table.mergeCells(1, row, table.getColumns(), row);
+			table.setCellpaddingLeft(1, row, 12);
 			table.add(getSmallHeader(localize("school.number_of_students", "Number of students") + ": " + String.valueOf(numberOfStudents)), 1, row++);
 		}
 
