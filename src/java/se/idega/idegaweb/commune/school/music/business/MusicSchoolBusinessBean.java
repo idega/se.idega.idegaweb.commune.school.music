@@ -500,6 +500,16 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		}
 	}
 	
+	public boolean hasGrantedApplication(User student, SchoolSeason season) {
+		try {
+			String[] statuses = { getCaseStatusPlaced().getStatus() };
+			return getMusicSchoolChoiceHome().getNumberOfApplications(student, season, statuses) > 0;
+		}
+		catch (IDOException ie) {
+			return false;
+		}
+	}
+	
 	private void sendMessageToParents(MusicSchoolChoice choice, String subject, String body) {
 		sendMessageToParents(choice, subject, body, body, false);
 	}
@@ -507,7 +517,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 	private void sendMessageToParents(MusicSchoolChoice application, String subject, String body, String letterBody, boolean alwaysSendLetter) {
 		try {
 			User child = application.getChild();
-			Object[] arguments = {child.getNameLastFirst(true), application.getSchool().getSchoolName(), PersonalIDFormatter.format(child.getPersonalID(), getIWApplicationContext().getApplicationSettings().getDefaultLocale()) };
+			Object[] arguments = {child.getName(), application.getSchool().getSchoolName(), PersonalIDFormatter.format(child.getPersonalID(), getIWApplicationContext().getApplicationSettings().getDefaultLocale()) };
 
 			User appParent = application.getOwner();
 			if (getUserBusiness().getMemberFamilyLogic().isChildInCustodyOf(child, appParent)) {
