@@ -465,13 +465,13 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		}
 		
 		SelectorUtility util = new SelectorUtility();
-		DropdownMenu instrumentsDrop1 = (DropdownMenu) getStyledInterface(util.getSelectorFromIDOEntities(new DropdownMenu(getParameterName(PARAMETER_INSTRUMENTS + "_1", extraApplications)), instruments, "getLocalizedKey", getResourceBundle()));
+		DropdownMenu instrumentsDrop1 = (DropdownMenu) util.getSelectorFromIDOEntities(getDropdown(getParameterName(PARAMETER_INSTRUMENTS + "_1", extraApplications), null), instruments, "getLocalizedKey", getResourceBundle());
 		instrumentsDrop1.addMenuElementFirst("-1", localize("select_instrument", "Select instrument"));
 		instrumentsDrop1.keepStatusOnAction(true);
-		DropdownMenu instrumentsDrop2 = (DropdownMenu) getStyledInterface(util.getSelectorFromIDOEntities(new DropdownMenu(getParameterName(PARAMETER_INSTRUMENTS + "_2", extraApplications)), instruments, "getLocalizedKey", getResourceBundle()));
+		DropdownMenu instrumentsDrop2 = (DropdownMenu) util.getSelectorFromIDOEntities(getDropdown(getParameterName(PARAMETER_INSTRUMENTS + "_2", extraApplications), null), instruments, "getLocalizedKey", getResourceBundle());
 		instrumentsDrop2.addMenuElementFirst("-1", localize("select_instrument", "Select instrument"));
 		instrumentsDrop2.keepStatusOnAction(true);
-		DropdownMenu instrumentsDrop3 = (DropdownMenu) getStyledInterface(util.getSelectorFromIDOEntities(new DropdownMenu(getParameterName(PARAMETER_INSTRUMENTS + "_3", extraApplications)), instruments, "getLocalizedKey", getResourceBundle()));
+		DropdownMenu instrumentsDrop3 = (DropdownMenu) util.getSelectorFromIDOEntities(getDropdown(getParameterName(PARAMETER_INSTRUMENTS + "_3", extraApplications), null), instruments, "getLocalizedKey", getResourceBundle());
 		instrumentsDrop3.addMenuElementFirst("-1", localize("select_instrument", "Select instrument"));
 		instrumentsDrop3.keepStatusOnAction(true);
 		if (chosenInstruments != null) {
@@ -548,7 +548,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("second_instrument", "Second instrument")), 2, iRow);
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
-		choiceTable.add(instrumentsDrop1, 2, iRow++);
+		choiceTable.add(instrumentsDrop2, 2, iRow++);
 
 		choiceTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("third_school", "Third school")), 1, iRow);
@@ -558,7 +558,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("third_instrument", "Third instrument")), 2, iRow);
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
-		choiceTable.add(instrumentsDrop1, 2, iRow++);
+		choiceTable.add(instrumentsDrop3, 2, iRow++);
 
 		choiceTable.setStyleClass(2, iRow, getStyleName(STYLENAME_TEXT_CELL));
 		choiceTable.add(getText(localize("other_instrument", "Other instrument")), 2, iRow);

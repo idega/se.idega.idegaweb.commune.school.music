@@ -342,11 +342,11 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 			email = null;
 		}
 		
-		table.add(getSmallHeader(localize("personal_id", "Personal ID")), 1, row);
-		table.add(getText(PersonalIDFormatter.format(user.getPersonalID(), iwc.getCurrentLocale())), 2, row);
+		table.add(getSmallHeader(localize("name", "Name")), 1, row);
+		table.add(getText(user.getName()), 2, row);
 		
-		table.add(getSmallHeader(localize("name", "Name")), 4, row);
-		table.add(getText(user.getName()), 5, row++);
+		table.add(getSmallHeader(localize("personal_id", "Personal ID")), 4, row);
+		table.add(getText(PersonalIDFormatter.format(user.getPersonalID(), iwc.getCurrentLocale())), 5, row++);
 		
 		table.add(getSmallHeader(localize("address", "Address")), 1, row);
 		table.add(getSmallHeader(localize("zip_code", "Postal code")), 4, row);
