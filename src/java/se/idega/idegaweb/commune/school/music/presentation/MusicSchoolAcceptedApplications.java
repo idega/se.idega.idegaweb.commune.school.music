@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolAcceptedApplications.java,v 1.5 2005/03/20 14:42:40 laddi Exp $
+ * $Id: MusicSchoolAcceptedApplications.java,v 1.6 2005/03/20 22:04:25 laddi Exp $
  * Created on 18.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -195,7 +195,10 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 						}
 					}
 					groupTable.add(instrumentText, iColumn++, iRow);
-					groupTable.add(getSmallText(localize(department.getLocalizedKey(), department.getSchoolYearName())), iColumn++, iRow);
+					if (department != null) {
+						groupTable.add(getSmallText(localize(department.getLocalizedKey(), department.getSchoolYearName())), iColumn, iRow);
+					}
+					iColumn++;
 
 					box = getCheckBox(PARAMETER_STUDENT, student.getPrimaryKey().toString());
 					if (student.getNeedsSpecialAttention() || !hasNextSeason) {

@@ -282,7 +282,9 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 					}
 				}
 				table.add(instrumentText, iColumn++, iRow);
-				table.add(getSmallText(localize(department.getLocalizedKey(), department.getSchoolYearName())), iColumn++, iRow);
+				if (department != null) {
+					table.add(getSmallText(localize(department.getLocalizedKey(), department.getSchoolYearName())), iColumn, iRow);
+				}
 				
 				iRow++;
 				count++;
