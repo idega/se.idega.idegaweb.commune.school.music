@@ -328,10 +328,8 @@ public class MusicSchoolStudents extends MusicSchoolBlock {
 		menu.addMenuElement(SchoolClassMemberComparatorForSweden.NAME_SORT, localize("school.sort_by", "- Sort by -"));
 		menu.addMenuElement(SchoolClassMemberComparatorForSweden.NAME_SORT, localize("school.sort_name", "Name"));
 		menu.addMenuElement(SchoolClassMemberComparatorForSweden.PERSONAL_ID_SORT, localize("school.sort_personal_id", "Personal ID"));
-		menu.addMenuElement(SchoolClassMemberComparatorForSweden.ADDRESS_SORT, localize("school.sort_address", "Address"));
 		menu.addMenuElement(SchoolClassMemberComparatorForSweden.GENDER_SORT, localize("school.sort_gender", "Gender"));
 		menu.setSelectedElement(sortStudentsBy);
-		menu.setToSubmit();
 		table.add(menu, 2, 3);
 
 		table.setColumnAlignment(2, Table.HORIZONTAL_ALIGN_RIGHT);

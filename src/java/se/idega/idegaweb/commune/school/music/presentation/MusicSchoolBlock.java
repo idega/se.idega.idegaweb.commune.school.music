@@ -243,7 +243,8 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 			
 			seasons.addMenuElementFirst("", localize("season", "- Season -"));
 			try {
-				Collection coll = getSchoolBusiness().getSchoolSeasonHome().findAllSchoolSeasons();
+				List coll = new ArrayList(getSchoolBusiness().getSchoolSeasonHome().findAllSchoolSeasons());
+				Collections.reverse(coll);
 				Iterator iter = coll.iterator();
 				while (iter.hasNext()) {
 					SchoolSeason season = (SchoolSeason) iter.next();

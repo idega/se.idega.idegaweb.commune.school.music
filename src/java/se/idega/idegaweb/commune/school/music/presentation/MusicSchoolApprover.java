@@ -344,8 +344,8 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		table.setHeight(row++, 18);
 		
 		Table viewTable = new Table();
-		viewTable.setCellpadding(0);
-		viewTable.setCellspacing(0);
+		viewTable.setCellpadding(2);
+		viewTable.setCellspacing(2);
 		viewTable.setColumns(2);
 		table.setCellpaddingLeft(1, row, 12);
 		table.add(viewTable, 1, row++);

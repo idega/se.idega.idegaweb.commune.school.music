@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolStudentEditor.java,v 1.3 2005/03/20 14:08:18 laddi Exp $
+ * $Id: MusicSchoolStudentEditor.java,v 1.4 2005/03/31 07:22:28 laddi Exp $
  * Created on 20.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -58,7 +58,8 @@ public class MusicSchoolStudentEditor extends MusicSchoolBlock {
 
 	private Form getEditForm(IWContext iwc) throws FinderException, RemoteException {
 		Form form = new Form();
-
+		form.addParameter(PARAMETER_ACTION, String.valueOf(ACTION_SAVE));
+		
 		SchoolClassMember student = getSession().getStudent();
 		if (student == null) {
 			form.add(getErrorText(localize("no_student_found", "No student found...")));
@@ -192,7 +193,7 @@ public class MusicSchoolStudentEditor extends MusicSchoolBlock {
 		table.setHeight(row++, 18);
 		
 		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));
-		SubmitButton submit = (SubmitButton) getButton(new SubmitButton(localize("change", "Change"), PARAMETER_ACTION, String.valueOf(ACTION_SAVE)));
+		SubmitButton submit = (SubmitButton) getButton(new SubmitButton(localize("change", "Change")));
 
 		table.add(previous, 1, row);
 		table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);

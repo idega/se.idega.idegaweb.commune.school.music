@@ -329,10 +329,6 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 			    row.createCell((short)cellColumn).setCellValue(email.getEmailAddress());
 			  }
 			  cellColumn++;
-			  if (custodianEmail != null) {
-			    row.createCell((short)cellColumn).setCellValue(custodianEmail.getEmailAddress());
-			  }
-			  cellColumn++;
 
 				Iterator iterator = instruments.iterator();
 				StringBuffer instrumentText = new StringBuffer();
@@ -355,6 +351,10 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 			    row.createCell((short)cellColumn).setCellValue(custodian.getName());
 			  }
 			  cellColumn++;
+			  if (custodianEmail != null) {
+			    row.createCell((short)cellColumn).setCellValue(custodianEmail.getEmailAddress());
+			  }
+			  cellColumn++;
 			  if (custodianHomePhone != null) {
 			    row.createCell((short)cellColumn).setCellValue(custodianHomePhone.getNumber());
 			  }
@@ -365,10 +365,6 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 			  cellColumn++;
 			  if (custodianMobilePhone != null) {
 			    row.createCell((short)cellColumn).setCellValue(custodianMobilePhone.getNumber());
-			  }
-			  cellColumn++;
-			  if (custodianEmail != null) {
-			    row.createCell((short)cellColumn).setCellValue(custodianEmail.getEmailAddress());
 			  }
 			  cellColumn++;
 			}

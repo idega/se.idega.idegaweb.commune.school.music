@@ -690,7 +690,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 	
 	public boolean hasApplication(User student, SchoolSeason season) {
 		try {
-			String[] statuses = { getCaseStatusPreliminary().getStatus(), getCaseStatusInactive().getStatus() };
+			String[] statuses = { getCaseStatusPlaced().getStatus(), getCaseStatusPreliminary().getStatus(), getCaseStatusInactive().getStatus() };
 			return getMusicSchoolChoiceHome().getNumberOfApplications(student, season, statuses) > 0;
 		}
 		catch (IDOException ie) {

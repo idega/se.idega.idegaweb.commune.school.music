@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolAcceptedApplications.java,v 1.10 2005/03/30 19:38:30 laddi Exp $
+ * $Id: MusicSchoolAcceptedApplications.java,v 1.11 2005/03/31 07:22:28 laddi Exp $
  * Created on 18.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -243,9 +243,6 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 			catch (FinderException fe) {
 				table.add(getErrorText(localize("no_students_found", "No students found...")), 1, row);
 			}
-		}
-		else {
-			table.add(getErrorText(localize("must_select_season", "You must select a season...")), 1, row);
 		}
 	}
 	

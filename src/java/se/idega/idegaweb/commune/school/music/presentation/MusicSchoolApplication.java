@@ -152,28 +152,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 	}
 	
 	private void showPhaseOne(IWContext iwc) throws RemoteException {
-		SchoolSeason season = null;
-		try {
-			season = getCareBusiness(iwc).getCurrentSeason();
-		}
-		catch (FinderException fe) {
-			log(fe);
-			add(getErrorText(localize("no_season_found", "No season found...")));
-			return;
-		}
-		
-		if (getBusiness().hasGrantedApplication(getSession().getChild(), season)) {
-			add(getErrorText(localize("student_already_has_placement", "Student already has a granted placement for the school season")));
-			add(new Break(2));
-			add(new UserHomeLink());
-			return;
-		}
-		
-		if (getBusiness().hasApplication(getSession().getChild(), season)) {
-			add(getErrorText(localize("student_already_has_application", "Student already has an application for the school season.  You can change it by doing it again.")));
-			add(new Break(2));
-		}
-		
 		Form form = new Form();
 		form.setEventListener(MusicSchoolEventListener.class);
 		form.maintainParameter(PARAMETER_SCHOOLS + "_1");
@@ -309,7 +287,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(getHelpButton("help_music_school_application_phase_1"), 1, row);
 		table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
 		table.setCellpaddingRight(1, row, 12);
-		form.setToDisableOnSubmit(next, true);
 
 		add(form);
 	}
@@ -368,7 +345,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
 		table.setCellpaddingRight(1, row, 12);
 		next.setOnSubmitFunction("checkApplication", getSubmitConfirmScript(""));
-		form.setToDisableOnSubmit(next, true);
 
 		add(form);
 	}
@@ -745,7 +721,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(getHelpButton("help_music_school_application_phase_3"), 1, row);
 		table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
 		table.setCellpaddingRight(1, row, 12);
-		form.setToDisableOnSubmit(next, true);
 
 		add(form);
 	}
@@ -753,17 +728,17 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 	private void showPhaseFour(IWContext iwc) throws RemoteException {
 		Form form = new Form();
 		form.setEventListener(MusicSchoolEventListener.class);
+		form.maintainParameter(PARAMETER_SCHOOLS + "_1");
+		form.maintainParameter(PARAMETER_SCHOOLS + "_2");
+		form.maintainParameter(PARAMETER_SCHOOLS + "_3");
+		form.maintainParameter(PARAMETER_INSTRUMENTS + "_1");
+		form.maintainParameter(PARAMETER_INSTRUMENTS + "_2");
+		form.maintainParameter(PARAMETER_INSTRUMENTS + "_3");
 		form.maintainParameter(PARAMETER_SEASON);
-		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_1");
-		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_2");
-		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_3");
-		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_1");
-		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_2");
-		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_3");
-		form.maintainParameter(EXTRA_PREFIX + PARAMETER_DEPARTMENT);
-		form.maintainParameter(EXTRA_PREFIX + PARAMETER_LESSON_TYPE);
-		form.maintainParameter(EXTRA_PREFIX + PARAMETER_TEACHER_REQUEST);
-		form.maintainParameter(EXTRA_PREFIX + PARAMETER_OTHER_INSTRUMENT);
+		form.maintainParameter(PARAMETER_DEPARTMENT);
+		form.maintainParameter(PARAMETER_LESSON_TYPE);
+		form.maintainParameter(PARAMETER_TEACHER_REQUEST);
+		form.maintainParameter(PARAMETER_OTHER_INSTRUMENT);
 		form.maintainParameter(PARAMETER_MESSAGE);
 		form.maintainParameter(PARAMETER_PREVIOUS_STUDIES);
 		form.maintainParameter(PARAMETER_ELEMENTARY_SCHOOL);
@@ -804,7 +779,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
 		table.setCellpaddingRight(1, row, 12);
 		next.setOnSubmitFunction("checkApplication", getSubmitConfirmScript(EXTRA_PREFIX));
-		form.setToDisableOnSubmit(next, true);
 
 		add(form);
 	}
@@ -834,17 +808,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_LESSON_TYPE);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_TEACHER_REQUEST);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_OTHER_INSTRUMENT);
-		
-		SchoolSeason season = null;
-		try {
-			season = getCareBusiness(iwc).getCurrentSeason();
-		}
-		catch (FinderException fe) {
-			log(fe);
-			add(getErrorText(localize("no_season_found", "No season found...")));
-			return;
-		}
-		form.addParameter(PARAMETER_SEASON, season.getPrimaryKey().toString());
 		
 		Table table = new Table();
 		table.setCellpadding(0);
@@ -908,7 +871,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(getHelpButton("help_music_school_application_phase_5"), 1, row);
 		table.setAlignment(1, row, Table.HORIZONTAL_ALIGN_RIGHT);
 		table.setCellpaddingRight(1, row, 12);
-		form.setToDisableOnSubmit(next, true);
 
 		add(form);
 	}
@@ -941,6 +903,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.maintainParameter(PARAMETER_MESSAGE);
 		form.maintainParameter(PARAMETER_PREVIOUS_STUDIES);
 		form.maintainParameter(PARAMETER_ELEMENTARY_SCHOOL);
+		form.addParameter(PARAMETER_ACTION, String.valueOf(ACTION_SAVE));
 
 		Table table = new Table();
 		table.setCellpadding(0);
@@ -1192,7 +1155,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setHeight(row++, 18);
 
 		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));
-		SubmitButton next = (SubmitButton) getButton(new SubmitButton(localize("save", "Save"), PARAMETER_ACTION, String.valueOf(ACTION_SAVE)));
+		SubmitButton next = (SubmitButton) getButton(new SubmitButton(localize("save", "Save")));
 		
 		table.add(previous, 1, row);
 		table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
