@@ -623,6 +623,7 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 			query.addCriteria(new MatchCriteria(postal, "ic_commune_id", MatchCriteria.EQUALS, commune));
 		}
 		
+		System.out.println(query.toString());
 		return idoGetNumberOfRecords(query);
 	}
 }
