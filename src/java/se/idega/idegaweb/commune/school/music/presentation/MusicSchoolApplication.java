@@ -843,6 +843,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 			add(getErrorText(localize("no_season_found", "No season found...")));
 			return;
 		}
+		form.addParameter(PARAMETER_SEASON, season.getPrimaryKey().toString());
 		
 		String chosenElementarySchool = null;
 		String chosenPreviousStudies = null;
