@@ -60,6 +60,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 			form.add(table);
 			int row = 1;
 			
+			table.setCellpaddingLeft(1, row, 12);
 			table.add(getNavigationTable(), 1, row++);
 			table.setHeight(row++, 12);
 			
