@@ -42,7 +42,7 @@ public class MusicSchoolViewer extends MusicSchoolBlock {
 			Lists list = new Lists();
 			list.setCompact(true);
 			if (textStyleName != null) {
-				list.setClass(textStyleName);
+				list.setStyleClass(textStyleName);
 			}
 			
 			Iterator iter = schools.iterator();
