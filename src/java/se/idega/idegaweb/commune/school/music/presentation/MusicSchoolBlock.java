@@ -13,6 +13,7 @@ import javax.ejb.FinderException;
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
 import se.idega.idegaweb.commune.care.business.CareBusiness;
 import se.idega.idegaweb.commune.presentation.CommuneBlock;
+import se.idega.idegaweb.commune.school.music.business.InstrumentComparator;
 import se.idega.idegaweb.commune.school.music.business.MusicConstants;
 import se.idega.idegaweb.commune.school.music.business.MusicSchoolBusiness;
 import se.idega.idegaweb.commune.school.music.business.MusicSchoolSession;
@@ -213,14 +214,15 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 			
 			instruments.addMenuElementFirst("", localize("instrument", "- Instrument -"));
 			try {
-				Collection coll = getBusiness().findInstrumentsInSchool(getSession().getProvider());
+				List coll = new ArrayList(getInstruments());
+				Collections.sort(coll, new InstrumentComparator(getResourceBundle()));
 				Iterator iter = coll.iterator();
 				while (iter.hasNext()) {
 					SchoolStudyPath instrument = (SchoolStudyPath) iter.next();
 					instruments.addMenuElement(instrument.getPrimaryKey().toString(), localize(instrument.getLocalizedKey(), instrument.getDescription()));
 				}
 			}
-			catch (FinderException fe) {
+			catch (NoInstrumentFoundException fe) {
 				log(fe);
 			}
 
