@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolAcceptedApplications.java,v 1.3 2005/03/20 13:31:43 laddi Exp $
+ * $Id: MusicSchoolAcceptedApplications.java,v 1.4 2005/03/20 14:08:18 laddi Exp $
  * Created on 18.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -261,8 +261,8 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 		table.add(getHeader(localize("students", "Students")), 1, row++);
 		
 		Table departmentTable = new Table();
-		departmentTable.setCellpadding(0);
-		departmentTable.setCellspacing(0);
+		departmentTable.setCellpadding(getCellpadding());
+		departmentTable.setCellspacing(getCellspacing());
 		departmentTable.setColumns(2);
 		table.add(departmentTable, 1, row++);
 		int iRow = 1;
@@ -280,10 +280,8 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 					departmentDrop.addMenuElement(year.getPrimaryKey().toString(), localize(year.getSchoolYearName(), year.getSchoolYearName()));
 				}
 
-				departmentTable.setStyleClass(1, iRow, getStyleName(STYLENAME_TEXT_CELL));
 				departmentTable.add(getText(user.getName()), 1, iRow);
 				departmentTable.add(new HiddenInput(PARAMETER_STUDENT, member.getPrimaryKey().toString()), 1, iRow);
-				departmentTable.setStyleClass(2, iRow, getStyleName(STYLENAME_INPUT_CELL));
 				departmentTable.add(departmentDrop, 2, iRow++);
 			}
 			catch (FinderException fe) {

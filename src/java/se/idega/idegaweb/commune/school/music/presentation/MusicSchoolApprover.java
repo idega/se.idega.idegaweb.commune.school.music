@@ -187,6 +187,15 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 						olderStudent = false;
 					}
 					
+					choicesTable.add(getSmallText(String.valueOf(applicationCount)), iColumn++, iRow);
+
+					if (choiceDate != null) {
+						choicesTable.add(getSmallText(choiceDate.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), iColumn++, iRow);
+					}
+					else {
+						choicesTable.add(getSmallText("-"), iColumn++, iRow);
+					}
+					
 					if (olderStudent) {
 						showOlderStudentMessage = true;
 						choicesTable.add(getSmallErrorText("* "), iColumn, iRow);
@@ -197,15 +206,6 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 					userLink.addParameter(getSession().getParameterNameChildID(), user.getPrimaryKey().toString());
 					userLink.addParameter(getSession().getParameterNameApplicationID(), choice.getPrimaryKey().toString());
 					userLink.addParameter(PARAMETER_EDIT, "true");
-					
-					choicesTable.add(getSmallText(String.valueOf(applicationCount)), iColumn++, iRow);
-
-					if (choiceDate != null) {
-						choicesTable.add(getSmallText(choiceDate.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), iColumn++, iRow);
-					}
-					else {
-						choicesTable.add(getSmallText("-"), iColumn++, iRow);
-					}
 					
 					choicesTable.add(userLink, iColumn++, iRow);
 					choicesTable.add(getSmallText(dateOfBirth.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), iColumn++, iRow);
@@ -305,8 +305,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		form.add(table);
 		int row = 1;
 		
-		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
-		table.add(getHeader(localize("application.applicant", "Applicant")), 1, row++);
+		table.setCellpaddingLeft(1, row, 12);
 		table.add(getPersonInfoTable(iwc, choice.getChild()), 1, row++);
 		
 		table.setHeight(row++, 18);
@@ -315,6 +314,7 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		editTable.setCellpadding(0);
 		editTable.setCellspacing(0);
 		editTable.setColumns(2);
+		table.setCellpaddingLeft(1, row, 12);
 		table.add(editTable, 1, row++);
 		int editRow = 1;
 		
@@ -397,67 +397,53 @@ public class MusicSchoolApprover extends MusicSchoolBlock {
 		TextInput teacherRequest = getTextInput(PARAMETER_TEACHER_REQUEST, choice.getTeacherRequest());
 		TextInput otherInstrument = getTextInput(PARAMETER_OTHER_INSTRUMENT, choice.getOtherInstrument());
 
-		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
 		editTable.add(getText(localize("instrument_1", "Instrument 1")), 1, editRow);
-		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
 		editTable.add(instrumentsDrop1, 2, editRow++);
 
-		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
 		editTable.add(getText(localize("instrument_2", "Instrument 2")), 1, editRow);
-		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
 		editTable.add(instrumentsDrop2, 2, editRow++);
 
-		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
 		editTable.add(getText(localize("instrument_3", "Instrument 3")), 1, editRow);
-		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
 		editTable.add(instrumentsDrop3, 2, editRow++);
 
-		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
 		editTable.add(getText(localize("other_instrument", "Other instrument")), 1, editRow);
-		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
 		editTable.add(otherInstrument, 2, editRow++);
 		
 		editTable.setHeight(editRow++, 12);
 
-		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
 		editTable.add(getText(localize("department", "Department")), 1, editRow);
-		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
 		editTable.add(departmentDrop, 2, editRow++);
 
-		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
 		editTable.add(getText(localize("lesson_type", "Lesson type")), 1, editRow);
-		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
 		editTable.add(lessonTypeDrop, 2, editRow++);
 
-		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
 		editTable.add(getText(localize("teacher_request", "Teacher request")), 1, editRow);
-		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
 		editTable.add(teacherRequest, 2, editRow++);
 		
 		table.setHeight(row++, 18);
 		
 		if (age.getYears() < 16) {
-			table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
+			table.setCellpaddingLeft(1, row, 12);
 			table.add(getText(localize("elementary_school", "Elementary school")), 1, row++);
-			table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
+			table.setCellpaddingLeft(1, row, 12);
 			table.add(getTextInput(PARAMETER_ELEMENTARY_SCHOOL, choice.getElementarySchool()), 1, row++);
 			table.setHeight(row++, 6);
 		}
 		
 		TextArea previousStudies = getTextArea(PARAMETER_PREVIOUS_STUDIES, choice.getPreviousStudies());
 		previousStudies.setHeight("50");
-		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
+		table.setCellpaddingLeft(1, row, 12);
 		table.add(getText(localize("previous_studies", "Previous studies")), 1, row++);
-		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
+		table.setCellpaddingLeft(1, row, 12);
 		table.add(previousStudies, 1, row++);
 		
 		table.setHeight(row++, 12);
 		
 		TextArea message = getTextArea(PARAMETER_MESSAGE, choice.getMessage());
 		message.setHeight("50");
-		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
+		table.setCellpaddingLeft(1, row, 12);
 		table.add(getText(localize("message", "message")), 1, row++);
-		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
+		table.setCellpaddingLeft(1, row, 12);
 		table.add(message, 1, row++);
 		
 		table.setHeight(row++, 18);

@@ -484,6 +484,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 					group.setSchoolSeason(season);
 					group.setValid(true);
 					group.setSchoolClassName(season.getName());
+					group.store();
 					
 					return group;
 				}

@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolStudentEditor.java,v 1.2 2005/03/20 13:31:43 laddi Exp $
+ * $Id: MusicSchoolStudentEditor.java,v 1.3 2005/03/20 14:08:18 laddi Exp $
  * Created on 20.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -165,17 +165,17 @@ public class MusicSchoolStudentEditor extends MusicSchoolBlock {
 		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
 		editTable.add(getText(localize("instrument_1", "Instrument 1")), 1, editRow);
 		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
-		editTable.add(instrumentsDrop1, 2, editRow);
+		editTable.add(instrumentsDrop1, 2, editRow++);
 
 		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
 		editTable.add(getText(localize("instrument_2", "Instrument 2")), 1, editRow);
 		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
-		editTable.add(instrumentsDrop2, 2, editRow);
+		editTable.add(instrumentsDrop2, 2, editRow++);
 
 		editTable.setStyleClass(1, editRow, getStyleName(STYLENAME_TEXT_CELL));
 		editTable.add(getText(localize("instrument_3", "Instrument 3")), 1, editRow);
 		editTable.setStyleClass(2, editRow, getStyleName(STYLENAME_INPUT_CELL));
-		editTable.add(instrumentsDrop3, 2, editRow);
+		editTable.add(instrumentsDrop3, 2, editRow++);
 
 		editTable.setHeight(editRow++, 12);
 

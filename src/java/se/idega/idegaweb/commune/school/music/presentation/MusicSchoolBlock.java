@@ -308,8 +308,8 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 	
 	protected Table getPersonInfoTable(IWContext iwc, User user) throws RemoteException {
 		Table table = new Table();
-		table.setCellpadding(0);
-		table.setCellspacing(0);
+		table.setCellpadding(getCellpadding());
+		table.setCellspacing(getCellspacing());
 		table.setColumns(5);
 		table.setWidth(3, 12);
 		int row = 1;
@@ -360,16 +360,16 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 		
 		table.add(getSmallHeader(localize("home_phone", "Home phone")), 1, row);
 		table.add(getSmallHeader(localize("mobile_phone", "Mobile phone")), 4, row);
-		if (phone != null) {
+		if (phone != null && phone.getNumber() != null) {
 			table.add(getText(phone.getNumber()), 2, row);
 		}
-		if (mobile != null) {
+		if (mobile != null && mobile.getNumber() != null) {
 			table.add(getText(mobile.getNumber()), 5, row);
 		}
 		row++;
 		
 		table.add(getSmallHeader(localize("email", "E-mail")), 1, row);
-		if (email != null) {
+		if (email != null && email.getEmailAddress() != null) {
 			table.add(getText(email.getEmailAddress()), 2, row);
 		}
 		
