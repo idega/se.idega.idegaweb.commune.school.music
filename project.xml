@@ -166,6 +166,17 @@
         <eclipse.dependency>true</eclipse.dependency>
       </properties>
     </dependency>
+     <dependency>
+      <groupId>bundles</groupId>
+      <artifactId>se.idega.util</artifactId>
+      <!--<version>1.0</version>-->
+      <version>SNAPSHOT</version>
+      <type>jar</type>
+      <url>http://www.idega.com/</url>
+      <properties>
+        <eclipse.dependency>true</eclipse.dependency>
+      </properties>
+    </dependency>
     <dependency>
       <groupId>bundles</groupId>
       <artifactId>se.idega.idegaweb.commune</artifactId>
@@ -179,8 +190,8 @@
     </dependency>
    <dependency>
       <groupId>bundles</groupId>
-      <artifactId>se.idega.idegaweb.commune.school</artifactId>
-      <!--<version>1.0</version>-->
+      <artifactId>se.idega.idegaweb.commune.care</artifactId>
+     <!-- <version>1.0</version>-->
      <version>SNAPSHOT</version>
       <type>jar</type>
       <url>http://www.idega.com/</url>

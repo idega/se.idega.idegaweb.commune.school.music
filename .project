@@ -11,8 +11,9 @@
     <project>com.idega.block.school</project>
     <project>com.idega.block.navigation</project>
     <project>is.idega.block.family</project>
+    <project>se.idega.util</project>
     <project>se.idega.idegaweb.commune</project>
-    <project>se.idega.idegaweb.commune.school</project>
+    <project>se.idega.idegaweb.commune.care</project>
   </projects>
   <buildSpec>
     <buildCommand>
