@@ -19,6 +19,7 @@ import se.idega.idegaweb.commune.school.music.business.NoLessonTypeFoundExceptio
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
 
+import com.idega.block.navigation.presentation.UserHomeLink;
 import com.idega.block.school.data.School;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
@@ -49,6 +50,7 @@ import com.idega.user.business.NoEmailFoundException;
 import com.idega.user.business.NoPhoneFoundException;
 import com.idega.user.data.User;
 import com.idega.util.PersonalIDFormatter;
+import com.idega.util.text.TextSoap;
 
 /**
  * @author laddi
@@ -322,12 +324,10 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
 		table.add(getHeader(localize("application.selection", "Selection")), 1, row++);
 		
+		table.mergeCells(1, row, 2, row);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("instruments", "Instruments")), 1, row);
-		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("department", "Department")), 2, row++);
-		
-		table.mergeCells(1, row, 1, row + 10);
+		table.add(getText(localize("instruments", "Instruments")), 1, row++);
+		table.mergeCells(1, row, 2, row);
 		
 		Table instrumentTable = new Table();
 		instrumentTable.setWidth(Table.HUNDRED_PERCENT);
@@ -336,7 +336,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		instrumentTable.setCellpadding(3);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
 		table.add(instrumentTable, 1, row);
-		table.setVerticalAlignment(1, row, Table.VERTICAL_ALIGN_TOP);
+		table.setVerticalAlignment(1, row++, Table.VERTICAL_ALIGN_TOP);
 		int iRow = 1;
 		int iColumn = 1;
 		
@@ -344,7 +344,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 			Iterator iter = instruments.iterator();
 			while (iter.hasNext()) {
 				SchoolStudyPath instrument = (SchoolStudyPath) iter.next();
-				if (iColumn > 2) {
+				if (iColumn > 4) {
 					iRow++;
 					iColumn = 1;
 				}
@@ -363,6 +363,16 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 			}
 		}
 		
+		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("school", "School") + " 1"), 1, row);
+		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("department", "Department")), 2, row++);
+		
+		DropdownMenu school1 = getDropdown(PARAMETER_SCHOOLS+"_1", chosenSchool1);
+		school1.addMenuElement("-1", localize("select_school", "Select school"));
+		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
+		table.add(school1, 1, row);
+
 		DropdownMenu departmentDrop = getDropdown(PARAMETER_DEPARTMENT, chosenDepartment);
 		departmentDrop.addMenuElementFirst("-1", localize("select_department", "Select department"));
 		Iterator iter = departments.iterator();
@@ -375,29 +385,16 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setStyleClass(2, row, getStyleName(STYLENAME_INPUT_CELL));
 		table.add(departmentDrop, 2, row++);
 
-		DropdownMenu school1 = getDropdown(PARAMETER_SCHOOLS+"_1", chosenSchool1);
-		school1.addMenuElement("-1", localize("select_school", "Select school"));
+		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("school", "School") + " 2"), 1, row);
 		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("school", "School") + " 1"), 2, row++);
-		table.setStyleClass(2, row, getStyleName(STYLENAME_INPUT_CELL));
-		table.add(school1, 2, row++);
+		table.add(getText(localize("lesson_type", "Lesson type")), 2, row++);
 
 		DropdownMenu school2 = getDropdown(PARAMETER_SCHOOLS+"_2", chosenSchool2);
 		school2.addMenuElement("-1", localize("select_school", "Select school"));
-		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("school", "School") + " 2"), 2, row++);
-		table.setStyleClass(2, row, getStyleName(STYLENAME_INPUT_CELL));
-		table.add(school2, 2, row++);
+		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
+		table.add(school2, 1, row);
 
-		DropdownMenu school3 = getDropdown(PARAMETER_SCHOOLS+"_3", chosenSchool3);
-		school3.addMenuElement("-1", localize("select_school", "Select school"));
-		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("school", "School") + " 3"), 2, row++);
-		table.setStyleClass(2, row, getStyleName(STYLENAME_INPUT_CELL));
-		table.add(school3, 2, row++);
-		
-		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
-		table.add(getText(localize("lesson_type", "Lesson type")), 2, row++);
 		DropdownMenu lessonTypeDrop = getDropdown(PARAMETER_LESSON_TYPE, chosenLessonType);
 		lessonTypeDrop.addMenuElementFirst("-1", localize("select_lesson_type", "Select lesson type"));
 		iter = lessonTypes.iterator();
@@ -408,8 +405,16 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setStyleClass(2, row, getStyleName(STYLENAME_INPUT_CELL));
 		table.add(lessonTypeDrop, 2, row++);
 
+		table.setStyleClass(1, row, getStyleName(STYLENAME_TEXT_CELL));
+		table.add(getText(localize("school", "School") + " 3"), 1, row);
 		table.setStyleClass(2, row, getStyleName(STYLENAME_TEXT_CELL));
 		table.add(getText(localize("teacher_request", "Teacher request")), 2, row++);
+
+		DropdownMenu school3 = getDropdown(PARAMETER_SCHOOLS+"_3", chosenSchool3);
+		school3.addMenuElement("-1", localize("select_school", "Select school"));
+		table.setStyleClass(1, row, getStyleName(STYLENAME_INPUT_CELL));
+		table.add(school3, 1, row);
+		
 		table.setStyleClass(2, row, getStyleName(STYLENAME_INPUT_CELL));
 		table.add(getTextInput(PARAMETER_TEACHER_REQUEST, chosenTeacher), 2, row++);
 		
@@ -488,7 +493,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 
 		table.mergeCells(1, row, 2, row);
 		table.setStyleClass(1, row, getStyleName(STYLENAME_INFORMATION_CELL));
-		table.add(getSmallText(localize("payment_method_information", "Information about payment...")), 1, row++);
+		table.add(getSmallText(TextSoap.formatText(localize("payment_method_information", "Information about payment..."))), 1, row++);
 		
 		table.setHeight(row++, 12);
 		
@@ -727,7 +732,22 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		int paymentMethod = Integer.parseInt(iwc.getParameter(PARAMETER_PAYMENT_METHOD));
 		
 		try {
-			getBusiness().saveChoices(iwc.getCurrentUser(), getSession().getChild(), schools, season, department, lessonType, instruments, teacherRequest, message, currentYear, currentInstrument, previousStudies, elementarySchool, paymentMethod);
+			boolean success = getBusiness().saveChoices(iwc.getCurrentUser(), getSession().getChild(), schools, season, department, lessonType, instruments, teacherRequest, message, currentYear, currentInstrument, previousStudies, elementarySchool, paymentMethod);
+			if (success) {
+				if (getResponsePage() != null) {
+					iwc.forwardToIBPage(getParentPage(), getResponsePage());
+				}
+				else {
+					Table table = new Table();
+					table.add(getErrorText(localize("submit_success", "Submit success...")), 1, 1);
+					table.add(new UserHomeLink(), 1, 2);
+				}
+			}
+			else {
+				Table table = new Table();
+				table.add(getErrorText(localize("submit_failed", "Submit failed...")), 1, 1);
+				table.add(new UserHomeLink(), 1, 2);
+			}
 		}
 		catch (RemoteException re) {
 			re.printStackTrace();
