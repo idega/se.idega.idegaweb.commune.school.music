@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import javax.ejb.FinderException;
 
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
+import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 
 import com.idega.block.school.business.SchoolBusiness;
 import com.idega.block.school.data.School;
@@ -48,12 +49,16 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 	protected SchoolClass iGroup;
 	protected Object iGroupPK;
 	
+	protected MusicSchoolChoice iApplication;
+	protected Object iApplicationPK;
+	
 	protected static final String PARAMETER_CHILD_ID = "ms_child_id";
 	protected static final String PARAMETER_PROVIDER_ID = "ms_provider_id";
 	protected static final String PARAMETER_INSTRUMENT_ID = "ms_instrument_id";
 	protected static final String PARAMETER_DEPARTMENT_ID = "ms_department_id";
 	protected static final String PARAMETER_SEASON_ID = "ms_season_id";
 	protected static final String PARAMETER_GROUP_ID = "ms_group_id";
+	protected static final String PARAMETER_APPLICATION_ID = "ms_application_id";
 	
 	public User getChild() {
 		if (iChild == null && getChildPK() != null) {
@@ -198,6 +203,25 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 		return iGroupPK;
 	}
 	
+	public MusicSchoolChoice getApplication() {
+		if (iApplication == null && iApplicationPK != null) {
+			try {
+				iApplication = getMusicSchoolBusiness().findMusicSchoolChoice(iApplicationPK);
+			}
+			catch (FinderException fe) {
+				iApplication = null;
+			}
+			catch (RemoteException re) {
+				iApplication = null;
+			}
+		}
+		return iApplication;
+	}
+	
+	public Object getApplicationPK() {
+		return iApplicationPK;
+	}
+	
 	public String getParameterNameChildID() {
 		return PARAMETER_CHILD_ID;
 	}
@@ -220,6 +244,10 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 	
 	public String getParameterNameGroupID() {
 		return PARAMETER_GROUP_ID;
+	}
+	
+	public String getParameterNameApplicationID() {
+		return PARAMETER_APPLICATION_ID;
 	}
 	
 	//Setters
@@ -253,6 +281,20 @@ public class MusicSchoolSessionBean extends IBOSessionBean implements MusicSchoo
 		iGroup = null;
 	}
 	
+	public void setApplication(Object applicationPK) {
+		iApplicationPK = applicationPK;
+		iApplication = null;
+	}
+	
+	private MusicSchoolBusiness getMusicSchoolBusiness() {
+		try {
+			return (MusicSchoolBusiness) IBOLookup.getServiceInstance(this.getIWApplicationContext(), MusicSchoolBusiness.class);
+		}
+		catch (IBOLookupException ile) {
+			throw new IBORuntimeException(ile);
+		}
+	}
+
 	private SchoolBusiness getSchoolBusiness() {
 		try {
 			return (SchoolBusiness) IBOLookup.getServiceInstance(this.getIWApplicationContext(), SchoolBusiness.class);

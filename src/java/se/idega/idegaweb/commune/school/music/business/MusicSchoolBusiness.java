@@ -20,6 +20,7 @@ public interface MusicSchoolBusiness extends com.idega.block.process.business.Ca
  public java.util.Map getInstrumentSchoolMap(java.util.Collection p0,java.util.Locale p1) throws java.rmi.RemoteException;
  public java.lang.String getLocalizedCaseDescription(com.idega.block.process.data.Case p0,java.util.Locale p1) throws java.rmi.RemoteException;
  public se.idega.idegaweb.commune.message.business.MessageBusiness getMessageBusiness() throws java.rmi.RemoteException;
+ public boolean isPlacedInSchool(com.idega.user.data.User p0,com.idega.block.school.data.School p1,com.idega.block.school.data.SchoolSeason p2,com.idega.block.school.data.SchoolStudyPath p3) throws java.rmi.RemoteException;
  public boolean removeChoiceFromGroup(java.lang.Object p0,com.idega.user.data.User p1) throws java.rmi.RemoteException;
  public boolean saveChoices(com.idega.user.data.User p0,com.idega.user.data.User p1,java.lang.Object[] p2,java.lang.Object p3,java.lang.Object p4,java.lang.Object p5,java.lang.Object[] p6,java.lang.String p7,java.lang.String p8,java.lang.Object p9,java.lang.Object p10,java.lang.String p11,java.lang.String p12,int p13)throws com.idega.data.IDOCreateException, java.rmi.RemoteException;
 }

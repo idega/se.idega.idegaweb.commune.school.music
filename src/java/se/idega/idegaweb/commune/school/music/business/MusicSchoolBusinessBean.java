@@ -43,6 +43,7 @@ import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOCreateException;
+import com.idega.data.IDOException;
 import com.idega.data.IDOLookup;
 import com.idega.data.IDOLookupException;
 import com.idega.data.IDORelationshipException;
@@ -415,6 +416,18 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		}
 		catch (RemoteException re) {
 			throw new IBORuntimeException(re);
+		}
+	}
+	
+	public boolean isPlacedInSchool(User student, School school, SchoolSeason season, SchoolStudyPath instrument) {
+		try {
+			return getSchoolBusiness().getSchoolClassMemberHome().countByUserAndSchoolAndSeasonAndStudyPath(student, school, season, instrument) > 0;
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+		catch (IDOException ie) {
+			return false;
 		}
 	}
 	

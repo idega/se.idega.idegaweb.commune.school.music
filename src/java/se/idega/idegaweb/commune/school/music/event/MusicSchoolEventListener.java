@@ -52,6 +52,10 @@ public class MusicSchoolEventListener implements IWPageEventListener {
 				session.setGroup(iwc.getParameter(session.getParameterNameGroupID()));
 			}
 			
+			if (iwc.isParameterSet(session.getParameterNameApplicationID())) {
+				session.setApplication(iwc.getParameter(session.getParameterNameApplicationID()));
+			}
+			
 			return true;
 		}
 		catch (RemoteException re){
