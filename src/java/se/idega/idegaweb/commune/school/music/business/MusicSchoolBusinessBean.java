@@ -3,7 +3,7 @@
  */
 package se.idega.idegaweb.commune.school.music.business;
 
-import is.idega.idegaweb.member.business.NoCustodianFound;
+import is.idega.block.family.business.NoCustodianFound;
 
 import java.rmi.RemoteException;
 import java.text.MessageFormat;
