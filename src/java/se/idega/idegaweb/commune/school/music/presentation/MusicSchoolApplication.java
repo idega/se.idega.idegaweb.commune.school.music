@@ -356,7 +356,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 				if (chosenInstruments != null) {
 					box.setChecked(chosenInstruments.contains(instrument));
 				}
-				instrumentTable.setStyleClass(iColumn, iRow, getStyleName(STYLENAME_INPUT_CELL));
+				//instrumentTable.setStyleClass(iColumn, iRow, getStyleName(STYLENAME_INPUT_CELL));
 				instrumentTable.add(box, iColumn, iRow);
 				instrumentTable.add(getSmallText(Text.NON_BREAKING_SPACE), iColumn, iRow);
 				instrumentTable.add(getSmallText(localize(instrument.getCode(), instrument.getDescription())), iColumn++, iRow);

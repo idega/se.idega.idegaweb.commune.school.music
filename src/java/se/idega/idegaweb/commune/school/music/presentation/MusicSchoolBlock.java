@@ -4,8 +4,11 @@
 package se.idega.idegaweb.commune.school.music.presentation;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.ejb.FinderException;
 
@@ -18,6 +21,7 @@ import se.idega.idegaweb.commune.school.music.business.NoInstrumentFoundExceptio
 import se.idega.idegaweb.commune.school.music.business.NoLessonTypeFoundException;
 
 import com.idega.block.school.business.SchoolBusiness;
+import com.idega.block.school.business.SchoolYearComparator;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolYear;
@@ -151,7 +155,8 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 			
 			departments.addMenuElementFirst("", localize("department", "- Department -"));
 			try {
-				Collection coll = getBusiness().findDepartmentsInSchool(getSession().getProvider());
+				List coll = new ArrayList(getBusiness().findDepartmentsInSchool(getSession().getProvider()));
+				Collections.sort(coll, new SchoolYearComparator());
 				Iterator iter = coll.iterator();
 				while (iter.hasNext()) {
 					SchoolYear department = (SchoolYear) iter.next();
