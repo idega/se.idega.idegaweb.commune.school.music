@@ -18,6 +18,7 @@ import com.idega.presentation.Table;
 import com.idega.presentation.text.Break;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.ui.Form;
+import com.idega.presentation.ui.HiddenInput;
 import com.idega.presentation.ui.SubmitButton;
 import com.idega.presentation.ui.TextInput;
 
@@ -102,10 +103,12 @@ public class MusicSchoolInstrumentEditor extends MusicSchoolBlock {
 					TextInput code = (TextInput) getStyledInterface(new TextInput(PARAMETER_CODE, instrument.getCode()));
 					TextInput description = (TextInput) getStyledInterface(new TextInput(PARAMETER_DESCRIPTION, instrument.getDescription()));
 					TextInput localizedKey = (TextInput) getStyledInterface(new TextInput(PARAMETER_LOCALIZED_KEY, instrument.getLocalizedKey()));
+					HiddenInput pk = new HiddenInput(PARAMETER_INSTRUMENT, instrument.getPrimaryKey().toString());
 					
 					table.add(code, column++, row);
 					table.add(description, column++, row);
 					table.add(localizedKey, column++, row);
+					table.add(pk, column++, row);
 				}
 				else {
 					edit = new Link(getEditIcon(localize("instrument.edit_instrument", "Edit instrument")));
@@ -137,7 +140,7 @@ public class MusicSchoolInstrumentEditor extends MusicSchoolBlock {
 				TextInput code = (TextInput) getStyledInterface(new TextInput(PARAMETER_CODE));
 				TextInput description = (TextInput) getStyledInterface(new TextInput(PARAMETER_DESCRIPTION));
 				TextInput localizedKey = (TextInput) getStyledInterface(new TextInput(PARAMETER_LOCALIZED_KEY));
-				
+			
 				table.add(code, column++, row);
 				table.add(description, column++, row);
 				table.add(localizedKey, column++, row);
