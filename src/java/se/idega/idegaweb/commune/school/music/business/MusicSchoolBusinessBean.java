@@ -449,9 +449,10 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 			while (iter.hasNext()) {
 				Case theCase = (Case) iter.next();
 				if (theCase.getCaseCode().getCode().equals(application.getCaseCode().getCode())) {
+					MusicSchoolChoice musicCase = findMusicSchoolChoice(theCase.getPrimaryKey());
 					String subject = getLocalizedString("music_school.choice_received_subject", "Music school choice received");
 					String body = getLocalizedString("music_school.choice_received_body", "{1} has received the application for a music school placing for {0}, {2}.  The application will be handled as soon as possible.");
-					sendMessageToParents((MusicSchoolChoice)theCase, subject, body);
+					sendMessageToParents(musicCase, subject, body);
 					changeCaseStatus(theCase, getCaseStatusPreliminary().getStatus(), performer);
 					hasChildrenApplications = true;
 				}
