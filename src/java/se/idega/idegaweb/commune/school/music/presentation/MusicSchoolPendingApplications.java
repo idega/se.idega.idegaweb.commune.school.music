@@ -178,6 +178,12 @@ public class MusicSchoolPendingApplications extends MusicSchoolBlock {
 	
 	private void parseAction(IWContext iwc) {
 		if (iwc.isParameterSet(PARAMETER_REACTIVATE)) {
+			try {
+				getBusiness().reactivateApplication(iwc.getParameter(PARAMETER_REACTIVATE), iwc.getCurrentUser());
+			}
+			catch (RemoteException re) {
+				log(re);
+			}
 		}
 	}
 }
