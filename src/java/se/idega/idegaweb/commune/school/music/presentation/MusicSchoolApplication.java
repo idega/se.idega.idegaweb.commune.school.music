@@ -21,6 +21,7 @@ import se.idega.idegaweb.commune.school.music.business.NoLessonTypeFoundExceptio
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
 import com.idega.block.navigation.presentation.UserHomeLink;
+import com.idega.block.school.data.School;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolType;
@@ -740,7 +741,6 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_1");
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_2");
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_3");
-		form.maintainParameter(EXTRA_PREFIX + PARAMETER_SEASON);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_DEPARTMENT);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_LESSON_TYPE);
 		form.maintainParameter(EXTRA_PREFIX + PARAMETER_TEACHER_REQUEST);
@@ -759,6 +759,239 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.add(getPersonInfoTable(iwc, getSession().getChild()), 1, row++);
 		table.setHeight(row++, 18);
 		
+		Table verifyTable = new Table();
+		verifyTable.setCellpadding(getCellpadding());
+		verifyTable.setCellspacing(getCellspacing());
+		verifyTable.setColumns(2);
+		table.add(verifyTable, 1, row++);
+		int iRow = 1;
+		
+		String school1 = iwc.getParameter(PARAMETER_SCHOOLS + "_1");
+		String school2 = iwc.getParameter(PARAMETER_SCHOOLS + "_2");
+		String school3 = iwc.getParameter(PARAMETER_SCHOOLS + "_3");
+		
+		String instrument1 = iwc.getParameter(PARAMETER_INSTRUMENTS + "_1");
+		String instrument2 = iwc.getParameter(PARAMETER_INSTRUMENTS + "_2");
+		String instrument3 = iwc.getParameter(PARAMETER_INSTRUMENTS + "_3");
+		
+		String department = iwc.getParameter(PARAMETER_DEPARTMENT);
+		String lessonType = iwc.getParameter(PARAMETER_LESSON_TYPE);
+		
+		String teacherRequest = iwc.getParameter(PARAMETER_TEACHER_REQUEST);
+		String otherInstrument = iwc.getParameter(PARAMETER_OTHER_INSTRUMENT);
+		
+		String elementarySchool = iwc.getParameter(PARAMETER_ELEMENTARY_SCHOOL);
+		String previousStudies = iwc.getParameter(PARAMETER_PREVIOUS_STUDIES);
+		String message = iwc.getParameter(PARAMETER_MESSAGE);
+		
+		verifyTable.mergeCells(1, iRow, 2, iRow);
+		verifyTable.add(getHeader(localize("primary_application", "Primary application")), 1, iRow++);
+		verifyTable.setHeight(iRow++, 6);
+		
+		if (school1 != null) {
+			School school = getSchoolBusiness().getSchool(school1);
+			if (school != null) {
+				verifyTable.add(getSmallHeader(localize("first_school", "First school")), 1, iRow);
+				verifyTable.add(getText(school.getSchoolName()), 2, iRow++);
+			}
+		}
+		
+		if (school2 != null) {
+			School school = getSchoolBusiness().getSchool(school2);
+			if (school != null) {
+				verifyTable.add(getSmallHeader(localize("second_school", "Second school")), 1, iRow);
+				verifyTable.add(getText(school.getSchoolName()), 2, iRow++);
+			}
+		}
+		
+		if (school3 != null) {
+			School school = getSchoolBusiness().getSchool(school3);
+			if (school != null) {
+				verifyTable.add(getSmallHeader(localize("third_school", "Third school")), 1, iRow);
+				verifyTable.add(getText(school.getSchoolName()), 2, iRow++);
+			}
+		}
+		
+		verifyTable.setHeight(iRow++, 6);
+		
+		if (instrument1 != null) {
+			SchoolStudyPath instrument = getSchoolBusiness().getSchoolStudyPath(instrument1);
+			if (instrument != null) {
+				verifyTable.add(getSmallHeader(localize("first_instrument", "First instrument")), 1, iRow);
+				verifyTable.add(getText(localize(instrument.getLocalizedKey(), instrument.getDescription())), 2, iRow++);
+			}
+		}
+		
+		if (instrument2 != null) {
+			SchoolStudyPath instrument = getSchoolBusiness().getSchoolStudyPath(instrument2);
+			if (instrument != null) {
+				verifyTable.add(getSmallHeader(localize("second_instrument", "Second instrument")), 1, iRow);
+				verifyTable.add(getText(localize(instrument.getLocalizedKey(), instrument.getDescription())), 2, iRow++);
+			}
+		}
+		
+		if (instrument3 != null) {
+			SchoolStudyPath instrument = getSchoolBusiness().getSchoolStudyPath(instrument3);
+			if (instrument != null) {
+				verifyTable.add(getSmallHeader(localize("third_instrument", "Third instrument")), 1, iRow);
+				verifyTable.add(getText(localize(instrument.getLocalizedKey(), instrument.getDescription())), 2, iRow++);
+			}
+		}
+		
+		if (otherInstrument != null && otherInstrument.length() > 0) {
+			verifyTable.add(getSmallHeader(localize("other_instrument", "Other instrument")), 1, iRow);
+			verifyTable.add(getText(otherInstrument), 2, iRow++);
+		}
+		
+		verifyTable.setHeight(iRow++, 6);
+		
+		if (department != null) {
+			SchoolYear year = getSchoolBusiness().getSchoolYear(department);
+			if (year != null) {
+				verifyTable.add(getSmallHeader(localize("department", "Department")), 1, iRow);
+				verifyTable.add(getText(localize(year.getLocalizedKey(), year.getSchoolYearName())), 2, iRow++);
+			}
+		}
+		
+		if (lessonType != null) {
+			SchoolType type = getSchoolBusiness().getSchoolType(lessonType);
+			if (type != null) {
+				verifyTable.add(getSmallHeader(localize("lesson_type", "Lesson type")), 1, iRow);
+				verifyTable.add(getText(localize(type.getLocalizationKey(), type.getSchoolTypeName())), 2, iRow++);
+			}
+		}
+		
+		if (teacherRequest != null && teacherRequest.length() > 0) {
+			verifyTable.add(getSmallHeader(localize("teacher_request", "Teacher request")), 1, iRow);
+			verifyTable.add(getText(teacherRequest), 2, iRow++);
+		}
+		
+		verifyTable.setHeight(iRow++, 12);
+		
+		boolean hasExtraApplications = new Boolean(iwc.getParameter(PARAMETER_HAS_EXTRA_APPLICATIONS)).booleanValue();
+		if (hasExtraApplications) {
+			verifyTable.mergeCells(1, iRow, 2, iRow);
+			verifyTable.add(getHeader(localize("secondary_application", "Secondary application")), 1, iRow++);
+			verifyTable.setHeight(iRow++, 6);
+			
+			school1 = iwc.getParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_1");
+			school2 = iwc.getParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_2");
+			school3 = iwc.getParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_3");
+			
+			instrument1 = iwc.getParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_1");
+			instrument2 = iwc.getParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_2");
+			instrument3 = iwc.getParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_3");
+			
+			department = iwc.getParameter(EXTRA_PREFIX + PARAMETER_DEPARTMENT);
+			lessonType = iwc.getParameter(EXTRA_PREFIX + PARAMETER_LESSON_TYPE);
+			
+			teacherRequest = iwc.getParameter(EXTRA_PREFIX + PARAMETER_TEACHER_REQUEST);
+			otherInstrument = iwc.getParameter(EXTRA_PREFIX + PARAMETER_OTHER_INSTRUMENT);
+			
+			if (school1 != null) {
+				School school = getSchoolBusiness().getSchool(school1);
+				if (school != null) {
+					verifyTable.add(getSmallHeader(localize("first_school", "First school")), 1, iRow);
+					verifyTable.add(getText(school.getSchoolName()), 2, iRow++);
+				}
+			}
+			
+			if (school2 != null) {
+				School school = getSchoolBusiness().getSchool(school2);
+				if (school != null) {
+					verifyTable.add(getSmallHeader(localize("second_school", "Second school")), 1, iRow);
+					verifyTable.add(getText(school.getSchoolName()), 2, iRow++);
+				}
+			}
+			
+			if (school3 != null) {
+				School school = getSchoolBusiness().getSchool(school3);
+				if (school != null) {
+					verifyTable.add(getSmallHeader(localize("third_school", "Third school")), 1, iRow);
+					verifyTable.add(getText(school.getSchoolName()), 2, iRow++);
+				}
+			}
+			
+			verifyTable.setHeight(iRow++, 6);
+			
+			if (instrument1 != null) {
+				SchoolStudyPath instrument = getSchoolBusiness().getSchoolStudyPath(instrument1);
+				if (instrument != null) {
+					verifyTable.add(getSmallHeader(localize("first_instrument", "First instrument")), 1, iRow);
+					verifyTable.add(getText(localize(instrument.getLocalizedKey(), instrument.getDescription())), 2, iRow++);
+				}
+			}
+			
+			if (instrument2 != null) {
+				SchoolStudyPath instrument = getSchoolBusiness().getSchoolStudyPath(instrument2);
+				if (instrument != null) {
+					verifyTable.add(getSmallHeader(localize("second_instrument", "Second instrument")), 1, iRow);
+					verifyTable.add(getText(localize(instrument.getLocalizedKey(), instrument.getDescription())), 2, iRow++);
+				}
+			}
+			
+			if (instrument3 != null) {
+				SchoolStudyPath instrument = getSchoolBusiness().getSchoolStudyPath(instrument3);
+				if (instrument != null) {
+					verifyTable.add(getSmallHeader(localize("third_instrument", "Third instrument")), 1, iRow);
+					verifyTable.add(getText(localize(instrument.getLocalizedKey(), instrument.getDescription())), 2, iRow++);
+				}
+			}
+			
+			if (otherInstrument != null && otherInstrument.length() > 0) {
+				verifyTable.add(getSmallHeader(localize("other_instrument", "Other instrument")), 1, iRow);
+				verifyTable.add(getText(otherInstrument), 2, iRow++);
+			}
+			
+			verifyTable.setHeight(iRow++, 6);
+			
+			if (department != null) {
+				SchoolYear year = getSchoolBusiness().getSchoolYear(department);
+				if (year != null) {
+					verifyTable.add(getSmallHeader(localize("department", "Department")), 1, iRow);
+					verifyTable.add(getText(localize(year.getLocalizedKey(), year.getSchoolYearName())), 2, iRow++);
+				}
+			}
+			
+			if (lessonType != null) {
+				SchoolType type = getSchoolBusiness().getSchoolType(lessonType);
+				if (type != null) {
+					verifyTable.add(getSmallHeader(localize("lesson_type", "Lesson type")), 1, iRow);
+					verifyTable.add(getText(localize(type.getLocalizationKey(), type.getSchoolTypeName())), 2, iRow++);
+				}
+			}
+			
+			if (teacherRequest != null && teacherRequest.length() > 0) {
+				verifyTable.add(getSmallHeader(localize("teacher_request", "Teacher request")), 1, iRow);
+				verifyTable.add(getText(teacherRequest), 2, iRow++);
+			}
+			
+			verifyTable.setHeight(iRow++, 12);
+		}
+		
+		verifyTable.mergeCells(1, iRow, 2, iRow);
+		verifyTable.add(getHeader(localize("other_info", "Other information")), 1, iRow++);
+		verifyTable.setHeight(iRow++, 6);
+		
+		if (elementarySchool != null && elementarySchool.length() > 0) {
+			verifyTable.add(getSmallHeader(localize("elementary_school", "Elementary school")), 1, iRow);
+			verifyTable.add(getText(elementarySchool), 2, iRow++);
+		}
+		
+		if (previousStudies != null && previousStudies.length() > 0) {
+			verifyTable.add(getSmallHeader(localize("previous_studies", "Previous studies")), 1, iRow);
+			verifyTable.setVerticalAlignment(1, iRow, Table.VERTICAL_ALIGN_TOP);
+			verifyTable.add(getText(previousStudies), 2, iRow++);
+		}
+		
+		if (message != null && message.length() > 0) {
+			verifyTable.add(getSmallHeader(localize("message", "Message")), 1, iRow);
+			verifyTable.setVerticalAlignment(1, iRow, Table.VERTICAL_ALIGN_TOP);
+			verifyTable.add(getText(message), 2, iRow++);
+		}
+		
+		table.setHeight(row++, 18);
+
 		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));
 		SubmitButton next = (SubmitButton) getButton(new SubmitButton(localize("save", "Save"), PARAMETER_ACTION, String.valueOf(ACTION_SAVE)));
 		
