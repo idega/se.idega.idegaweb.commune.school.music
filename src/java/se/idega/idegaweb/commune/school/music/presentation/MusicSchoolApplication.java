@@ -524,7 +524,7 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		while (iter.hasNext()) {
 			SchoolYear year = (SchoolYear) iter.next();
 			if (year.isSelectable()) {
-				departmentDrop.addMenuElement(year.getPrimaryKey().toString(), localize(year.getSchoolYearName(), year.getSchoolYearName()));
+				departmentDrop.addMenuElement(year.getPrimaryKey().toString(), localize(year.getLocalizedKey(), year.getSchoolYearName()));
 			}
 		}
 
