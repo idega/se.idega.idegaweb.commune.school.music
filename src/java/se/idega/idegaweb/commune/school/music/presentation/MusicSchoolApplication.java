@@ -328,8 +328,11 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setHeight(row++, 12);
 
 		table.add(getPersonInfoTable(iwc, getSession().getChild()), 1, row++);
-		table.setHeight(row++, 18);
+		table.setHeight(row++, 6);
 		
+		table.add(getInformationTable(localize("phase_two_information", "Information text for phase two...")), 1, row++);
+		table.setHeight(row++, 12);
+
 		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
 		table.add(getHeader(localize("application.primary_application", "Primary application")), 1, row++);
 		
@@ -605,16 +608,31 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 	
 	private Table getPhasesTable(int phase, int totalPhases) {
 		Table table = new Table(2, 1);
-		table.setCellpadding(0);
+		table.setCellpadding(getCellpadding());
 		table.setCellspacing(0);
 		table.setWidth(Table.HUNDRED_PERCENT);
 		table.setAlignment(2, 1, Table.HORIZONTAL_ALIGN_RIGHT);
+		table.setBottomCellBorder(1, 1, 1, "#D7D7D7", "solid");
+		table.setBottomCellBorder(2, 1, 1, "#D7D7D7", "solid");
 		
 		table.add(getHeader(localize("music_school_application", "Music school application")), 1, 1);
 		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(localize("phase", "Phase")).append(" ").append(phase).append(" ").append(localize("of", "of")).append(" ").append(totalPhases);
 		table.add(getHeader(buffer.toString()), 2, 1);
+		
+		return table;
+	}
+	
+	private Table getInformationTable(String information) {
+		Table table = new Table(1, 1);
+		table.setCellpadding(getCellpadding());
+		table.setCellspacing(0);
+		table.setWidth(Table.HUNDRED_PERCENT);
+		table.setBottomCellBorder(1, 1, 1, "#D7D7D7", "solid");
+		table.setCellpaddingBottom(1, 1, 6);
+		
+		table.add(getText(information), 1, 1);
 		
 		return table;
 	}
@@ -666,8 +684,11 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setHeight(row++, 12);
 
 		table.add(getPersonInfoTable(iwc, getSession().getChild()), 1, row++);
-		table.setHeight(row++, 18);
+		table.setHeight(row++, 6);
 		
+		table.add(getInformationTable(localize("phase_three_information", "Information text for phase three...")), 1, row++);
+		table.setHeight(row++, 12);
+
 		table.add(getText(localize("extra_application_information_text", "If you want to make an application to another school for another instrument select 'Yes' below and click 'Next'.")), 1, row++);
 		table.setHeight(row++, 12);
 		
@@ -746,8 +767,11 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setHeight(row++, 12);
 
 		table.add(getPersonInfoTable(iwc, getSession().getChild()), 1, row++);
-		table.setHeight(row++, 18);
+		table.setHeight(row++, 6);
 		
+		table.add(getInformationTable(localize("phase_four_information", "Information text for phase four...")), 1, row++);
+		table.setHeight(row++, 12);
+
 		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
 		table.add(getHeader(localize("application.secondary_applications", "Secondary application")), 1, row++);
 		
@@ -824,8 +848,11 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 		table.setHeight(row++, 12);
 
 		table.add(getPersonInfoTable(iwc, user), 1, row++);
-		table.setHeight(row++, 18);
+		table.setHeight(row++, 6);
 		
+		table.add(getInformationTable(localize("phase_five_information", "Information text for phase five...")), 1, row++);
+		table.setHeight(row++, 12);
+
 		table.setStyleClass(1, row, getStyleName(STYLENAME_HEADING_CELL));
 		table.add(getHeader(localize("application.other_information", "Other information")), 1, row++);
 		
