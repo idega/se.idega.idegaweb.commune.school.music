@@ -1726,13 +1726,19 @@ public class MusicSchoolApplication extends MusicSchoolBlock {
 					schoolPKs = new ArrayList();
 					for (int i = 0; i < 3; i++) {
 						if (iwc.isParameterSet(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_" + (i+1))) {
-							schoolPKs.add(iwc.getParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_" + (i+1)));
+							String schoolPK = iwc.getParameter(EXTRA_PREFIX + PARAMETER_SCHOOLS + "_" + (i+1));
+							if (!schoolPK.equals("-1")) {
+								schoolPKs.add(schoolPK);
+							}
 						}
 					}
 					instrumentPKs = new ArrayList();
 					for (int i = 0; i < 3; i++) {
 						if (iwc.isParameterSet(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_" + (i+1))) {
-							instrumentPKs.add(iwc.getParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_" + (i+1)));
+							String instrumentPK = iwc.getParameter(EXTRA_PREFIX + PARAMETER_INSTRUMENTS + "_" + (i+1));
+							if (!instrumentPK.equals("-1")) {
+								instrumentPKs.add(instrumentPK);
+							}
 						}
 					}
 	
