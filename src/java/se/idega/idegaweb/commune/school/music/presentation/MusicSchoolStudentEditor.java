@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolStudentEditor.java,v 1.5 2005/03/31 09:42:14 laddi Exp $
+ * $Id: MusicSchoolStudentEditor.java,v 1.6 2005/04/19 16:52:36 laddi Exp $
  * Created on 20.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -195,7 +195,7 @@ public class MusicSchoolStudentEditor extends MusicSchoolBlock {
 		table.setHeight(row++, 18);
 		
 		BackButton previous = (BackButton) getButton(new BackButton(localize("previous", "Previous")));
-		SubmitButton submit = (SubmitButton) getButton(new SubmitButton(localize("change", "Change")));
+		SubmitButton submit = (SubmitButton) getButton(new SubmitButton(localize("save", "Save")));
 
 		table.add(previous, 1, row);
 		table.add(getSmallText(Text.NON_BREAKING_SPACE), 1, row);
