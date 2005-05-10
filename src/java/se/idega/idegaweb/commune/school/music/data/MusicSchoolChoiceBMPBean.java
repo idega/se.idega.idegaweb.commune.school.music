@@ -15,6 +15,8 @@ import se.idega.idegaweb.commune.school.music.business.MusicConstants;
 import com.idega.block.process.data.AbstractCaseBMPBean;
 import com.idega.block.process.data.Case;
 import com.idega.block.school.data.School;
+import com.idega.block.school.data.SchoolClass;
+import com.idega.block.school.data.SchoolClassMember;
 import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolType;
@@ -635,6 +637,16 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 			}
 			query.addCriteria(new MatchCriteria(postal, "ic_commune_id", MatchCriteria.EQUALS, commune));
 		}
+		
+		Table student = new Table(SchoolClassMember.class);
+		Table group = new Table(SchoolClass.class);
+		
+		SelectQuery inQuery = new SelectQuery(student);
+		inQuery.addColumn(student, "ic_user_id");
+		inQuery.addJoin(student, group);
+		inQuery.addCriteria(new MatchCriteria(group, "school_id", MatchCriteria.EQUALS, school));
+		
+		query.addCriteria(new InCriteria(choice, CHILD, inQuery, true));
 		
 		return idoGetNumberOfRecords(query);
 	}
