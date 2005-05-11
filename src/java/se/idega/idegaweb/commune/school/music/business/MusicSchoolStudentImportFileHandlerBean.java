@@ -54,7 +54,7 @@ public class MusicSchoolStudentImportFileHandlerBean extends IBOServiceBean impl
 			sHome = schoolBiz.getSchoolBusiness().getSchoolHome();
 			fullStudy = getFullTimeStudySchoolType(schoolBiz.getSchoolBusiness());
 			SchoolSeasonHome schoolSeasonHome = schoolBiz.getSchoolBusiness().getSchoolSeasonHome();
-			schoolSeason = schoolSeasonHome.findSeasonByDate(new IWTimestamp().getDate());
+			schoolSeason = schoolSeasonHome.findSeasonByDate(schoolBiz.getSchoolBusiness().getCategoryMusicSchool(), new IWTimestamp().getDate());
 			transaction.begin();
 			String item;
 			int count = 1;
