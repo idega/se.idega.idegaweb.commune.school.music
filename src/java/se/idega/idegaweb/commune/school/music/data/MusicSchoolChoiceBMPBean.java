@@ -23,16 +23,12 @@ import com.idega.block.school.data.SchoolType;
 import com.idega.block.school.data.SchoolYear;
 import com.idega.core.location.data.Address;
 import com.idega.core.location.data.AddressBMPBean;
-import com.idega.core.location.data.AddressType;
-import com.idega.core.location.data.AddressTypeHome;
 import com.idega.core.location.data.Commune;
 import com.idega.core.location.data.PostalCode;
 import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOCompositePrimaryKeyException;
 import com.idega.data.IDOEntity;
 import com.idega.data.IDOException;
-import com.idega.data.IDOLookup;
-import com.idega.data.IDOLookupException;
 import com.idega.data.IDORelationshipException;
 import com.idega.data.IDORemoveRelationshipException;
 import com.idega.data.query.Column;
@@ -624,17 +620,7 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 			catch (IDORelationshipException ile) {
 				throw new IDOException("Tables " + address.getName() + " and " + postal.getName() + " don't have a relation.");
 			}
-			
-			try {
-				AddressType type = ((AddressTypeHome) IDOLookup.getHome(AddressType.class)).findAddressType1();
-				query.addCriteria(new MatchCriteria(address, AddressBMPBean.getColumnNameAddressTypeId(), MatchCriteria.EQUALS, type));
-			}
-			catch (IDOLookupException ile) {
-				throw new IDOException(ile);
-			}
-			catch (FinderException fe) {
-				throw new IDOException(fe);
-			}
+			query.addCriteria(new MatchCriteria(address, AddressBMPBean.getColumnNameAddressTypeId(), MatchCriteria.EQUALS, 1));
 			query.addCriteria(new MatchCriteria(postal, "ic_commune_id", MatchCriteria.EQUALS, commune));
 		}
 		
