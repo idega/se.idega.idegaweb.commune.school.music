@@ -556,9 +556,9 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 		Table choice = new Table(this, "c");
 		Table process = new Table(Case.class, "p");
 		Table instruments = new Table(SchoolStudyPath.class, "sp");
-		Table user = new Table(User.class);
-		Table address = new Table(Address.class);
-		Table postal = new Table(PostalCode.class);
+		Table user = new Table(User.class, "u");
+		Table address = new Table(Address.class, "a");
+		Table postal = new Table(PostalCode.class, "pc");
 		
 		SelectQuery query = new SelectQuery(choice);
 		query.addColumn(new CountColumn(choice, this.getIDColumnName()));
@@ -609,7 +609,7 @@ public class MusicSchoolChoiceBMPBean extends AbstractCaseBMPBean implements Mus
 				throw new IDOException("Tables " + choice.getName() + " and " + user.getName() + " don't have a relation.");
 			}
 			try {
-				query.addJoin(user, address);
+				query.addManyToManyJoin(user, address, "ua");
 			}
 			catch (IDORelationshipException ile) {
 				throw new IDOException("Tables " + user.getName() + " and " + address.getName() + " don't have a relation.");
