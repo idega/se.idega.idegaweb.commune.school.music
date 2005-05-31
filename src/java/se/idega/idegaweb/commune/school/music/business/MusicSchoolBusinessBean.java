@@ -520,6 +520,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 				catch (IDORelationshipException ire) {
 					ire.printStackTrace();
 				}
+				department = choice.getSchoolYear();
 				addStudentToGroup(choice.getChild(), group, department, choice.getSchoolType(), instrument, instruments, choice.getMessage(), stamp, performer);
 			}
 			catch (FinderException fe) {
