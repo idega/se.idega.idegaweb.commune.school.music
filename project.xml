@@ -158,6 +158,17 @@
     </dependency>
     <dependency>
       <groupId>bundles</groupId>
+      <artifactId>com.idega.block.importer</artifactId>
+      <!--HELPER--><version>1.1.1</version><!--HELPER-->
+     <!--HELPERversion>SNAPSHOT</versionHELPER-->
+      <type>jar</type>
+      <url>http://www.idega.com/</url>
+      <properties>
+        <eclipse.dependency>true</eclipse.dependency>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>bundles</groupId>
       <artifactId>is.idega.block.family</artifactId>
       <!--HELPER--><version>1.0.1</version><!--HELPER-->
       <!--HELPERversion>SNAPSHOT</versionHELPER-->
