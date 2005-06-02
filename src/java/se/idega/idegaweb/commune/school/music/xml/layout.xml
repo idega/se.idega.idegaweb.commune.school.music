@@ -3,17 +3,17 @@
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
 		 name="GeneratedReport"
-		 columnCount="19"
+		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
 		 pageWidth="595"
 		 pageHeight="842"
-		 columnWidth="29"
+		 columnWidth="554"
 		 columnSpacing="0"
-		 leftMargin="20"
-		 rightMargin="20"
-		 topMargin="10"
-		 bottomMargin="30"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
 		 whenNoDataType="AllSectionsNoDetail"
 		 isTitleNewPage="false"
 		 isSummaryNewPage="false">
@@ -43,11 +43,12 @@
 		</background>
 		<title>
 			<band height="40"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
 						x="0"
 						y="0"
-						width="500"
+						width="595"
 						height="40"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -67,11 +68,12 @@
 		</title>
 		<pageHeader>
 			<band height="36"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="471"
+						x="470"
 						y="8"
-						width="84"
+						width="125"
 						height="16"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -94,7 +96,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="198"
+						x="232"
 						y="15"
 						width="18"
 						height="10"
@@ -115,7 +117,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="216"
+						x="250"
 						y="15"
 						width="19"
 						height="10"
@@ -136,7 +138,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="235"
+						x="269"
 						y="15"
 						width="19"
 						height="10"
@@ -157,7 +159,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="254"
+						x="288"
 						y="15"
 						width="18"
 						height="10"
@@ -178,7 +180,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="272"
+						x="306"
 						y="15"
 						width="24"
 						height="10"
@@ -199,7 +201,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="296"
+						x="330"
 						y="15"
 						width="21"
 						height="10"
@@ -220,7 +222,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="317"
+						x="351"
 						y="15"
 						width="18"
 						height="10"
@@ -241,7 +243,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="335"
+						x="369"
 						y="15"
 						width="19"
 						height="10"
@@ -262,7 +264,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="354"
+						x="388"
 						y="15"
 						width="19"
 						height="10"
@@ -283,7 +285,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="373"
+						x="407"
 						y="15"
 						width="18"
 						height="10"
@@ -304,7 +306,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="391"
+						x="425"
 						y="15"
 						width="23"
 						height="10"
@@ -325,7 +327,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="414"
+						x="448"
 						y="15"
 						width="22"
 						height="10"
@@ -346,7 +348,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="436"
+						x="470"
 						y="15"
 						width="18"
 						height="10"
@@ -367,9 +369,9 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="454"
+						x="488"
 						y="15"
-						width="19"
+						width="20"
 						height="10"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -388,9 +390,9 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="473"
+						x="508"
 						y="15"
-						width="19"
+						width="20"
 						height="10"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -409,9 +411,9 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="492"
+						x="528"
 						y="15"
-						width="18"
+						width="19"
 						height="10"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -430,7 +432,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="510"
+						x="547"
 						y="15"
 						width="23"
 						height="10"
@@ -451,9 +453,9 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="533"
+						x="570"
 						y="15"
-						width="22"
+						width="25"
 						height="10"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -472,7 +474,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="198"
+						x="232"
 						y="3"
 						width="119"
 						height="12"
@@ -493,7 +495,7 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="317"
+						x="351"
 						y="3"
 						width="119"
 						height="12"
@@ -514,9 +516,9 @@
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="436"
+						x="470"
 						y="3"
-						width="119"
+						width="125"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -535,7 +537,7 @@
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="198"
+						x="232"
 						y="25"
 						width="357"
 						height="0"
@@ -553,7 +555,7 @@
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="317"
+						x="351"
 						y="3"
 						width="0"
 						height="34"
@@ -571,7 +573,7 @@
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="436"
+						x="470"
 						y="3"
 						width="0"
 						height="34"
@@ -590,11 +592,12 @@
 		</columnHeader>
 		<detail>
 			<band height="12"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
 						x="0"
 						y="0"
-						width="198"
+						width="232"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -610,11 +613,12 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{school}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="454"
+						x="488"
 						y="0"
-						width="19"
+						width="20"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -630,9 +634,10 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_base_level_all}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="335"
+						x="369"
 						y="0"
 						width="19"
 						height="12"
@@ -650,9 +655,10 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_base_level_singing}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="216"
+						x="250"
 						y="0"
 						width="19"
 						height="12"
@@ -670,11 +676,12 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_base_level_other}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="473"
+						x="508"
 						y="0"
-						width="19"
+						width="20"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -690,9 +697,10 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_middle_level_all}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="354"
+						x="388"
 						y="0"
 						width="19"
 						height="12"
@@ -710,9 +718,10 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_middle_level_singing}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="235"
+						x="269"
 						y="0"
 						width="19"
 						height="12"
@@ -730,9 +739,10 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_middle_level_other}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="436"
+						x="470"
 						y="0"
 						width="18"
 						height="12"
@@ -750,9 +760,10 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_pre_level_all}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="317"
+						x="351"
 						y="0"
 						width="18"
 						height="12"
@@ -770,9 +781,10 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_pre_level_singing}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="198"
+						x="232"
 						y="0"
 						width="18"
 						height="12"
@@ -790,11 +802,12 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_pre_level_other}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="492"
+						x="528"
 						y="0"
-						width="18"
+						width="19"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -810,9 +823,10 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_advanced_level_all}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="373"
+						x="407"
 						y="0"
 						width="18"
 						height="12"
@@ -830,9 +844,10 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_advanced_level_singing}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="254"
+						x="288"
 						y="0"
 						width="18"
 						height="12"
@@ -850,9 +865,10 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_advanced_level_other}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="510"
+						x="547"
 						y="0"
 						width="23"
 						height="12"
@@ -870,9 +886,10 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_teacher_level_all}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="391"
+						x="425"
 						y="0"
 						width="23"
 						height="12"
@@ -890,9 +907,10 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{sch_year_teacher_level_singing}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >
+					<reportElement
 						mode="Opaque"
-						x="272"
+						x="306"
 						y="0"
 						width="24"
 						height="12"
