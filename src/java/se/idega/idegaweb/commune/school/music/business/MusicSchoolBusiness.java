@@ -1,6 +1,6 @@
 /*
- * $Id: MusicSchoolBusiness.java,v 1.18 2005/03/31 08:22:32 laddi Exp $
- * Created on 31.3.2005
+ * $Id: MusicSchoolBusiness.java,v 1.19 2005/06/09 10:04:30 laddi Exp $
+ * Created on Jun 8, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -34,13 +34,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * <p>
- * TODO laddi Describe Type MusicSchoolBusiness
- * </p>
- *  Last modified: $Date: 2005/03/31 08:22:32 $ by $Author: laddi $
+ * Last modified: $Date: 2005/06/09 10:04:30 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 
@@ -261,6 +258,11 @@ public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 	 */
 	public void transferToNextSchoolSeason(Object[] studentPKs, Object[] departmentPKs, School school,
 			SchoolSeason currentSeason, User performer) throws FinderException, java.rmi.RemoteException;
+
+	/**
+	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#isPlacedInSchool
+	 */
+	public boolean isPlacedInSchool(User user, School school, SchoolSeason season) throws java.rmi.RemoteException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#getBundleIdentifier

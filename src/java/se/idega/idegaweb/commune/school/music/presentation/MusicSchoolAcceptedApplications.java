@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolAcceptedApplications.java,v 1.11 2005/03/31 07:22:28 laddi Exp $
+ * $Id: MusicSchoolAcceptedApplications.java,v 1.12 2005/06/09 10:04:31 laddi Exp $
  * Created on 18.3.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -21,6 +21,7 @@ import se.idega.idegaweb.commune.school.music.business.MusicSchoolGroupWriter;
 import se.idega.idegaweb.commune.school.music.event.MusicSchoolEventListener;
 import se.idega.util.SchoolClassMemberComparatorForSweden;
 import com.idega.block.school.data.SchoolClassMember;
+import com.idega.block.school.data.SchoolSeason;
 import com.idega.block.school.data.SchoolStudyPath;
 import com.idega.block.school.data.SchoolYear;
 import com.idega.business.IBORuntimeException;
@@ -111,6 +112,15 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 			int iRow = 1;
 			
 			boolean hasNextSeason = getBusiness().hasNextSeason(getSession().getSeason());
+			SchoolSeason nextSeason = null;
+			if (hasNextSeason) {
+				try {
+					nextSeason = getSchoolBusiness().getSchoolSeasonHome().findNextSeason(getSession().getSeason());
+				}
+				catch (FinderException fe) {
+					fe.printStackTrace();
+				}
+			}
 			
 			groupTable.add(getSmallHeader(localize("nr", "Nr.")), iColumn++, iRow);
 			groupTable.add(getSmallHeader(localize("name", "Name")), iColumn++, iRow);
@@ -134,6 +144,7 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 				PostalCode code;
 				CheckBox box;
 				Link userLink;
+				boolean placedNextSeason = false;
 				
 				int count = 1;
 				Iterator iter = students.iterator();
@@ -158,6 +169,9 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 						instruments = null;
 					}
 					department = student.getSchoolYear();
+					if (nextSeason != null) {
+						placedNextSeason = getBusiness().isPlacedInSchool(user, getSession().getProvider(), nextSeason);
+					}
 
 					userLink = getSmallLink(user.getName());
 					userLink.setEventListener(MusicSchoolEventListener.class);
@@ -214,7 +228,7 @@ public class MusicSchoolAcceptedApplications extends MusicSchoolBlock {
 						box.setDisabled(true);
 					}
 					groupTable.setWidth(iColumn, iRow, 12);
-					if (!student.getNeedsSpecialAttention()) {
+					if (!placedNextSeason) {
 						groupTable.add(box, iColumn, iRow);
 					}
 

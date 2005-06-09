@@ -909,6 +909,19 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 			throw new IBORuntimeException(re);
 		}
 	}
+	
+	public boolean isPlacedInSchool(User user, School school, SchoolSeason season) {
+		try {
+			return getSchoolBusiness().getSchoolClassMemberHome().countByUserAndSchoolAndSeasonAndStudyPath(user, school, season, null) > 0;
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+		catch (IDOException ie) {
+			ie.printStackTrace();
+			return false;
+		}
+	}
 
 	public String getBundleIdentifier() {
 		return IW_BUNDLE_IDENTIFIER;

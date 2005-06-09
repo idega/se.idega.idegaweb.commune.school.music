@@ -1,6 +1,6 @@
 /*
- * $Id: MusicSchoolBusinessHome.java,v 1.8 2005/03/31 08:22:32 laddi Exp $
- * Created on 31.3.2005
+ * $Id: MusicSchoolBusinessHome.java,v 1.9 2005/06/09 10:04:31 laddi Exp $
+ * Created on Jun 8, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -13,13 +13,10 @@ import com.idega.business.IBOHome;
 
 
 /**
- * <p>
- * TODO laddi Describe Type MusicSchoolBusinessHome
- * </p>
- *  Last modified: $Date: 2005/03/31 08:22:32 $ by $Author: laddi $
+ * Last modified: $Date: 2005/06/09 10:04:31 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface MusicSchoolBusinessHome extends IBOHome {
 
