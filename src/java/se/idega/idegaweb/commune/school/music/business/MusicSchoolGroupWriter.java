@@ -210,6 +210,9 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 		cell = row.createCell((short) cellColumn++);
     cell.setCellValue(iwrb.getLocalizedString("custodian","Custodian"));
     cell.setCellStyle(style);
+		cell = row.createCell((short) cellColumn++);
+    cell.setCellValue(iwrb.getLocalizedString("custodian_personal_id","Custodian personal ID"));
+    cell.setCellStyle(style);
     cell = row.createCell((short) cellColumn++);
     cell.setCellValue(iwrb.getLocalizedString("custodian_email","E-mail"));
     cell.setCellStyle(style);
@@ -348,7 +351,11 @@ public class MusicSchoolGroupWriter implements MediaWritable {
 				row.createCell((short)cellColumn++).setCellValue("");
 				
 			  if (custodian != null) {
-			    row.createCell((short)cellColumn).setCellValue(custodian.getName());
+			    row.createCell((short)cellColumn++).setCellValue(custodian.getName());
+			    row.createCell((short)cellColumn).setCellValue(PersonalIDFormatter.format(custodian.getPersonalID(), locale));
+			  }
+			  else {
+			  		cellColumn++;
 			  }
 			  cellColumn++;
 			  if (custodianEmail != null) {
