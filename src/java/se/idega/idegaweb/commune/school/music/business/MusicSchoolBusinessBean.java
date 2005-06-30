@@ -21,7 +21,6 @@ import javax.transaction.UserTransaction;
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
 import se.idega.idegaweb.commune.care.business.CareBusiness;
 import se.idega.idegaweb.commune.message.business.MessageBusiness;
-import se.idega.idegaweb.commune.message.data.Message;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceHome;
 import com.idega.block.process.business.CaseBusiness;
@@ -763,9 +762,7 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 
 			User appParent = application.getOwner();
 			if (getUserBusiness().getMemberFamilyLogic().isChildInCustodyOf(child, appParent)) {
-				Message message = getMessageBusiness().createUserMessage(application, appParent, subject, MessageFormat.format(body, arguments), MessageFormat.format(letterBody, arguments), true, alwaysSendLetter);
-				message.setParentCase(application);
-				message.store();
+				getMessageBusiness().createUserMessage(application, appParent, subject, MessageFormat.format(body, arguments), MessageFormat.format(letterBody, arguments), true, alwaysSendLetter);
 			}
 
 			try {
