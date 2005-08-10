@@ -12,9 +12,9 @@ import java.util.List;
 import javax.ejb.FinderException;
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
 import se.idega.idegaweb.commune.care.business.CareBusiness;
+import se.idega.idegaweb.commune.care.business.CareConstants;
 import se.idega.idegaweb.commune.presentation.CommuneBlock;
 import se.idega.idegaweb.commune.school.music.business.InstrumentComparator;
-import se.idega.idegaweb.commune.school.music.business.MusicConstants;
 import se.idega.idegaweb.commune.school.music.business.MusicSchoolBusiness;
 import se.idega.idegaweb.commune.school.music.business.MusicSchoolSession;
 import se.idega.idegaweb.commune.school.music.business.NoDepartmentFoundException;
@@ -492,7 +492,7 @@ public abstract class MusicSchoolBlock extends CommuneBlock {
 	
 	protected Help getHelpButton(String key) {
 		Help help = new Help();
-		help.setHelpTextBundle(MusicConstants.HELP_BUNDLE_IDENTFIER);
+		help.setHelpTextBundle(CareConstants.HELP_BUNDLE_IDENTFIER);
 		help.setHelpTextKey(key);
 		help.setImage(getBundle().getImage("help.gif"));
 		return help;
