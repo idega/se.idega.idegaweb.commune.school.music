@@ -20,7 +20,7 @@ import javax.ejb.RemoveException;
 import javax.transaction.UserTransaction;
 import se.idega.idegaweb.commune.business.CommuneUserBusiness;
 import se.idega.idegaweb.commune.care.business.CareBusiness;
-import se.idega.idegaweb.commune.message.business.MessageBusiness;
+import se.idega.idegaweb.commune.message.business.CommuneMessageBusiness;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceHome;
 import com.idega.block.process.business.CaseBusiness;
@@ -76,9 +76,9 @@ public class MusicSchoolBusinessBean extends CaseBusinessBean implements MusicSc
 		}
 	}
 	
-	public MessageBusiness getMessageBusiness() {
+	public CommuneMessageBusiness getMessageBusiness() {
 		try {
-			return (MessageBusiness) this.getServiceInstance(MessageBusiness.class);
+			return (CommuneMessageBusiness) this.getServiceInstance(CommuneMessageBusiness.class);
 		}
 		catch (RemoteException e) {
 			throw new IBORuntimeException(e.getMessage());

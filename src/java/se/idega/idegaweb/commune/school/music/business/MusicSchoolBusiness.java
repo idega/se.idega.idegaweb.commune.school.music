@@ -1,5 +1,5 @@
 /*
- * $Id: MusicSchoolBusiness.java,v 1.19 2005/06/09 10:04:30 laddi Exp $
+ * $Id: MusicSchoolBusiness.java,v 1.20 2005/10/13 18:36:11 laddi Exp $
  * Created on Jun 8, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
-import se.idega.idegaweb.commune.message.business.MessageBusiness;
+import se.idega.idegaweb.commune.message.business.CommuneMessageBusiness;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoice;
 import se.idega.idegaweb.commune.school.music.data.MusicSchoolChoiceHome;
 import com.idega.block.process.business.CaseBusiness;
@@ -34,10 +34,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/06/09 10:04:30 $ by $Author: laddi $
+ * Last modified: $Date: 2005/10/13 18:36:11 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 
@@ -54,7 +54,7 @@ public interface MusicSchoolBusiness extends IBOService, CaseBusiness {
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#getMessageBusiness
 	 */
-	public MessageBusiness getMessageBusiness() throws java.rmi.RemoteException;
+	public CommuneMessageBusiness getMessageBusiness() throws java.rmi.RemoteException;
 
 	/**
 	 * @see se.idega.idegaweb.commune.school.music.business.MusicSchoolBusinessBean#findMusicSchoolChoice
